@@ -74,7 +74,7 @@ export default function Index() {
       {/* Content - Only render after animation completes */}
       {showContent && (
         <div 
-          className="absolute inset-0 opacity-0 animate-fade-in"
+          className="absolute inset-0 opacity-0 animate-[fade-in_0.6s_ease-out_forwards]"
         >
           <div className="w-full h-full flex flex-col items-center justify-center px-4">
             <div className="absolute top-8 left-8">
@@ -126,6 +126,17 @@ export default function Index() {
 
       <style>
         {`
+          @keyframes fade-in {
+            from { 
+              opacity: 0;
+              transform: translateY(10px);
+            }
+            to { 
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          
           .bg-gradient-text {
             background: linear-gradient(to right, #ffffff 30%, #ffffff, #22e55c, #10b981, #059669, #047857);
             -webkit-background-clip: text;
