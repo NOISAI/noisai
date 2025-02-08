@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
@@ -38,11 +39,11 @@ export default function Index() {
 
   return (
     <main 
-      className="w-screen h-screen bg-[#0B0F17]"
+      className="w-screen h-screen bg-[#0B0F17] relative"
     >
       {/* 3D Scene */}
-      {!splineError && !showContent && (
-        <div className="absolute inset-0 transition-opacity duration-1000">
+      {!splineError && (
+        <div className="absolute inset-0 w-full h-full">
           <Spline
             scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
             className="w-full h-full"
