@@ -29,11 +29,13 @@ export default function Index() {
         spline.emitEvent('mouseDown');
         setIsAnimating(true);
         
-        setTimeout(() => {
+        const timer = setTimeout(() => {
           console.log("Animation complete");
           setShowContent(true);
           setIsAnimating(false);
         }, 27000);
+
+        return () => clearTimeout(timer);
       } catch (error) {
         console.error("Error starting animation:", error);
         setIsAnimating(false);
@@ -56,7 +58,7 @@ export default function Index() {
     <main 
       className="w-screen h-screen bg-[#0B0F17]"
     >
-      {/* 3D Scene */}
+      {/* 3D Scene - Only show when content is not visible */}
       {!showContent && (
         <div className="absolute inset-0">
           <Spline
@@ -67,9 +69,11 @@ export default function Index() {
         </div>
       )}
 
-      {/* Content - Only render when showContent is true */}
+      {/* Content - Only render after animation completes */}
       {showContent && (
-        <div className="absolute inset-0 transition-all duration-1000">
+        <div 
+          className="absolute inset-0 transition-all duration-1000 opacity-0 animate-fade-in"
+        >
           <div className="w-full h-full flex flex-col items-center justify-center px-4">
             <div className="absolute top-8 left-8">
               <div className="flex items-center gap-2">
