@@ -86,12 +86,16 @@ export default function Index() {
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-size: 400% 400%;
-            animation: gradient 8s ease-in-out infinite;
+            animation: gradient 15s ease-in-out infinite;
           }
 
           @keyframes gradient {
             0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+            16.66% { background-position: 0% 50%; }
+            33.33% { background-position: 25% 50%; }
+            50% { background-position: 50% 50%; }
+            66.66% { background-position: 75% 50%; }
+            83.33% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
           }
 
