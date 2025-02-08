@@ -14,17 +14,14 @@ export default function Index() {
   const { toast } = useToast();
   const isMobile = useIsMobile();
 
-  // Handle Spline load error
-  const onSplineError = () => {
-    console.error("Spline failed to load");
-    setSplineError(true);
-    setShowContent(true);
-    toast({
-      variant: "destructive",
-      title: "3D Scene Load Error",
-      description: "Failed to load 3D scene. Showing regular content instead.",
-    });
-  };
+  useEffect(() => {
+    // Show content immediately if on mobile to prevent WebGL issues
+    if (isMobile) {
+      setSplineError(true);
+      setShowContent(true);
+      console.log("Mobile device detected, skipping 3D scene");
+    }
+  }, [isMobile]);
 
   // Show logo text after content appears
   useEffect(() => {
@@ -41,17 +38,26 @@ export default function Index() {
     <main 
       className="w-screen h-screen bg-[#0B0F17]"
     >
-      {/* 3D Scene */}
-      {!splineError && !showContent && (
+      {/* 3D Scene - Only show if not mobile and no errors */}
+      {!splineError && !showContent && !isMobile && (
         <div className="absolute inset-0 transition-opacity duration-1000">
           <Spline
             scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
             className="w-full h-full"
-            onError={onSplineError}
+            onError={() => {
+              console.error("Spline failed to load");
+              setSplineError(true);
+              setShowContent(true);
+              toast({
+                variant: "destructive",
+                title: "3D Scene Load Error",
+                description: "Failed to load 3D scene. Showing regular content instead.",
+              });
+            }}
             onLoad={() => {
               console.log("Spline loaded successfully");
-              // Show content after a short delay to ensure smooth transition
-              setTimeout(() => setShowContent(true), 2000);
+              // Show content after a short delay
+              setTimeout(() => setShowContent(true), 1500);
             }}
           />
         </div>
