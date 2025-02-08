@@ -10,29 +10,16 @@ export default function Index() {
   const [hasInteracted, setHasInteracted] = useState(false);
   const [showContent, setShowContent] = useState(false);
   const [showLogoText, setShowLogoText] = useState(false);
-  const [countdown, setCountdown] = useState(23);
   const isMobile = useIsMobile();
 
   useEffect(() => {
     if (hasInteracted || isMobile) {
       const timer = setTimeout(() => {
         setShowContent(true);
-      }, 23000);
-
-      // Countdown timer (keeping for internal state management)
-      const countdownInterval = setInterval(() => {
-        setCountdown((prev) => {
-          if (prev <= 1) {
-            clearInterval(countdownInterval);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
+      }, 30000); // Changed from 23000 to 30000 milliseconds
 
       return () => {
         clearTimeout(timer);
-        clearInterval(countdownInterval);
       };
     }
   }, [hasInteracted, isMobile]);
