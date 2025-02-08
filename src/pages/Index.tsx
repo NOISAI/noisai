@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
@@ -19,6 +20,13 @@ export default function Index() {
     console.log("Spline loaded");
     setSpline(splineApp);
     setIsLoaded(true);
+    
+    // Auto-start for mobile
+    if (isMobile) {
+      console.log("Mobile detected - auto starting");
+      setHasInteracted(true);
+      splineApp.play();
+    }
   };
 
   // Handle click interaction
@@ -32,18 +40,10 @@ export default function Index() {
     }
   };
 
-  // Auto-start for mobile devices
-  useEffect(() => {
-    if (isMobile && spline && isLoaded) {
-      console.log("Mobile device detected, auto-starting");
-      setHasInteracted(true);
-      spline.play();
-    }
-  }, [isMobile, spline, isLoaded]);
-
   // Handle animation completion
   useEffect(() => {
-    if ((hasInteracted || isMobile) && isLoaded && spline) {
+    if (hasInteracted && isLoaded && spline) {
+      console.log("Starting animation completion timer");
       const timer = setTimeout(() => {
         console.log("Animation complete");
         setAnimationComplete(true);
@@ -51,7 +51,7 @@ export default function Index() {
 
       return () => clearTimeout(timer);
     }
-  }, [hasInteracted, isMobile, isLoaded, spline]);
+  }, [hasInteracted, isLoaded, spline]);
 
   // Show content after animation completes
   useEffect(() => {
@@ -80,7 +80,7 @@ export default function Index() {
         cursor: !hasInteracted && !isMobile && isLoaded ? 'pointer' : 'default'
       }}
     >
-      {/* Initial Click Overlay */}
+      {/* Initial Click Overlay - Only show on desktop when not interacted */}
       {!hasInteracted && !isMobile && isLoaded && (
         <div className="absolute inset-0 flex items-center justify-center z-10">
           <div className="text-white text-2xl animate-pulse">
