@@ -4,20 +4,28 @@ import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
 
 export default function Index() {
-  const [show3D, setShow3D] = useState(true); // Start with 3D scene visible
+  const [hasInteracted, setHasInteracted] = useState(false);
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    // After 20 seconds, show the website content
-    const timer = setTimeout(() => {
-      setShowContent(true);
-    }, 20000);
+    // Only start countdown after user interaction
+    if (hasInteracted) {
+      const timer = setTimeout(() => {
+        setShowContent(true);
+      }, 20000);
 
-    return () => clearTimeout(timer);
-  }, []); // Only run once on mount
+      return () => clearTimeout(timer);
+    }
+  }, [hasInteracted]); // Dependency on hasInteracted
+
+  const handleSceneClick = () => {
+    if (!hasInteracted) {
+      setHasInteracted(true);
+    }
+  };
 
   return (
-    <main className="w-screen h-screen bg-[#221F26]">
+    <main className="w-screen h-screen bg-[#221F26]" onClick={handleSceneClick}>
       {/* 3D Scene */}
       <div className={`absolute inset-0 transition-opacity duration-1000 ${showContent ? 'opacity-0' : 'opacity-100'}`}>
         <Spline
