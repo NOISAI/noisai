@@ -24,10 +24,26 @@ export default function Index() {
 
   // Handle click to start
   const handleStart = () => {
-    if (isLoaded && !isAnimating && !hasStarted) {
+    if (isLoaded && spline && !isAnimating && !hasStarted) {
       setHasStarted(true);
-      setShowContent(true);
-      setIsAnimating(false);
+      try {
+        console.log("Starting animation");
+        spline.emitEvent('mouseDown');
+        setIsAnimating(true);
+
+        // Set timer for 25 seconds
+        const timer = setTimeout(() => {
+          console.log("25 seconds elapsed, showing content");
+          setShowContent(true);
+          setIsAnimating(false);
+        }, 25000);
+
+        return () => clearTimeout(timer);
+      } catch (error) {
+        console.error("Error starting animation:", error);
+        setShowContent(true);
+        setIsAnimating(false);
+      }
     }
   };
 
@@ -44,31 +60,33 @@ export default function Index() {
 
   return (
     <main 
-      className="w-screen h-screen bg-[#0B0F17] relative overflow-hidden"
+      className="w-screen h-screen bg-[#0B0F17]"
       onClick={handleStart}
     >
-      {/* Background Spline Scene */}
-      <div className="absolute inset-0 -top-20 scale-125 z-0">
-        <Spline
-          scene="https://prod.spline.design/WPMa2X2U2NClGTaW/scene.splinecode"
-          className="w-full h-full"
-          onLoad={onSplineLoad}
-        />
-      </div>
-
       {/* Start Message - Only show before animation starts */}
       {isLoaded && !hasStarted && (
-        <div className="absolute inset-0 flex items-center justify-center z-20">
+        <div className="absolute inset-0 flex items-center justify-center">
           <p className="text-white text-2xl md:text-3xl font-bold animate-pulse cursor-pointer">
             Click anywhere to begin
           </p>
         </div>
       )}
 
+      {/* 3D Scene - Only show when content is not visible */}
+      {!showContent && (
+        <div className="absolute inset-0">
+          <Spline
+            scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
+            className="w-full h-full"
+            onLoad={onSplineLoad}
+          />
+        </div>
+      )}
+
       {/* Content - Only render after animation completes */}
       {showContent && (
         <div 
-          className="absolute inset-0 opacity-0 animate-[fade-in_1.5s_ease-out_forwards] z-30"
+          className="absolute inset-0 opacity-0 animate-[fade-in_1.5s_ease-out_forwards]"
         >
           <div className="w-full h-full flex flex-col items-center justify-center px-4">
             <div className="absolute top-8 left-8">
