@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
@@ -49,7 +48,6 @@ export default function Index() {
     if (!hasInteracted) {
       setHasInteracted(true);
       if (spline) {
-        // Start the animation by triggering the timeline
         spline.play();
       }
     }
@@ -60,7 +58,6 @@ export default function Index() {
       className="w-screen h-screen bg-[#0B0F17]" 
       onClick={handleSceneClick}
       style={{ 
-        pointerEvents: hasInteracted && !showContent ? 'none' : 'auto',
         cursor: !hasInteracted ? 'pointer' : 'default'
       }}
     >
@@ -76,9 +73,6 @@ export default function Index() {
       {/* 3D Scene */}
       <div 
         className={`absolute inset-0 transition-opacity duration-1000 ${showContent ? 'opacity-0' : 'opacity-100'}`}
-        style={{ 
-          pointerEvents: hasInteracted ? 'none' : 'auto'
-        }}
       >
         <Spline
           scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
@@ -92,7 +86,6 @@ export default function Index() {
         ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
         ${!showContent ? 'pointer-events-none' : ''}`}>
         <div className="w-full h-full flex flex-col items-center justify-center px-4">
-          {/* Logo */}
           <div className="absolute top-8 left-8">
             <div className="flex items-center gap-2">
               <div className={`transition-transform duration-1000 ${!showLogoText ? '-rotate-90' : 'rotate-0'}`}>
