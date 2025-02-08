@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
@@ -10,12 +11,13 @@ export default function Index() {
   const [showContent, setShowContent] = useState(false);
   const [showLogoText, setShowLogoText] = useState(false);
   const [spline, setSpline] = useState(null);
+  const [animationComplete, setAnimationComplete] = useState(false);
   const isMobile = useIsMobile();
 
   useEffect(() => {
     if (hasInteracted || isMobile) {
       const timer = setTimeout(() => {
-        setShowContent(true);
+        setAnimationComplete(true);
       }, 27000);
 
       return () => {
@@ -23,6 +25,12 @@ export default function Index() {
       };
     }
   }, [hasInteracted, isMobile]);
+
+  useEffect(() => {
+    if (animationComplete) {
+      setShowContent(true);
+    }
+  }, [animationComplete]);
 
   useEffect(() => {
     if (showContent) {
