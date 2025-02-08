@@ -29,6 +29,7 @@ export default function Index() {
         spline.emitEvent('mouseDown');
         setIsAnimating(true);
         
+        // Only show content after animation is complete
         setTimeout(() => {
           console.log("Animation complete");
           setShowContent(true);
@@ -69,58 +70,56 @@ export default function Index() {
         />
       </div>
 
-      {/* Content */}
-      <div 
-        className={`absolute inset-0 transition-all duration-2000 ease-in-out transform
-          ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-          ${!showContent ? 'pointer-events-none' : ''}`}
-      >
-        <div className="w-full h-full flex flex-col items-center justify-center px-4">
-          <div className="absolute top-8 left-8">
-            <div className="flex items-center gap-2">
-              <div className={`transition-transform duration-1000 ${
-                !showLogoText ? '-rotate-90' : 'rotate-0'
-              }`}>
-                <img 
-                  src="/lovable-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
-                  alt="NOISAI Logo" 
-                  className="w-8 h-8"
-                />
+      {/* Content - Only render when showContent is true */}
+      {showContent && (
+        <div className="absolute inset-0 transition-all duration-2000 ease-in-out">
+          <div className="w-full h-full flex flex-col items-center justify-center px-4">
+            <div className="absolute top-8 left-8">
+              <div className="flex items-center gap-2">
+                <div className={`transition-transform duration-1000 ${
+                  !showLogoText ? '-rotate-90' : 'rotate-0'
+                }`}>
+                  <img 
+                    src="/lovable-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
+                    alt="NOISAI Logo" 
+                    className="w-8 h-8"
+                  />
+                </div>
+                <span 
+                  className={`text-[#22C55E] text-2xl font-bold transition-opacity duration-500
+                    ${showLogoText ? 'opacity-100' : 'opacity-0'}`}
+                >
+                  NOISAI
+                </span>
               </div>
-              <span 
-                className={`text-[#22C55E] text-2xl font-bold transition-opacity duration-500
-                  ${showLogoText ? 'opacity-100' : 'opacity-0'}`}
-              >
-                NOISAI
-              </span>
             </div>
-          </div>
 
-          <Motion className="text-center space-y-8">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 max-w-4xl mx-auto leading-tight bg-gradient-text animate-gradient-x">
-              Sound Waves to Clean Energy
-            </h1>
-            <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-12">
-              Revolutionary technology that converts ambient sound into renewable electricity, powered by blockchain and AI
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Button
-                className="bg-[#22C55E] hover:bg-[#22C55E]/90 text-white px-8 py-6 text-lg h-auto"
-              >
-                <Link className="mr-2 h-5 w-5" />
-                Invest on NOISAI
-              </Button>
-              <Button
-                variant="outline"
-                className="bg-transparent border-gray-700 text-gray-300 hover:bg-gray-800 px-8 py-6 text-lg h-auto"
-              >
-                <Github className="mr-2 h-5 w-5" />
-                View on GitHub
-              </Button>
-            </div>
-          </Motion>
+            <Motion className="text-center space-y-8">
+              <h1 className="text-5xl md:text-7xl font-bold mb-6 max-w-4xl mx-auto leading-tight bg-gradient-text animate-gradient-x">
+                Sound Waves to Clean Energy
+              </h1>
+              <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-12">
+                Revolutionary technology that converts ambient sound into renewable electricity, powered by blockchain and AI
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Button
+                  className="bg-[#22C55E] hover:bg-[#22C55E]/90 text-white px-8 py-6 text-lg h-auto"
+                >
+                  <Link className="mr-2 h-5 w-5" />
+                  Invest on NOISAI
+                </Button>
+                <Button
+                  variant="outline"
+                  className="bg-transparent border-gray-700 text-gray-300 hover:bg-gray-800 px-8 py-6 text-lg h-auto"
+                >
+                  <Github className="mr-2 h-5 w-5" />
+                  View on GitHub
+                </Button>
+              </div>
+            </Motion>
+          </div>
         </div>
-      </div>
+      )}
 
       <style>
         {`
