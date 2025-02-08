@@ -5,51 +5,26 @@ import { Motion } from "@/components/ui/motion";
 import { Button } from "@/components/ui/button";
 import { Github, Link } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function Index() {
   const [showContent, setShowContent] = useState(false);
   const [showLogoText, setShowLogoText] = useState(false);
-  const [spline, setSpline] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [splineError, setSplineError] = useState(false);
+  const { toast } = useToast();
   const isMobile = useIsMobile();
 
-  // Handle Spline load and start animation
-  const onSplineLoad = (splineApp) => {
-    console.log("Spline loaded");
-    setSpline(splineApp);
-    setIsLoaded(true);
-  };
-
-  // Handle animation end event
-  const onAnimationEnd = () => {
-    console.log("Animation complete");
+  // Handle Spline load error
+  const onSplineError = () => {
+    console.error("Spline failed to load");
+    setSplineError(true);
     setShowContent(true);
-    setIsAnimating(false);
+    toast({
+      variant: "destructive",
+      title: "3D Scene Load Error",
+      description: "Failed to load 3D scene. Showing regular content instead.",
+    });
   };
-
-  // Start animation when spline is loaded
-  useEffect(() => {
-    if (isLoaded && spline && !isAnimating) {
-      try {
-        console.log("Starting animation");
-        // Listen for animation events
-        spline.addEventListener('onAnimationEnd', onAnimationEnd);
-        // Trigger the animation
-        spline.emitEvent('mouseDown');
-        setIsAnimating(true);
-
-        return () => {
-          spline.removeEventListener('onAnimationEnd', onAnimationEnd);
-        };
-      } catch (error) {
-        console.error("Error starting animation:", error);
-        setIsAnimating(false);
-        // Fallback: show content if animation fails
-        setShowContent(true);
-      }
-    }
-  }, [isLoaded, spline]);
 
   // Show logo text after content appears
   useEffect(() => {
@@ -67,13 +42,20 @@ export default function Index() {
       className="w-screen h-screen bg-[#0B0F17]"
     >
       {/* 3D Scene */}
-      <div className={`absolute inset-0 transition-opacity duration-1000 ${showContent ? 'opacity-0' : 'opacity-100'}`}>
-        <Spline
-          scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
-          className="w-full h-full"
-          onLoad={onSplineLoad}
-        />
-      </div>
+      {!splineError && !showContent && (
+        <div className="absolute inset-0 transition-opacity duration-1000">
+          <Spline
+            scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
+            className="w-full h-full"
+            onError={onSplineError}
+            onLoad={() => {
+              console.log("Spline loaded successfully");
+              // Show content after a short delay to ensure smooth transition
+              setTimeout(() => setShowContent(true), 2000);
+            }}
+          />
+        </div>
+      )}
 
       {/* Content */}
       <div 
