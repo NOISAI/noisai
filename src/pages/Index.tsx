@@ -26,15 +26,19 @@ export default function Index() {
   const handleSceneClick = () => {
     if (!hasInteracted && isLoaded && spline) {
       try {
+        // First try to trigger the animation
+        console.log("Attempting to trigger animation directly");
+        spline.emitEvent('mouseDown');
+        spline.emitEvent('keyDown');
+        
+        // Also try to play any timeline animations
+        const timeline = spline.getTimeline();
+        if (timeline) {
+          console.log("Found timeline, attempting to play");
+          timeline.play();
+        }
+        
         setHasInteracted(true);
-        // Get reference to current spline instance
-        const currentSpline = spline;
-        // Small timeout to ensure state updates before animation
-        setTimeout(() => {
-          console.log("Attempting to play animation...");
-          currentSpline.play();
-          console.log("Animation triggered");
-        }, 100);
       } catch (error) {
         console.error("Error playing animation:", error);
       }
