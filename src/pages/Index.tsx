@@ -16,7 +16,7 @@ export default function Index() {
     if (hasInteracted || isMobile) {
       const timer = setTimeout(() => {
         setShowContent(true);
-      }, 27000); // Changed to 27000 milliseconds
+      }, 27000);
 
       return () => {
         clearTimeout(timer);
@@ -35,14 +35,13 @@ export default function Index() {
   }, [showContent]);
 
   useEffect(() => {
-    // Automatically trigger content on mobile
     if (isMobile) {
       setHasInteracted(true);
     }
   }, [isMobile]);
 
   const handleSceneClick = () => {
-    if (!hasInteracted && !showContent) {
+    if (!hasInteracted) {
       setHasInteracted(true);
     }
   };
@@ -66,7 +65,12 @@ export default function Index() {
       )}
 
       {/* 3D Scene */}
-      <div className={`absolute inset-0 transition-opacity duration-1000 ${showContent ? 'opacity-0' : 'opacity-100'}`}>
+      <div 
+        className={`absolute inset-0 transition-opacity duration-1000 ${showContent ? 'opacity-0' : 'opacity-100'}`}
+        style={{ 
+          pointerEvents: hasInteracted ? 'none' : 'auto'
+        }}
+      >
         <Spline
           scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
           className="w-full h-full"
