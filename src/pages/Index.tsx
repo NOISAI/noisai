@@ -12,18 +12,20 @@ export default function Index() {
   const [spline, setSpline] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
   const isMobile = useIsMobile();
 
-  // Handle Spline load and start animation
+  // Handle Spline load
   const onSplineLoad = (splineApp) => {
     console.log("Spline loaded");
     setSpline(splineApp);
     setIsLoaded(true);
   };
 
-  // Start animation and timer when spline is loaded
-  useEffect(() => {
-    if (isLoaded && spline && !isAnimating) {
+  // Handle click to start
+  const handleStart = () => {
+    if (isLoaded && spline && !isAnimating && !hasStarted) {
+      setHasStarted(true);
       try {
         console.log("Starting animation");
         spline.emitEvent('mouseDown');
@@ -39,12 +41,11 @@ export default function Index() {
         return () => clearTimeout(timer);
       } catch (error) {
         console.error("Error starting animation:", error);
-        // If animation fails, show content anyway
         setShowContent(true);
         setIsAnimating(false);
       }
     }
-  }, [isLoaded, spline]);
+  };
 
   // Show logo text after content appears
   useEffect(() => {
@@ -60,7 +61,17 @@ export default function Index() {
   return (
     <main 
       className="w-screen h-screen bg-[#0B0F17]"
+      onClick={handleStart}
     >
+      {/* Start Message - Only show before animation starts */}
+      {isLoaded && !hasStarted && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <p className="text-white text-2xl md:text-3xl font-bold animate-pulse cursor-pointer">
+            Click anywhere to begin
+          </p>
+        </div>
+      )}
+
       {/* 3D Scene - Only show when content is not visible */}
       {!showContent && (
         <div className="absolute inset-0">
