@@ -52,9 +52,19 @@ export default function Index() {
       className="w-screen h-screen bg-[#0B0F17]" 
       onClick={handleSceneClick}
       style={{ 
-        pointerEvents: hasInteracted && !showContent ? 'none' : 'auto' 
+        pointerEvents: hasInteracted && !showContent ? 'none' : 'auto',
+        cursor: !hasInteracted ? 'pointer' : 'default'
       }}
     >
+      {/* Initial Click Overlay */}
+      {!hasInteracted && (
+        <div className="absolute inset-0 flex items-center justify-center z-10">
+          <div className="text-white text-2xl animate-pulse">
+            Click anywhere to begin
+          </div>
+        </div>
+      )}
+
       {/* 3D Scene */}
       <div className={`absolute inset-0 transition-opacity duration-1000 ${showContent ? 'opacity-0' : 'opacity-100'}`}>
         <Spline
