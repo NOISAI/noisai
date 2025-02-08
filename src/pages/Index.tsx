@@ -30,12 +30,11 @@ export default function Index() {
       {/* Logo */}
       <div className="absolute top-8 left-8 z-10">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8">
-            <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M7 14C10.5 14 14.5 22 18 22C21.5 22 25.5 14 29 14" 
-                    stroke="#22C55E" strokeWidth="2" strokeLinecap="round"/>
-            </svg>
-          </div>
+          <img 
+            src="/lovable-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
+            alt="NOISAI Logo" 
+            className="w-8 h-8"
+          />
           <span className="text-[#22C55E] text-2xl font-bold">NOISAI</span>
         </div>
       </div>
@@ -96,12 +95,6 @@ export default function Index() {
             50% { background-position: 50% 50%; }
             66.66% { background-position: 75% 50%; }
             83.33% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-          }
-
-          @keyframes gradient-x {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
           }
         `}
