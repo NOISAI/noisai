@@ -12,12 +12,14 @@ export default function Index() {
   const [showLogoText, setShowLogoText] = useState(false);
   const [spline, setSpline] = useState(null);
   const [animationComplete, setAnimationComplete] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const isMobile = useIsMobile();
 
   // Handle animation completion
   useEffect(() => {
-    if (hasInteracted || isMobile) {
+    if ((hasInteracted || isMobile) && isLoaded) {
       const timer = setTimeout(() => {
+        console.log("Animation complete");
         setAnimationComplete(true);
       }, 27000);
 
@@ -25,11 +27,12 @@ export default function Index() {
         clearTimeout(timer);
       };
     }
-  }, [hasInteracted, isMobile]);
+  }, [hasInteracted, isMobile, isLoaded]);
 
   // Set content visibility after animation completes
   useEffect(() => {
     if (animationComplete) {
+      console.log("Showing content");
       setShowContent(true);
     }
   }, [animationComplete]);
@@ -45,25 +48,27 @@ export default function Index() {
     }
   }, [showContent]);
 
-  // Set interaction state for mobile devices
+  // Handle mobile interaction
   useEffect(() => {
-    if (isMobile) {
+    if (isMobile && spline && isLoaded) {
+      console.log("Mobile device detected, auto-starting");
       setHasInteracted(true);
-      if (spline) {
-        spline.play();
-      }
+      spline.play();
     }
-  }, [isMobile, spline]);
+  }, [isMobile, spline, isLoaded]);
 
   const onSplineLoad = (splineApp) => {
+    console.log("Spline loaded");
     setSpline(splineApp);
+    setIsLoaded(true);
     if (isMobile) {
       splineApp.play();
     }
   };
 
   const handleSceneClick = () => {
-    if (!hasInteracted) {
+    if (!hasInteracted && !isMobile) {
+      console.log("Scene clicked");
       setHasInteracted(true);
       if (spline) {
         spline.play();
@@ -76,11 +81,11 @@ export default function Index() {
       className="w-screen h-screen bg-[#0B0F17]" 
       onClick={handleSceneClick}
       style={{ 
-        cursor: !hasInteracted ? 'pointer' : 'default'
+        cursor: !hasInteracted && !isMobile ? 'pointer' : 'default'
       }}
     >
       {/* Initial Click Overlay */}
-      {!hasInteracted && !isMobile && (
+      {!hasInteracted && !isMobile && isLoaded && (
         <div className="absolute inset-0 flex items-center justify-center z-10">
           <div className="text-white text-2xl animate-pulse">
             Click anywhere to begin
@@ -90,7 +95,9 @@ export default function Index() {
 
       {/* 3D Scene */}
       <div 
-        className={`absolute inset-0 transition-opacity duration-1000 ${showContent ? 'opacity-0' : 'opacity-100'}`}
+        className={`absolute inset-0 transition-opacity duration-1000 ${
+          showContent ? 'opacity-0' : 'opacity-100'
+        }`}
       >
         <Spline
           scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
@@ -100,13 +107,17 @@ export default function Index() {
       </div>
 
       {/* Content */}
-      <div className={`absolute inset-0 transition-all duration-2000 ease-in-out transform
-        ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-        ${!showContent ? 'pointer-events-none' : ''}`}>
+      <div 
+        className={`absolute inset-0 transition-all duration-2000 ease-in-out transform
+          ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
+          ${!showContent ? 'pointer-events-none' : ''}`}
+      >
         <div className="w-full h-full flex flex-col items-center justify-center px-4">
           <div className="absolute top-8 left-8">
             <div className="flex items-center gap-2">
-              <div className={`transition-transform duration-1000 ${!showLogoText ? '-rotate-90' : 'rotate-0'}`}>
+              <div className={`transition-transform duration-1000 ${
+                !showLogoText ? '-rotate-90' : 'rotate-0'
+              }`}>
                 <img 
                   src="/lovable-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
                   alt="NOISAI Logo" 
