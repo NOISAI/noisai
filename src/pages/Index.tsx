@@ -50,8 +50,9 @@ export default function Index() {
             onError={onSplineError}
             onLoad={() => {
               console.log("Spline loaded successfully");
-              // Show content after a longer delay to let the 3D scene play
-              setTimeout(() => setShowContent(true), 4000);
+            }}
+            onSplineEnd={() => {
+              setShowContent(true);
             }}
           />
         </div>
