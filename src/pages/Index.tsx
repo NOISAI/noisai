@@ -21,21 +21,22 @@ export default function Index() {
     setIsLoaded(true);
   };
 
-  // Handle animation end event
-  const onAnimationEnd = () => {
-    console.log("Animation complete");
-    setShowContent(true);
-    setIsAnimating(false);
-  };
-
-  // Start animation when spline is loaded
+  // Start animation and timer when spline is loaded
   useEffect(() => {
     if (isLoaded && spline && !isAnimating) {
       try {
         console.log("Starting animation");
         spline.emitEvent('mouseDown');
-        spline.addEventListener('animationEnd', onAnimationEnd);
         setIsAnimating(true);
+
+        // Set timer for 25 seconds
+        const timer = setTimeout(() => {
+          console.log("25 seconds elapsed, showing content");
+          setShowContent(true);
+          setIsAnimating(false);
+        }, 25000);
+
+        return () => clearTimeout(timer);
       } catch (error) {
         console.error("Error starting animation:", error);
         // If animation fails, show content anyway
@@ -74,7 +75,7 @@ export default function Index() {
       {/* Content - Only render after animation completes */}
       {showContent && (
         <div 
-          className="absolute inset-0 opacity-0 animate-[fade-in_0.6s_ease-out_forwards]"
+          className="absolute inset-0 opacity-0 animate-[fade-in_1.5s_ease-out_forwards]"
         >
           <div className="w-full h-full flex flex-col items-center justify-center px-4">
             <div className="absolute top-8 left-8">
