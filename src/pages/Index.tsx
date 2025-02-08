@@ -66,7 +66,7 @@ export default function Index() {
       {/* Background Spline Scene */}
       <div className="absolute inset-0 z-0">
         <Spline
-          scene="https://draft.spline.design/WPMa2X2U2NClGTaW/scene.splinecode"
+          scene="https://prod.spline.design/WPMa2X2U2NClGTaW/scene.splinecode"
           className="w-full h-full"
           onLoad={onSplineLoad}
         />
@@ -76,7 +76,7 @@ export default function Index() {
       {!showContent && (
         <div className={`absolute inset-0 z-10 ${isMobile ? 'scale-75 transform-gpu flex items-center justify-center' : ''}`}>
           <Spline
-            scene="https://draft.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
+            scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
             className="w-full h-full"
             onLoad={onSplineLoad}
           />
