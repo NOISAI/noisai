@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
@@ -27,6 +28,7 @@ export default function Index() {
       console.log("Scene clicked");
       setHasInteracted(true);
       if (spline) {
+        console.log("Starting animation");
         spline.play();
       }
     }
