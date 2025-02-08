@@ -7,7 +7,6 @@ import { Github, Link } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function Index() {
-  const [hasInteracted, setHasInteracted] = useState(false);
   const [showContent, setShowContent] = useState(false);
   const [showLogoText, setShowLogoText] = useState(false);
   const [spline, setSpline] = useState(null);
@@ -15,32 +14,25 @@ export default function Index() {
   const [isAnimating, setIsAnimating] = useState(false);
   const isMobile = useIsMobile();
 
-  // Handle Spline load
+  // Handle Spline load and start animation
   const onSplineLoad = (splineApp) => {
     console.log("Spline loaded");
     setSpline(splineApp);
     setIsLoaded(true);
-  };
-
-  // Handle click interaction and start animation
-  const handleSceneClick = () => {
-    if (!hasInteracted && !isAnimating && isLoaded && spline) {
-      console.log("Scene clicked, triggering interaction");
-      try {
-        spline.emitEvent('mouseDown');
-        setHasInteracted(true);
-        setIsAnimating(true);
-        
-        // Start the animation completion timer only after user interaction
-        setTimeout(() => {
-          console.log("Animation complete");
-          setShowContent(true);
-          setIsAnimating(false);
-        }, 27000);
-      } catch (error) {
-        console.error("Error during interaction:", error);
+    
+    // Start animation automatically once loaded
+    try {
+      splineApp.emitEvent('mouseDown');
+      setIsAnimating(true);
+      
+      setTimeout(() => {
+        console.log("Animation complete");
+        setShowContent(true);
         setIsAnimating(false);
-      }
+      }, 27000);
+    } catch (error) {
+      console.error("Error starting animation:", error);
+      setIsAnimating(false);
     }
   };
 
@@ -57,22 +49,8 @@ export default function Index() {
 
   return (
     <main 
-      className="w-screen h-screen bg-[#0B0F17]" 
-      onClick={handleSceneClick}
-      style={{ 
-        cursor: !hasInteracted && isLoaded && !isAnimating ? 'pointer' : 'default',
-        pointerEvents: isAnimating ? 'none' : 'auto'
-      }}
+      className="w-screen h-screen bg-[#0B0F17]"
     >
-      {/* Initial Click Overlay - Show when not interacted */}
-      {!hasInteracted && isLoaded && !isAnimating && (
-        <div className="absolute inset-0 flex items-center justify-center z-10">
-          <div className="text-white text-2xl animate-pulse cursor-pointer">
-            Click anywhere to begin
-          </div>
-        </div>
-      )}
-
       {/* 3D Scene */}
       <div 
         className={`absolute inset-0 transition-opacity duration-1000 ${
