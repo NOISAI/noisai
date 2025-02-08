@@ -12,7 +12,7 @@ export default function Index() {
     if (hasInteracted) {
       const timer = setTimeout(() => {
         setShowContent(true);
-      }, 20000);
+      }, 30000); // Changed from 20000 to 30000 milliseconds
 
       return () => clearTimeout(timer);
     }
