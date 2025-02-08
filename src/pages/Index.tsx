@@ -22,10 +22,10 @@ export default function Index() {
     setIsLoaded(true);
   };
 
-  // Handle click interaction
+  // Handle click interaction and start animation
   const handleSceneClick = () => {
     if (!hasInteracted && isLoaded && spline) {
-      console.log("Scene clicked, starting animation");
+      console.log("Scene clicked, triggering animation");
       spline.play();
       setHasInteracted(true);
     }
