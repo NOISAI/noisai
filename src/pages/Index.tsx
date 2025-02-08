@@ -10,6 +10,7 @@ export default function Index() {
   const [hasInteracted, setHasInteracted] = useState(false);
   const [showContent, setShowContent] = useState(false);
   const [showLogoText, setShowLogoText] = useState(false);
+  const [spline, setSpline] = useState(null);
   const isMobile = useIsMobile();
 
   useEffect(() => {
@@ -40,9 +41,17 @@ export default function Index() {
     }
   }, [isMobile]);
 
+  const onSplineLoad = (splineApp) => {
+    setSpline(splineApp);
+  };
+
   const handleSceneClick = () => {
     if (!hasInteracted) {
       setHasInteracted(true);
+      if (spline) {
+        // Start the animation by triggering the timeline
+        spline.play();
+      }
     }
   };
 
@@ -74,6 +83,7 @@ export default function Index() {
         <Spline
           scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
           className="w-full h-full"
+          onLoad={onSplineLoad}
         />
       </div>
 
