@@ -29,7 +29,6 @@ export default function Index() {
         spline.emitEvent('mouseDown');
         setIsAnimating(true);
         
-        // Only show content after animation is complete
         setTimeout(() => {
           console.log("Animation complete");
           setShowContent(true);
@@ -58,21 +57,19 @@ export default function Index() {
       className="w-screen h-screen bg-[#0B0F17]"
     >
       {/* 3D Scene */}
-      <div 
-        className={`absolute inset-0 transition-opacity duration-1000 ${
-          showContent ? 'opacity-0' : 'opacity-100'
-        }`}
-      >
-        <Spline
-          scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
-          className="w-full h-full"
-          onLoad={onSplineLoad}
-        />
-      </div>
+      {!showContent && (
+        <div className="absolute inset-0">
+          <Spline
+            scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
+            className="w-full h-full"
+            onLoad={onSplineLoad}
+          />
+        </div>
+      )}
 
       {/* Content - Only render when showContent is true */}
       {showContent && (
-        <div className="absolute inset-0 transition-all duration-2000 ease-in-out">
+        <div className="absolute inset-0 transition-all duration-1000">
           <div className="w-full h-full flex flex-col items-center justify-center px-4">
             <div className="absolute top-8 left-8">
               <div className="flex items-center gap-2">
