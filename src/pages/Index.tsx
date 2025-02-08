@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
@@ -70,8 +71,8 @@ export default function Index() {
       </div>
 
       {/* Content */}
-      <div className={`absolute inset-0 transition-opacity duration-1000 
-        ${showContent ? 'opacity-100' : 'opacity-0'}
+      <div className={`absolute inset-0 transition-all duration-1000 ease-in-out transform
+        ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
         ${!showContent ? 'pointer-events-none' : ''}`}>
         <div className="w-full h-full flex flex-col items-center justify-center px-4">
           {/* Logo */}
