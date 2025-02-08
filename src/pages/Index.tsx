@@ -54,7 +54,12 @@ export default function Index() {
         ${!showContent ? 'pointer-events-none' : ''}`}>
         <div className="w-full h-full flex flex-col items-center justify-center px-4">
           <Motion className="text-center space-y-8">
-            <h1 className="text-5xl md:text-7xl font-bold text-[#22C55E] mb-6 max-w-4xl mx-auto leading-tight">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 max-w-4xl mx-auto leading-tight animate-[gradient_8s_ease-in-out_infinite]
+              [background:linear-gradient(to_right,#FFFFFF,#F2FCE2,#22C55E,#16A34A,#15803D)]
+              [-webkit-background-clip:text]
+              [-webkit-text-fill-color:transparent]
+              [background-size:400%_400%]
+              [animation:gradient_8s_ease-in-out_infinite]">
               Sound Waves to Clean Energy
             </h1>
             <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-12">
@@ -78,6 +83,14 @@ export default function Index() {
           </Motion>
         </div>
       </div>
+
+      <style jsx global>{`
+        @keyframes gradient {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+      `}</style>
     </main>
   );
 }
