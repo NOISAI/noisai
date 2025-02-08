@@ -64,7 +64,7 @@ export default function Index() {
       onClick={handleStart}
     >
       {/* Background Spline Scene */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 -top-20 scale-125 z-0">
         <Spline
           scene="https://prod.spline.design/WPMa2X2U2NClGTaW/scene.splinecode"
           className="w-full h-full"
