@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
@@ -59,21 +60,20 @@ export default function Index() {
 
   return (
     <main 
-      className="w-screen h-screen bg-[#0B0F17]"
+      className="w-screen h-screen bg-[#0B0F17] relative overflow-hidden"
       onClick={handleStart}
     >
-      {/* Start Message - Only show before animation starts */}
-      {isLoaded && !hasStarted && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <p className="text-white text-2xl md:text-3xl font-bold animate-pulse cursor-pointer">
-            Click anywhere to begin
-          </p>
-        </div>
-      )}
+      {/* Background Spline Scene */}
+      <div className="absolute inset-0 z-0">
+        <Spline
+          scene="https://prod.spline.design/WPMa2X2U2NClGTaW/scene.splinecode"
+          className="w-full h-full"
+        />
+      </div>
 
-      {/* 3D Scene - Only show when content is not visible */}
+      {/* Primary Spline Scene - Only show when content is not visible */}
       {!showContent && (
-        <div className={`absolute inset-0 ${isMobile ? 'scale-75 transform-gpu flex items-center justify-center' : ''}`}>
+        <div className={`absolute inset-0 z-10 ${isMobile ? 'scale-75 transform-gpu flex items-center justify-center' : ''}`}>
           <Spline
             scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
             className="w-full h-full"
@@ -82,10 +82,19 @@ export default function Index() {
         </div>
       )}
 
+      {/* Start Message - Only show before animation starts */}
+      {isLoaded && !hasStarted && (
+        <div className="absolute inset-0 flex items-center justify-center z-20">
+          <p className="text-white text-2xl md:text-3xl font-bold animate-pulse cursor-pointer">
+            Click anywhere to begin
+          </p>
+        </div>
+      )}
+
       {/* Content - Only render after animation completes */}
       {showContent && (
         <div 
-          className="absolute inset-0 opacity-0 animate-[fade-in_1.5s_ease-out_forwards]"
+          className="absolute inset-0 opacity-0 animate-[fade-in_1.5s_ease-out_forwards] z-30"
         >
           <div className="w-full h-full flex flex-col items-center justify-center px-4">
             <div className="absolute top-8 left-8">
