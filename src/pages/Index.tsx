@@ -19,22 +19,27 @@ export default function Index() {
     console.log("Spline loaded");
     setSpline(splineApp);
     setIsLoaded(true);
-    
-    // Start animation automatically once loaded
-    try {
-      splineApp.emitEvent('mouseDown');
-      setIsAnimating(true);
-      
-      setTimeout(() => {
-        console.log("Animation complete");
-        setShowContent(true);
-        setIsAnimating(false);
-      }, 27000);
-    } catch (error) {
-      console.error("Error starting animation:", error);
-      setIsAnimating(false);
-    }
   };
+
+  // Start animation when spline is loaded
+  useEffect(() => {
+    if (isLoaded && spline && !isAnimating) {
+      try {
+        console.log("Starting animation");
+        spline.emitEvent('mouseDown');
+        setIsAnimating(true);
+        
+        setTimeout(() => {
+          console.log("Animation complete");
+          setShowContent(true);
+          setIsAnimating(false);
+        }, 27000);
+      } catch (error) {
+        console.error("Error starting animation:", error);
+        setIsAnimating(false);
+      }
+    }
+  }, [isLoaded, spline]);
 
   // Show logo text after content appears
   useEffect(() => {
