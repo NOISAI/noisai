@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
@@ -25,14 +26,14 @@ export default function Index() {
   const handleSceneClick = () => {
     if (!hasInteracted && isLoaded && spline) {
       console.log("Scene clicked, starting animation");
-      setHasInteracted(true);
       spline.play();
+      setHasInteracted(true);
     }
   };
 
-  // Handle animation completion
+  // Start animation completion timer after interaction
   useEffect(() => {
-    if (hasInteracted && isLoaded && spline) {
+    if (hasInteracted) {
       console.log("Starting animation completion timer");
       const timer = setTimeout(() => {
         console.log("Animation complete");
@@ -41,7 +42,7 @@ export default function Index() {
 
       return () => clearTimeout(timer);
     }
-  }, [hasInteracted, isLoaded, spline]);
+  }, [hasInteracted]);
 
   // Show content after animation completes
   useEffect(() => {
@@ -70,7 +71,7 @@ export default function Index() {
         cursor: !hasInteracted && isLoaded ? 'pointer' : 'default'
       }}
     >
-      {/* Initial Click Overlay - Show for all devices when not interacted */}
+      {/* Initial Click Overlay - Show when not interacted */}
       {!hasInteracted && isLoaded && (
         <div className="absolute inset-0 flex items-center justify-center z-10">
           <div className="text-white text-2xl animate-pulse">
