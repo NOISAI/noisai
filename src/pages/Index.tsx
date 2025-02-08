@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
@@ -20,18 +19,11 @@ export default function Index() {
     console.log("Spline loaded");
     setSpline(splineApp);
     setIsLoaded(true);
-    
-    // Auto-start for mobile
-    if (isMobile) {
-      console.log("Mobile detected - auto starting");
-      setHasInteracted(true);
-      splineApp.play();
-    }
   };
 
   // Handle click interaction
   const handleSceneClick = () => {
-    if (!hasInteracted && !isMobile && isLoaded) {
+    if (!hasInteracted && isLoaded) {
       console.log("Scene clicked");
       setHasInteracted(true);
       if (spline) {
@@ -77,11 +69,11 @@ export default function Index() {
       className="w-screen h-screen bg-[#0B0F17]" 
       onClick={handleSceneClick}
       style={{ 
-        cursor: !hasInteracted && !isMobile && isLoaded ? 'pointer' : 'default'
+        cursor: !hasInteracted && isLoaded ? 'pointer' : 'default'
       }}
     >
-      {/* Initial Click Overlay - Only show on desktop when not interacted */}
-      {!hasInteracted && !isMobile && isLoaded && (
+      {/* Initial Click Overlay - Show for all devices when not interacted */}
+      {!hasInteracted && isLoaded && (
         <div className="absolute inset-0 flex items-center justify-center z-10">
           <div className="text-white text-2xl animate-pulse">
             Click anywhere to begin
