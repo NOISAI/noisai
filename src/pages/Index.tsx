@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
@@ -25,22 +24,13 @@ export default function Index() {
   // Handle click interaction and start animation
   const handleSceneClick = () => {
     if (!hasInteracted && isLoaded && spline) {
+      console.log("Scene clicked, triggering interaction");
       try {
-        // First try to trigger the animation
-        console.log("Attempting to trigger animation directly");
+        // Simply trigger interaction and state change
         spline.emitEvent('mouseDown');
-        spline.emitEvent('keyDown');
-        
-        // Also try to play any timeline animations
-        const timeline = spline.getTimeline();
-        if (timeline) {
-          console.log("Found timeline, attempting to play");
-          timeline.play();
-        }
-        
         setHasInteracted(true);
       } catch (error) {
-        console.error("Error playing animation:", error);
+        console.error("Error during interaction:", error);
       }
     }
   };
