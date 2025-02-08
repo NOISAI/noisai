@@ -26,8 +26,10 @@ export default function Index() {
   const handleSceneClick = () => {
     if (!hasInteracted && isLoaded && spline) {
       console.log("Scene clicked, triggering animation");
-      spline.play();
-      setHasInteracted(true);
+      setHasInteracted(true); // Set this first to prevent multiple clicks
+      setTimeout(() => {
+        spline.play();
+      }, 100); // Small delay to ensure state is updated
     }
   };
 
@@ -74,7 +76,7 @@ export default function Index() {
       {/* Initial Click Overlay - Show when not interacted */}
       {!hasInteracted && isLoaded && (
         <div className="absolute inset-0 flex items-center justify-center z-10">
-          <div className="text-white text-2xl animate-pulse">
+          <div className="text-white text-2xl animate-pulse cursor-pointer">
             Click anywhere to begin
           </div>
         </div>
