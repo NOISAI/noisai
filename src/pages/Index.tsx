@@ -82,7 +82,7 @@ export default function Index() {
       <style>
         {`
           .bg-gradient-text {
-            background: linear-gradient(to right, #FFFFFF, #F2FCE2, #22C55E, #16A34A, #15803D);
+            background: linear-gradient(to right, #ffffff, #22e55c, #10b981, #059669, #047857);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-size: 400% 400%;
