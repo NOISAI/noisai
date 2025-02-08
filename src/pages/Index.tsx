@@ -54,7 +54,7 @@ export default function Index() {
           {/* Logo */}
           <div className="absolute top-8 left-8">
             <div className="flex items-center gap-2">
-              <div className={`transition-transform duration-1000 ${!showLogoText ? 'rotate-90' : 'rotate-0'}`}>
+              <div className={`transition-transform duration-1000 ${!showLogoText ? '-rotate-90' : 'rotate-0'}`}>
                 <img 
                   src="/lovable-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
                   alt="NOISAI Logo" 
