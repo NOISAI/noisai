@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
@@ -19,7 +18,7 @@ export default function Index() {
         setShowContent(true);
       }, 23000);
 
-      // Countdown timer
+      // Countdown timer (keeping for internal state management)
       const countdownInterval = setInterval(() => {
         setCountdown((prev) => {
           if (prev <= 1) {
@@ -68,11 +67,6 @@ export default function Index() {
           scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
           className="w-full h-full"
         />
-        {hasInteracted && !showContent && (
-          <div className="absolute top-4 right-4 text-white text-xl font-bold">
-            {countdown}s
-          </div>
-        )}
       </div>
 
       {/* Content */}
