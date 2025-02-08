@@ -46,17 +46,21 @@ export default function Index() {
             <p className="text-[#8E9196] max-w-2xl mx-auto mb-8">
               Watch how sound waves can be transformed into clean, renewable energy. Experience the future of sustainable power generation.
             </p>
-            {!show3D && (
-              <Button 
-                onClick={() => setShow3D(true)}
-                className="bg-[#0EA5E9] hover:bg-[#0EA5E9]/90 text-white px-8 py-6 text-lg rounded-full"
-              >
-                Start Experience
-              </Button>
-            )}
           </Motion>
         </div>
       </div>
+
+      {/* Start Button */}
+      {!show3D && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Button 
+            onClick={() => setShow3D(true)}
+            className="bg-[#0EA5E9] hover:bg-[#0EA5E9]/90 text-white px-8 py-6 text-lg rounded-full"
+          >
+            Start Experience
+          </Button>
+        </div>
+      )}
     </main>
   );
 }
