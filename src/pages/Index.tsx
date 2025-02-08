@@ -4,21 +4,23 @@ import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
 import { Button } from "@/components/ui/button";
 import { Github, Link } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function Index() {
   const [hasInteracted, setHasInteracted] = useState(false);
   const [showContent, setShowContent] = useState(false);
   const [showLogoText, setShowLogoText] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
-    if (hasInteracted) {
+    if (hasInteracted || isMobile) {
       const timer = setTimeout(() => {
         setShowContent(true);
-      }, 23000);
+      }, isMobile ? 1000 : 23000);
 
       return () => clearTimeout(timer);
     }
-  }, [hasInteracted]);
+  }, [hasInteracted, isMobile]);
 
   useEffect(() => {
     if (showContent) {
@@ -29,6 +31,13 @@ export default function Index() {
       return () => clearTimeout(timer);
     }
   }, [showContent]);
+
+  useEffect(() => {
+    // Automatically trigger content on mobile
+    if (isMobile) {
+      setHasInteracted(true);
+    }
+  }, [isMobile]);
 
   const handleSceneClick = () => {
     if (!hasInteracted) {
