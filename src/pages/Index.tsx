@@ -1,38 +1,30 @@
 
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
-import { Button } from "@/components/ui/button";
 import { Motion } from "@/components/ui/motion";
 
 export default function Index() {
-  const [show3D, setShow3D] = useState(false);
+  const [show3D, setShow3D] = useState(true); // Start with 3D scene visible
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    if (show3D) {
-      // Start with content hidden when 3D scene starts
-      setShowContent(false);
-      
-      // After 15 seconds, show the website content
-      const timer = setTimeout(() => {
-        setShowContent(true);
-      }, 15000);
+    // After 20 seconds, show the website content
+    const timer = setTimeout(() => {
+      setShowContent(true);
+    }, 20000);
 
-      return () => clearTimeout(timer);
-    }
-  }, [show3D]);
+    return () => clearTimeout(timer);
+  }, []); // Only run once on mount
 
   return (
     <main className="w-screen h-screen bg-[#221F26]">
       {/* 3D Scene */}
-      {show3D && (
-        <div className={`absolute inset-0 transition-opacity duration-1000 ${showContent ? 'opacity-0' : 'opacity-100'}`}>
-          <Spline
-            scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
-            className="w-full h-full"
-          />
-        </div>
-      )}
+      <div className={`absolute inset-0 transition-opacity duration-1000 ${showContent ? 'opacity-0' : 'opacity-100'}`}>
+        <Spline
+          scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
+          className="w-full h-full"
+        />
+      </div>
 
       {/* Content */}
       <div className={`absolute inset-0 transition-opacity duration-1000 
@@ -49,18 +41,6 @@ export default function Index() {
           </Motion>
         </div>
       </div>
-
-      {/* Start Button */}
-      {!show3D && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <Button 
-            onClick={() => setShow3D(true)}
-            className="bg-[#0EA5E9] hover:bg-[#0EA5E9]/90 text-white px-8 py-6 text-lg rounded-full"
-          >
-            Start Experience
-          </Button>
-        </div>
-      )}
     </main>
   );
 }
