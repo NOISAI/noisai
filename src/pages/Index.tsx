@@ -27,18 +27,6 @@ export default function Index() {
 
   return (
     <main className="w-screen h-screen bg-[#0B0F17]" onClick={handleSceneClick}>
-      {/* Logo */}
-      <div className="absolute top-8 left-8 z-10">
-        <div className="flex items-center gap-2">
-          <img 
-            src="/lovable-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
-            alt="NOISAI Logo" 
-            className="w-8 h-8"
-          />
-          <span className="text-[#22C55E] text-2xl font-bold">NOISAI</span>
-        </div>
-      </div>
-
       {/* 3D Scene */}
       <div className={`absolute inset-0 transition-opacity duration-1000 ${showContent ? 'opacity-0' : 'opacity-100'}`}>
         <Spline
@@ -52,6 +40,18 @@ export default function Index() {
         ${showContent ? 'opacity-100' : 'opacity-0'}
         ${!showContent ? 'pointer-events-none' : ''}`}>
         <div className="w-full h-full flex flex-col items-center justify-center px-4">
+          {/* Logo */}
+          <div className="absolute top-8 left-8">
+            <div className="flex items-center gap-2">
+              <img 
+                src="/lovable-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
+                alt="NOISAI Logo" 
+                className="w-8 h-8"
+              />
+              <span className="text-[#22C55E] text-2xl font-bold">NOISAI</span>
+            </div>
+          </div>
+
           <Motion className="text-center space-y-8">
             <h1 className="text-5xl md:text-7xl font-bold mb-6 max-w-4xl mx-auto leading-tight bg-gradient-text animate-gradient-x">
               Sound Waves to Clean Energy
