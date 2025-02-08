@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
@@ -15,21 +14,46 @@ export default function Index() {
   const [isLoaded, setIsLoaded] = useState(false);
   const isMobile = useIsMobile();
 
+  // Handle Spline load
+  const onSplineLoad = (splineApp) => {
+    console.log("Spline loaded");
+    setSpline(splineApp);
+    setIsLoaded(true);
+  };
+
+  // Handle click interaction
+  const handleSceneClick = () => {
+    if (!hasInteracted && !isMobile && isLoaded) {
+      console.log("Scene clicked");
+      setHasInteracted(true);
+      if (spline) {
+        spline.play();
+      }
+    }
+  };
+
+  // Auto-start for mobile devices
+  useEffect(() => {
+    if (isMobile && spline && isLoaded) {
+      console.log("Mobile device detected, auto-starting");
+      setHasInteracted(true);
+      spline.play();
+    }
+  }, [isMobile, spline, isLoaded]);
+
   // Handle animation completion
   useEffect(() => {
-    if ((hasInteracted || isMobile) && isLoaded) {
+    if ((hasInteracted || isMobile) && isLoaded && spline) {
       const timer = setTimeout(() => {
         console.log("Animation complete");
         setAnimationComplete(true);
       }, 27000);
 
-      return () => {
-        clearTimeout(timer);
-      };
+      return () => clearTimeout(timer);
     }
-  }, [hasInteracted, isMobile, isLoaded]);
+  }, [hasInteracted, isMobile, isLoaded, spline]);
 
-  // Set content visibility after animation completes
+  // Show content after animation completes
   useEffect(() => {
     if (animationComplete) {
       console.log("Showing content");
@@ -37,7 +61,7 @@ export default function Index() {
     }
   }, [animationComplete]);
 
-  // Handle logo text animation
+  // Show logo text after content appears
   useEffect(() => {
     if (showContent) {
       const timer = setTimeout(() => {
@@ -48,40 +72,12 @@ export default function Index() {
     }
   }, [showContent]);
 
-  // Handle mobile interaction
-  useEffect(() => {
-    if (isMobile && spline && isLoaded) {
-      console.log("Mobile device detected, auto-starting");
-      setHasInteracted(true);
-      spline.play();
-    }
-  }, [isMobile, spline, isLoaded]);
-
-  const onSplineLoad = (splineApp) => {
-    console.log("Spline loaded");
-    setSpline(splineApp);
-    setIsLoaded(true);
-    if (isMobile) {
-      splineApp.play();
-    }
-  };
-
-  const handleSceneClick = () => {
-    if (!hasInteracted && !isMobile) {
-      console.log("Scene clicked");
-      setHasInteracted(true);
-      if (spline) {
-        spline.play();
-      }
-    }
-  };
-
   return (
     <main 
       className="w-screen h-screen bg-[#0B0F17]" 
       onClick={handleSceneClick}
       style={{ 
-        cursor: !hasInteracted && !isMobile ? 'pointer' : 'default'
+        cursor: !hasInteracted && !isMobile && isLoaded ? 'pointer' : 'default'
       }}
     >
       {/* Initial Click Overlay */}
