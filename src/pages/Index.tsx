@@ -14,6 +14,7 @@ export default function Index() {
   const [animationComplete, setAnimationComplete] = useState(false);
   const isMobile = useIsMobile();
 
+  // Handle animation completion
   useEffect(() => {
     if (hasInteracted || isMobile) {
       const timer = setTimeout(() => {
@@ -26,12 +27,14 @@ export default function Index() {
     }
   }, [hasInteracted, isMobile]);
 
+  // Set content visibility after animation completes
   useEffect(() => {
     if (animationComplete) {
       setShowContent(true);
     }
   }, [animationComplete]);
 
+  // Handle logo text animation
   useEffect(() => {
     if (showContent) {
       const timer = setTimeout(() => {
@@ -42,14 +45,21 @@ export default function Index() {
     }
   }, [showContent]);
 
+  // Set interaction state for mobile devices
   useEffect(() => {
     if (isMobile) {
       setHasInteracted(true);
+      if (spline) {
+        spline.play();
+      }
     }
-  }, [isMobile]);
+  }, [isMobile, spline]);
 
   const onSplineLoad = (splineApp) => {
     setSpline(splineApp);
+    if (isMobile) {
+      splineApp.play();
+    }
   };
 
   const handleSceneClick = () => {
@@ -70,7 +80,7 @@ export default function Index() {
       }}
     >
       {/* Initial Click Overlay */}
-      {!hasInteracted && (
+      {!hasInteracted && !isMobile && (
         <div className="absolute inset-0 flex items-center justify-center z-10">
           <div className="text-white text-2xl animate-pulse">
             Click anywhere to begin
