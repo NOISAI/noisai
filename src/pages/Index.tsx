@@ -109,6 +109,14 @@ export default function Index() {
               </div>
             </div>
 
+            {/* New Spline Scene */}
+            <div className="w-full h-[300px] mb-8">
+              <Spline
+                scene="https://prod.spline.design/WPMa2X2U2NClGTaW/scene.splinecode"
+                className="w-full h-full"
+              />
+            </div>
+
             <Motion className="text-center space-y-8">
               <h1 className="text-5xl md:text-7xl font-bold mb-6 max-w-4xl mx-auto leading-tight bg-gradient-text animate-gradient-x">
                 Sound Waves to Clean Energy
