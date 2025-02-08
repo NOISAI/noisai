@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
@@ -73,7 +74,7 @@ export default function Index() {
 
       {/* 3D Scene - Only show when content is not visible */}
       {!showContent && (
-        <div className={`absolute inset-0 ${isMobile ? 'scale-75 transform-gpu flex items-center justify-center' : ''}`}>
+        <div className="absolute inset-0">
           <Spline
             scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
             className="w-full h-full"
