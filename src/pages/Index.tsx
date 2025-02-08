@@ -16,7 +16,7 @@ export default function Index() {
     if (hasInteracted || isMobile) {
       const timer = setTimeout(() => {
         setShowContent(true);
-      }, isMobile ? 1000 : 23000);
+      }, isMobile ? 8000 : 23000);
 
       return () => clearTimeout(timer);
     }
