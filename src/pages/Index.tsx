@@ -16,7 +16,7 @@ export default function Index() {
     if (hasInteracted || isMobile) {
       const timer = setTimeout(() => {
         setShowContent(true);
-      }, 30000); // Changed from 23000 to 30000 milliseconds
+      }, 27000); // Changed to 27000 milliseconds
 
       return () => {
         clearTimeout(timer);
@@ -42,13 +42,19 @@ export default function Index() {
   }, [isMobile]);
 
   const handleSceneClick = () => {
-    if (!hasInteracted) {
+    if (!hasInteracted && !showContent) {
       setHasInteracted(true);
     }
   };
 
   return (
-    <main className="w-screen h-screen bg-[#0B0F17]" onClick={handleSceneClick}>
+    <main 
+      className="w-screen h-screen bg-[#0B0F17]" 
+      onClick={handleSceneClick}
+      style={{ 
+        pointerEvents: hasInteracted && !showContent ? 'none' : 'auto' 
+      }}
+    >
       {/* 3D Scene */}
       <div className={`absolute inset-0 transition-opacity duration-1000 ${showContent ? 'opacity-0' : 'opacity-100'}`}>
         <Spline
