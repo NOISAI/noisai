@@ -26,11 +26,15 @@ export default function Index() {
   const handleSceneClick = () => {
     if (!hasInteracted && isLoaded && spline) {
       try {
-        console.log("Scene clicked, attempting to play animation");
-        const app = spline;
-        app.play();
-        console.log("Animation started");
         setHasInteracted(true);
+        // Get reference to current spline instance
+        const currentSpline = spline;
+        // Small timeout to ensure state updates before animation
+        setTimeout(() => {
+          console.log("Attempting to play animation...");
+          currentSpline.play();
+          console.log("Animation triggered");
+        }, 100);
       } catch (error) {
         console.error("Error playing animation:", error);
       }
