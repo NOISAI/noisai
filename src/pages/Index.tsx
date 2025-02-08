@@ -36,12 +36,10 @@ export default function Index() {
         spline.emitEvent('mouseDown');
         spline.addEventListener('animationEnd', onAnimationEnd);
         setIsAnimating(true);
-
-        return () => {
-          spline.removeEventListener('animationEnd', onAnimationEnd);
-        };
       } catch (error) {
         console.error("Error starting animation:", error);
+        // If animation fails, show content anyway
+        setShowContent(true);
         setIsAnimating(false);
       }
     }
