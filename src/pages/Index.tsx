@@ -65,7 +65,7 @@ export default function Index() {
                 className="bg-[#22C55E] hover:bg-[#22C55E]/90 text-white px-8 py-6 text-lg h-auto"
               >
                 <Link className="mr-2 h-5 w-5" />
-                Invest Now
+                Invest on NOISAI
               </Button>
               <Button
                 variant="outline"
