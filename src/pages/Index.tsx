@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
@@ -10,8 +11,8 @@ export default function Index() {
   const [showContent, setShowContent] = useState(false);
   const [showLogoText, setShowLogoText] = useState(false);
   const [spline, setSpline] = useState(null);
-  const [animationComplete, setAnimationComplete] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
   const isMobile = useIsMobile();
 
   // Handle Spline load
@@ -23,38 +24,25 @@ export default function Index() {
 
   // Handle click interaction and start animation
   const handleSceneClick = () => {
-    if (!hasInteracted && isLoaded && spline) {
+    if (!hasInteracted && !isAnimating && isLoaded && spline) {
       console.log("Scene clicked, triggering interaction");
       try {
-        // Simply trigger interaction and state change
         spline.emitEvent('mouseDown');
         setHasInteracted(true);
+        setIsAnimating(true);
+        
+        // Start the animation completion timer only after user interaction
+        setTimeout(() => {
+          console.log("Animation complete");
+          setShowContent(true);
+          setIsAnimating(false);
+        }, 27000);
       } catch (error) {
         console.error("Error during interaction:", error);
+        setIsAnimating(false);
       }
     }
   };
-
-  // Start animation completion timer after interaction
-  useEffect(() => {
-    if (hasInteracted) {
-      console.log("Starting animation completion timer");
-      const timer = setTimeout(() => {
-        console.log("Animation complete");
-        setAnimationComplete(true);
-      }, 27000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [hasInteracted]);
-
-  // Show content after animation completes
-  useEffect(() => {
-    if (animationComplete) {
-      console.log("Showing content");
-      setShowContent(true);
-    }
-  }, [animationComplete]);
 
   // Show logo text after content appears
   useEffect(() => {
@@ -72,11 +60,12 @@ export default function Index() {
       className="w-screen h-screen bg-[#0B0F17]" 
       onClick={handleSceneClick}
       style={{ 
-        cursor: !hasInteracted && isLoaded ? 'pointer' : 'default'
+        cursor: !hasInteracted && isLoaded && !isAnimating ? 'pointer' : 'default',
+        pointerEvents: isAnimating ? 'none' : 'auto'
       }}
     >
       {/* Initial Click Overlay - Show when not interacted */}
-      {!hasInteracted && isLoaded && (
+      {!hasInteracted && isLoaded && !isAnimating && (
         <div className="absolute inset-0 flex items-center justify-center z-10">
           <div className="text-white text-2xl animate-pulse cursor-pointer">
             Click anywhere to begin
