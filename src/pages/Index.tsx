@@ -110,7 +110,7 @@ export default function Index() {
             </div>
 
             {/* New Spline Scene */}
-            <div className="w-full h-[400px] -mt-[150px]">
+            <div className="w-full h-[400px] -mt-[200px]">
               <Spline
                 scene="https://prod.spline.design/WPMa2X2U2NClGTaW/scene.splinecode"
                 className="w-full h-full"
