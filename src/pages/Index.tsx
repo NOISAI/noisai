@@ -76,7 +76,7 @@ export default function Index() {
       {!showContent && (
         <div className="absolute inset-0">
           <Spline
-            scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
+            scene="https://prod.spline.design/WPMa2X2U2NClGTaW/scene.splinecode"
             className="w-full h-full"
             onLoad={onSplineLoad}
           />
