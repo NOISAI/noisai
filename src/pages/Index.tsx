@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
@@ -26,10 +25,8 @@ export default function Index() {
   const handleSceneClick = () => {
     if (!hasInteracted && isLoaded && spline) {
       console.log("Scene clicked, triggering animation");
-      setHasInteracted(true); // Set this first to prevent multiple clicks
-      setTimeout(() => {
-        spline.play();
-      }, 100); // Small delay to ensure state is updated
+      spline.play(); // Immediately play the animation
+      setHasInteracted(true);
     }
   };
 
