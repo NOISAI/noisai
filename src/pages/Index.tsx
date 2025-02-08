@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
@@ -50,8 +49,6 @@ export default function Index() {
             onError={onSplineError}
             onLoad={() => {
               console.log("Spline loaded successfully");
-            }}
-            onSplineEnd={() => {
               setShowContent(true);
             }}
           />
