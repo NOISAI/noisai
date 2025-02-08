@@ -24,26 +24,10 @@ export default function Index() {
 
   // Handle click to start
   const handleStart = () => {
-    if (isLoaded && spline && !isAnimating && !hasStarted) {
+    if (isLoaded && !isAnimating && !hasStarted) {
       setHasStarted(true);
-      try {
-        console.log("Starting animation");
-        spline.emitEvent('mouseDown');
-        setIsAnimating(true);
-
-        // Set timer for 25 seconds
-        const timer = setTimeout(() => {
-          console.log("25 seconds elapsed, showing content");
-          setShowContent(true);
-          setIsAnimating(false);
-        }, 25000);
-
-        return () => clearTimeout(timer);
-      } catch (error) {
-        console.error("Error starting animation:", error);
-        setShowContent(true);
-        setIsAnimating(false);
-      }
+      setShowContent(true);
+      setIsAnimating(false);
     }
   };
 
@@ -71,17 +55,6 @@ export default function Index() {
           onLoad={onSplineLoad}
         />
       </div>
-
-      {/* Primary Spline Scene - Only show when content is not visible */}
-      {!showContent && (
-        <div className={`absolute inset-0 z-10 ${isMobile ? 'scale-75 transform-gpu flex items-center justify-center' : ''}`}>
-          <Spline
-            scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
-            className="w-full h-full"
-            onLoad={onSplineLoad}
-          />
-        </div>
-      )}
 
       {/* Start Message - Only show before animation starts */}
       {isLoaded && !hasStarted && (
