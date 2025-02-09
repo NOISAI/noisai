@@ -83,7 +83,7 @@ export default function Index() {
 
   return (
     <main 
-      className="relative w-screen min-h-screen bg-[#0B0F17]"
+      className="relative w-screen min-h-screen bg-black"
       onClick={handleStart}
     >
       <div className="relative w-full min-h-screen opacity-0 animate-[fade-in_1.5s_ease-out_forwards] px-4 md:px-0">
