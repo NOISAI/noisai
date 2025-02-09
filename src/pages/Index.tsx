@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { HeroSection } from "@/components/sections/HeroSection";
@@ -7,6 +6,7 @@ import { Features } from "@/components/sections/Features";
 import { BlockchainIntegration } from "@/components/features/BlockchainIntegration";
 import { TokenomicsSection } from "@/components/sections/TokenomicsSection";
 import { getRandomChange, calculateTokenChange, calculateUserNodeChange } from "@/utils/statsCalculations";
+import { Link } from "@/components/ui/link";
 
 export default function Index() {
   const [showContent, setShowContent] = useState(false);
@@ -114,6 +114,57 @@ export default function Index() {
               <TokenomicsSection />
             </>
           )}
+
+          <footer className="w-full bg-black mt-32 py-16">
+            <div className="max-w-7xl mx-auto px-4">
+              <div className="flex flex-col items-center text-center mb-16 space-y-6">
+                <h2 className="text-4xl md:text-5xl font-bold text-white">Join the Energy Revolution</h2>
+                <p className="text-gray-300 text-lg max-w-2xl">
+                  Connect your wallet to start earning energy credits and participate in our decentralized energy marketplace.
+                </p>
+                <div className="flex flex-col md:flex-row gap-4 mt-8">
+                  <button className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg flex items-center justify-center gap-2 transition-colors">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                    </svg>
+                    Connect Wallet
+                  </button>
+                  <button className="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg flex items-center justify-center gap-2 transition-colors">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                      <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                    View Whitepaper
+                  </button>
+                </div>
+              </div>
+
+              <div className="border-t border-gray-800 pt-8">
+                <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+                  <div className="flex items-center text-green-500 font-bold text-xl">
+                    <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                      <path d="M18.63 13A17.89 17.89 0 0 1 18 12" />
+                      <path d="M6.26 19.86C4.8 18.94 3.5 17.8 2.37 16.46" />
+                      <path d="M2.37 7.54C3.5 6.2 4.8 5.06 6.26 4.14" />
+                      <path d="M18.63 11A17.89 17.89 0 0 1 18 12" />
+                    </svg>
+                    NoisAI
+                  </div>
+                  <nav className="flex gap-8 text-gray-400">
+                    <a href="#" className="hover:text-white transition-colors">Technology</a>
+                    <a href="#" className="hover:text-white transition-colors">Tokenomics</a>
+                    <a href="#" className="hover:text-white transition-colors">Governance</a>
+                    <a href="#" className="hover:text-white transition-colors">Contact</a>
+                  </nav>
+                </div>
+                <div className="text-center text-gray-500 mt-8">
+                  © 2025 NoisAI. All rights reserved.
+                </div>
+              </div>
+            </div>
+          </footer>
 
           <style>
             {`
