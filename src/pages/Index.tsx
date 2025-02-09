@@ -53,22 +53,12 @@ export default function Index() {
     if (showContent) {
       const timer = setTimeout(() => {
         setStartRotation(true);
+        setShowLogoText(true);  // Show text immediately when rotation starts
       }, 5000);
 
       return () => clearTimeout(timer);
     }
   }, [showContent]);
-
-  // Show logo text after rotation starts
-  useEffect(() => {
-    if (startRotation) {
-      const timer = setTimeout(() => {
-        setShowLogoText(true);
-      }, 1000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [startRotation]);
 
   return (
     <main 
