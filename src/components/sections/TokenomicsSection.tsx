@@ -2,7 +2,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { InitialDistributionTable } from "@/components/tokenomics/InitialDistributionTable";
 import { TokenUtilityTable } from "@/components/tokenomics/TokenUtilityTable";
-import { ChevronDown } from "lucide-react";
 
 export const TokenomicsSection = () => {
   return (
@@ -11,9 +10,8 @@ export const TokenomicsSection = () => {
       
       <Accordion type="single" collapsible>
         <AccordionItem value="tokenomics" className="border-none">
-          <AccordionTrigger className="w-full bg-[#1A1F2C] hover:bg-[#1A1F2C]/80 transition-colors rounded-lg p-4">
+          <AccordionTrigger className="w-full bg-[#1A1F2C] hover:bg-[#1A1F2C]/80 transition-colors rounded-lg p-4 [&>svg]:text-green-500">
             <span className="text-lg font-semibold text-white">NOIS Token Distribution</span>
-            <ChevronDown className="h-4 w-4 shrink-0 text-green-500 transition-transform duration-200" />
           </AccordionTrigger>
           
           <AccordionContent className="mt-2">
