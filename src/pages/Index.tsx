@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
@@ -60,12 +59,12 @@ export default function Index() {
 
   return (
     <main 
-      className="w-screen h-screen bg-[#0B0F17] overflow-hidden"
+      className="relative w-screen min-h-screen bg-[#0B0F17]"
       onClick={handleStart}
     >
       {/* Start Message - Only show before animation starts */}
       {isLoaded && !hasStarted && (
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className="absolute inset-0 flex items-center justify-center z-10">
           <p className="text-white text-2xl md:text-3xl font-bold animate-pulse cursor-pointer">
             Click anywhere to begin
           </p>
@@ -74,7 +73,7 @@ export default function Index() {
 
       {/* 3D Scene - Only show when content is not visible */}
       {!showContent && (
-        <div className="absolute inset-0">
+        <div className="fixed inset-0">
           <Spline
             scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
             className="w-full h-full"
@@ -85,10 +84,8 @@ export default function Index() {
 
       {/* Content - Only render after animation completes */}
       {showContent && (
-        <div 
-          className="absolute inset-0 opacity-0 animate-[fade-in_1.5s_ease-out_forwards] px-4 md:px-0"
-        >
-          <div className="w-full h-full flex flex-col items-center justify-center">
+        <div className="relative w-full min-h-screen opacity-0 animate-[fade-in_1.5s_ease-out_forwards] px-4 md:px-0">
+          <div className="w-full min-h-screen flex flex-col items-center justify-center">
             <div className="absolute top-8 left-8">
               <div className="flex items-center gap-2">
                 <div className={`transition-transform duration-1000 ${
@@ -110,7 +107,7 @@ export default function Index() {
             </div>
 
             {/* New Spline Scene */}
-            <div className={`w-full ${isMobile ? 'h-[200px] -mt-[400px]' : 'h-[400px] -mt-[800px]'}`}>
+            <div className={`w-full ${isMobile ? 'h-[200px] -mt-32' : 'h-[400px] -mt-[400px]'}`}>
               <Spline
                 scene="https://prod.spline.design/WPMa2X2U2NClGTaW/scene.splinecode"
                 className="w-full h-full"
