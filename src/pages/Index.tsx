@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
@@ -230,13 +229,13 @@ export default function Index() {
             <section className="w-full max-w-7xl mx-auto mt-32 px-4">
               <h2 className="text-4xl font-bold text-center text-white mb-16">Tokenomics</h2>
               
-              <div className="glass-panel p-6 relative overflow-hidden">
-                <div className="flex items-center justify-between cursor-pointer p-4">
+              <div className="bg-[#0D1117] rounded-2xl">
+                <div className="flex items-center justify-between p-6 cursor-pointer">
                   <h3 className="text-xl font-semibold text-white">NOIS Token Distribution</h3>
                   <ChevronDown className="w-6 h-6 text-white" />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
                   <div className="space-y-6">
                     <h4 className="text-lg font-medium text-white mb-4">Initial Distribution</h4>
                     
