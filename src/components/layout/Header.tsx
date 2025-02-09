@@ -12,7 +12,7 @@ export const Header = ({ showRotation, showLogoText }: HeaderProps) => {
           !showRotation ? '-rotate-90' : 'rotate-0'
         }`}>
           <img 
-            src="/lovable-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
+            src="/noisai-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
             alt="NOISAI Logo" 
             className="w-8 h-8"
           />

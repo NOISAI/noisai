@@ -26,7 +26,7 @@ export const Footer = () => {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center text-green-500 font-bold text-xl">
               <img 
-                src="/lovable-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
+                src="/noisai-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
                 alt="NOISAI Logo" 
                 className="w-6 h-6 mr-2"
               />

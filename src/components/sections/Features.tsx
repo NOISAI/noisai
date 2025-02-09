@@ -10,7 +10,7 @@ export const Features = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <FeatureCard
           icon={<img 
-            src="/lovable-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
+            src="/noisai-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
             alt="NOISAI Logo" 
             className="w-8 h-8"
           />}
