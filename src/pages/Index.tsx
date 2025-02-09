@@ -19,7 +19,7 @@ export default function Index() {
     energyGenerated: 2.51,
     activeNodes: 1254,
     networkEfficiency: 94.8,
-    tokens: 157375,
+    tokens: 100000000, // Starting from 100 million
     activeUsers: 4532,
     dailyTransactions: 12496
   });
@@ -28,18 +28,18 @@ export default function Index() {
     return (Math.random() * 2 - 1) * 0.5;
   };
 
-  // New function to handle token circulation logic
+  // Updated token circulation logic
   const calculateTokenChange = (currentTokens) => {
-    const changePercentage = getRandomChange() * 0.2; // 20% max change
+    const changePercentage = getRandomChange() * 0.1; // 10% max change
     const change = currentTokens * changePercentage;
-    return Math.max(45000, Math.min(70000, currentTokens + change));
+    return Math.max(100000000, Math.min(210000000, currentTokens + change)); // Between 100M and 210M
   };
 
-  // New function to handle user and node changes
+  // Keep existing node and user change logic
   const calculateUserNodeChange = (current) => {
-    const changePercentage = getRandomChange() * 0.1; // 10% max change
+    const changePercentage = getRandomChange() * 0.1;
     const change = current * changePercentage;
-    return Math.max(current * 0.8, current + change); // Never drop below 80% of current value
+    return Math.max(current * 0.8, current + change);
   };
 
   useEffect(() => {
@@ -52,7 +52,7 @@ export default function Index() {
         activeUsers: Math.floor(calculateUserNodeChange(prev.activeUsers)),
         dailyTransactions: Math.max(1000, Math.floor(prev.dailyTransactions * (1 + getRandomChange())))
       }));
-    }, 2000);
+    }, 5000); // Updated to 5 seconds
 
     return () => clearInterval(interval);
   }, []);
@@ -214,7 +214,9 @@ export default function Index() {
                     <span className="text-[#22C55E] text-sm">{getRandomChange() > 0 ? '+' : ''}{(getRandomChange() * 20).toFixed(1)}% ↗</span>
                   </div>
                   <h3 className="text-white text-lg mb-2">NOISAI Tokens</h3>
-                  <p className="text-4xl font-bold text-[#22C55E] mb-2">{liveStats.tokens}</p>
+                  <p className="text-4xl font-bold text-[#22C55E] mb-2">
+                    {(liveStats.tokens / 1000000).toFixed(2)}M
+                  </p>
                   <p className="text-gray-300 text-sm">Total tokens in circulation</p>
                 </div>
 
