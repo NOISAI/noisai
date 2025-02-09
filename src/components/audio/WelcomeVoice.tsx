@@ -15,7 +15,7 @@ export const WelcomeVoice = ({ isLoaded, hasStarted }: WelcomeVoiceProps) => {
       const playVoice = async () => {
         try {
           setIsPlaying(true);
-          const apiKey = process.env.ELEVENLABS_API_KEY;
+          const apiKey = import.meta.env.VITE_ELEVENLABS_API_KEY;
           const voiceId = "EXAVITQu4vr4xnSDxMaL"; // Sarah voice
           const text = "Hello, I am, NOISAI";
           
