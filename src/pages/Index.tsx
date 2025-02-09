@@ -9,6 +9,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 export default function Index() {
   const [showContent, setShowContent] = useState(false);
   const [showLogoText, setShowLogoText] = useState(false);
+  const [showRotation, setShowRotation] = useState(false);
   const [spline, setSpline] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -47,14 +48,15 @@ export default function Index() {
     }
   };
 
-  // Show logo text after content appears
+  // Show logo text and rotation after content appears
   useEffect(() => {
     if (showContent) {
-      const timer = setTimeout(() => {
-        setShowLogoText(true);
-      }, 1000);
-
-      return () => clearTimeout(timer);
+      setTimeout(() => {
+        setShowRotation(true);
+        setTimeout(() => {
+          setShowLogoText(true);
+        }, 500);
+      }, 5000);
     }
   }, [showContent]);
 
@@ -81,7 +83,7 @@ export default function Index() {
             <div className="absolute top-8 left-8">
               <div className="flex items-center gap-2">
                 <div className={`transition-transform duration-1000 ${
-                  !showLogoText ? '-rotate-90' : 'rotate-0'
+                  !showRotation ? '-rotate-90' : 'rotate-0'
                 }`}>
                   <img 
                     src="/lovable-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
