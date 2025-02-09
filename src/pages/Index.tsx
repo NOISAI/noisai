@@ -15,6 +15,34 @@ export default function Index() {
   const [hasStarted, setHasStarted] = useState(false);
   const isMobile = useIsMobile();
 
+  const [liveStats, setLiveStats] = useState({
+    energyGenerated: 2.51,
+    activeNodes: 1254,
+    networkEfficiency: 94.8,
+    tokens: 157375,
+    activeUsers: 4532,
+    dailyTransactions: 12496
+  });
+
+  const getRandomChange = () => {
+    return (Math.random() * 2 - 1) * 0.5;
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLiveStats(prev => ({
+        energyGenerated: Math.max(0, +(prev.energyGenerated * (1 + getRandomChange())).toFixed(2)),
+        activeNodes: Math.max(0, Math.floor(prev.activeNodes * (1 + getRandomChange()))),
+        networkEfficiency: Math.min(100, Math.max(80, +(prev.networkEfficiency * (1 + getRandomChange() * 0.1)).toFixed(1))),
+        tokens: Math.max(0, Math.floor(prev.tokens * (1 + getRandomChange()))),
+        activeUsers: Math.max(0, Math.floor(prev.activeUsers * (1 + getRandomChange()))),
+        dailyTransactions: Math.max(0, Math.floor(prev.dailyTransactions * (1 + getRandomChange())))
+      }));
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const onSplineLoad = (splineApp) => {
     console.log("Spline loaded");
     setSpline(splineApp);
@@ -128,75 +156,75 @@ export default function Index() {
               <h2 className="text-4xl font-bold text-center text-white mb-12">Live Network Stats</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="glass-panel p-6 transform transition-transform hover:scale-105 hover:translate-z-10 shadow-xl">
+                <div className="glass-panel p-6 transform transition-all duration-300 hover:scale-105 hover:translate-z-10 shadow-xl">
                   <div className="flex justify-between items-start mb-4">
                     <div className="p-3 bg-[#22C55E]/10 rounded-lg">
                       <Zap className="w-6 h-6 text-[#22C55E]" />
                     </div>
-                    <span className="text-[#22C55E] text-sm">+12.5% ↗</span>
+                    <span className="text-[#22C55E] text-sm">{getRandomChange() > 0 ? '+' : ''}{(getRandomChange() * 20).toFixed(1)}% ↗</span>
                   </div>
-                  <h3 className="text-gray-100 text-lg mb-2">Energy Generated</h3>
-                  <p className="text-4xl font-bold text-[#22C55E] mb-2">2.51 MWh</p>
+                  <h3 className="text-white text-lg mb-2">Energy Generated</h3>
+                  <p className="text-4xl font-bold text-[#22C55E] mb-2">{liveStats.energyGenerated} MWh</p>
                   <p className="text-gray-300 text-sm">Total network energy production</p>
                 </div>
 
-                <div className="glass-panel p-6 transform transition-transform hover:scale-105 hover:translate-z-10 shadow-xl">
+                <div className="glass-panel p-6 transform transition-all duration-300 hover:scale-105 hover:translate-z-10 shadow-xl">
                   <div className="flex justify-between items-start mb-4">
                     <div className="p-3 bg-[#22C55E]/10 rounded-lg">
                       <Activity className="w-6 h-6 text-[#22C55E]" />
                     </div>
-                    <span className="text-[#22C55E] text-sm">+8.3% ↗</span>
+                    <span className="text-[#22C55E] text-sm">{getRandomChange() > 0 ? '+' : ''}{(getRandomChange() * 20).toFixed(1)}% ↗</span>
                   </div>
-                  <h3 className="text-gray-100 text-lg mb-2">Active Nodes</h3>
-                  <p className="text-4xl font-bold text-[#22C55E] mb-2">1254</p>
+                  <h3 className="text-white text-lg mb-2">Active Nodes</h3>
+                  <p className="text-4xl font-bold text-[#22C55E] mb-2">{liveStats.activeNodes}</p>
                   <p className="text-gray-300 text-sm">Connected energy harvesting devices</p>
                 </div>
 
-                <div className="glass-panel p-6 transform transition-transform hover:scale-105 hover:translate-z-10 shadow-xl">
+                <div className="glass-panel p-6 transform transition-all duration-300 hover:scale-105 hover:translate-z-10 shadow-xl">
                   <div className="flex justify-between items-start mb-4">
                     <div className="p-3 bg-[#22C55E]/10 rounded-lg">
                       <Battery className="w-6 h-6 text-[#22C55E]" />
                     </div>
-                    <span className="text-[#22C55E] text-sm">+2.1% ↗</span>
+                    <span className="text-[#22C55E] text-sm">{getRandomChange() > 0 ? '+' : ''}{(getRandomChange() * 20).toFixed(1)}% ↗</span>
                   </div>
-                  <h3 className="text-gray-100 text-lg mb-2">Network Efficiency</h3>
-                  <p className="text-4xl font-bold text-[#22C55E] mb-2">94.8%</p>
+                  <h3 className="text-white text-lg mb-2">Network Efficiency</h3>
+                  <p className="text-4xl font-bold text-[#22C55E] mb-2">{liveStats.networkEfficiency}%</p>
                   <p className="text-gray-300 text-sm">Sound to energy conversion rate</p>
                 </div>
 
-                <div className="glass-panel p-6 transform transition-transform hover:scale-105 hover:translate-z-10 shadow-xl">
+                <div className="glass-panel p-6 transform transition-all duration-300 hover:scale-105 hover:translate-z-10 shadow-xl">
                   <div className="flex justify-between items-start mb-4">
                     <div className="p-3 bg-[#22C55E]/10 rounded-lg">
                       <Coins className="w-6 h-6 text-[#22C55E]" />
                     </div>
-                    <span className="text-[#22C55E] text-sm">+15.4% ↗</span>
+                    <span className="text-[#22C55E] text-sm">{getRandomChange() > 0 ? '+' : ''}{(getRandomChange() * 20).toFixed(1)}% ↗</span>
                   </div>
-                  <h3 className="text-gray-100 text-lg mb-2">NOISAI Tokens</h3>
-                  <p className="text-4xl font-bold text-[#22C55E] mb-2">157375</p>
+                  <h3 className="text-white text-lg mb-2">NOISAI Tokens</h3>
+                  <p className="text-4xl font-bold text-[#22C55E] mb-2">{liveStats.tokens}</p>
                   <p className="text-gray-300 text-sm">Total tokens in circulation</p>
                 </div>
 
-                <div className="glass-panel p-6 transform transition-transform hover:scale-105 hover:translate-z-10 shadow-xl">
+                <div className="glass-panel p-6 transform transition-all duration-300 hover:scale-105 hover:translate-z-10 shadow-xl">
                   <div className="flex justify-between items-start mb-4">
                     <div className="p-3 bg-[#22C55E]/10 rounded-lg">
                       <Users className="w-6 h-6 text-[#22C55E]" />
                     </div>
-                    <span className="text-[#22C55E] text-sm">+5.7% ↗</span>
+                    <span className="text-[#22C55E] text-sm">{getRandomChange() > 0 ? '+' : ''}{(getRandomChange() * 20).toFixed(1)}% ↗</span>
                   </div>
-                  <h3 className="text-gray-100 text-lg mb-2">Active Users</h3>
-                  <p className="text-4xl font-bold text-[#22C55E] mb-2">4532</p>
+                  <h3 className="text-white text-lg mb-2">Active Users</h3>
+                  <p className="text-4xl font-bold text-[#22C55E] mb-2">{liveStats.activeUsers}</p>
                   <p className="text-gray-300 text-sm">Current network participants</p>
                 </div>
 
-                <div className="glass-panel p-6 transform transition-transform hover:scale-105 hover:translate-z-10 shadow-xl">
+                <div className="glass-panel p-6 transform transition-all duration-300 hover:scale-105 hover:translate-z-10 shadow-xl">
                   <div className="flex justify-between items-start mb-4">
                     <div className="p-3 bg-[#22C55E]/10 rounded-lg">
                       <Waves className="w-6 h-6 text-[#22C55E]" />
                     </div>
-                    <span className="text-[#22C55E] text-sm">+10.2% ↗</span>
+                    <span className="text-[#22C55E] text-sm">{getRandomChange() > 0 ? '+' : ''}{(getRandomChange() * 20).toFixed(1)}% ↗</span>
                   </div>
-                  <h3 className="text-gray-100 text-lg mb-2">Daily Transactions</h3>
-                  <p className="text-4xl font-bold text-[#22C55E] mb-2">12496</p>
+                  <h3 className="text-white text-lg mb-2">Daily Transactions</h3>
+                  <p className="text-4xl font-bold text-[#22C55E] mb-2">{liveStats.dailyTransactions}</p>
                   <p className="text-gray-300 text-sm">Energy credit transfers per day</p>
                 </div>
               </div>
@@ -228,11 +256,14 @@ export default function Index() {
 
           .glass-panel {
             border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+            perspective: 1000px;
           }
 
           .glass-panel:hover {
             border-color: #22C55E;
+            transform: scale(1.05) translateZ(20px);
           }
 
           @keyframes gradient {
