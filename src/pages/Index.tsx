@@ -217,6 +217,14 @@ export default function Index() {
 
             <BlockchainIntegration />
 
+            <section className="w-full max-w-7xl mx-auto mt-32 px-4">
+              <div className="h-[600px] w-full">
+                <Spline 
+                  scene="https://prod.spline.design/Wfx6S6vnF-LjKSSy/scene.splinecode"
+                />
+              </div>
+            </section>
+
             <style>
               {`
                 @keyframes fade-in {
