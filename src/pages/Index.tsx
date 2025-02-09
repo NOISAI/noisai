@@ -13,7 +13,6 @@ export default function Index() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
-  const [startRotation, setStartRotation] = useState(false);
   const isMobile = useIsMobile();
 
   // Handle Spline load
@@ -48,15 +47,12 @@ export default function Index() {
     }
   };
 
-  // Start rotation after 5 seconds when content is shown
+  // Show logo text after content appears
   useEffect(() => {
     if (showContent) {
       const timer = setTimeout(() => {
-        setStartRotation(true);
-        setTimeout(() => {
-          setShowLogoText(true);  // Show text after 0.5s delay
-        }, 500);
-      }, 5000);
+        setShowLogoText(true);
+      }, 1000);
 
       return () => clearTimeout(timer);
     }
@@ -84,8 +80,8 @@ export default function Index() {
           <div className="w-full min-h-screen flex flex-col items-center justify-center">
             <div className="absolute top-8 left-8">
               <div className="flex items-center gap-2">
-                <div className={`transition-transform duration-[5000ms] ${
-                  !startRotation ? '-rotate-90' : 'rotate-0'
+                <div className={`transition-transform duration-1000 ${
+                  !showLogoText ? '-rotate-90' : 'rotate-0'
                 }`}>
                   <img 
                     src="/lovable-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
