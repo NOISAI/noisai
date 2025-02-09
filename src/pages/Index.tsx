@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { HeroSection } from "@/components/sections/HeroSection";
@@ -6,7 +7,6 @@ import { Features } from "@/components/sections/Features";
 import { BlockchainIntegration } from "@/components/features/BlockchainIntegration";
 import { TokenomicsSection } from "@/components/sections/TokenomicsSection";
 import { getRandomChange, calculateTokenChange, calculateUserNodeChange } from "@/utils/statsCalculations";
-import { Link } from "@/components/ui/link";
 
 export default function Index() {
   const [showContent, setShowContent] = useState(false);
