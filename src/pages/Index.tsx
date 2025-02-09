@@ -19,6 +19,7 @@ export default function Index() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
+  const [showTokenomics, setShowTokenomics] = useState(true);
   const isMobile = useIsMobile();
 
   const [liveStats, setLiveStats] = useState({
