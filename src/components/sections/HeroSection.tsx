@@ -46,13 +46,6 @@ export const HeroSection = ({
         <>
           <Header showRotation={showRotation} showLogoText={showLogoText} />
 
-          <div className="w-full h-[300px] md:h-[400px] mb-8">
-            <Spline 
-              scene="https://prod.spline.design/Wfx6S6vnF-LjKSSy/scene.splinecode"
-              className="w-full h-full"
-            />
-          </div>
-
           <Motion className="text-center space-y-6 md:space-y-8">
             <h1 className="text-4xl md:text-7xl font-bold mb-4 md:mb-6 max-w-4xl mx-auto leading-tight bg-gradient-text animate-gradient-x px-4">
               Sound Waves to Clean Energy
@@ -60,6 +53,14 @@ export const HeroSection = ({
             <p className="text-base md:text-xl text-gray-300 max-w-3xl mx-auto mb-8 md:mb-12 px-4">
               Revolutionary technology that converts ambient sound into renewable electricity, powered by blockchain and AI
             </p>
+
+            <div className="w-full h-[300px] md:h-[400px] mb-8">
+              <Spline 
+                scene="https://prod.spline.design/Wfx6S6vnF-LjKSSy/scene.splinecode"
+                className="w-full h-full"
+              />
+            </div>
+
             <div className="flex flex-wrap justify-center gap-4 px-4">
               <Button
                 className="bg-[#22C55E] hover:bg-[#22C55E]/90 text-white px-6 md:px-8 py-4 md:py-6 text-base md:text-lg h-auto w-full md:w-auto"
