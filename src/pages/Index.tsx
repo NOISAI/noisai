@@ -157,7 +157,7 @@ export default function Index() {
                   </nav>
                 </div>
                 <div className="text-center text-gray-500 mt-8">
-                  © 202 NOISAI. All rights reserved.
+                  © 2025 NOISAI. All rights reserved.
                 </div>
               </div>
             </div>
