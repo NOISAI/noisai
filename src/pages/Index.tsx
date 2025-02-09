@@ -80,14 +80,12 @@ export default function Index() {
         console.log("Starting animation");
         spline.emitEvent('mouseDown');
         setIsAnimating(true);
-
-        const animationDuration = isMobile ? 15000 : 25000;
         
         const timer = setTimeout(() => {
           console.log("Animation complete, showing content");
           setShowContent(true);
           setIsAnimating(false);
-        }, animationDuration);
+        }, 25000);
 
         return () => clearTimeout(timer);
       } catch (error) {
@@ -118,11 +116,6 @@ export default function Index() {
     >
       {!showContent && (
         <div className="fixed inset-0">
-          {isMobile && !hasStarted && (
-            <div className="absolute inset-0 flex items-center justify-center z-10">
-              <p className="text-white text-lg animate-pulse">Tap to begin</p>
-            </div>
-          )}
           <Spline
             scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
             className="w-full h-full"
