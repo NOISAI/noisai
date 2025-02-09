@@ -54,7 +54,7 @@ export const HeroSection = ({
           </div>
 
           <Motion className="text-center space-y-6 md:space-y-8">
-            <h1 className="text-4xl md:text-7xl font-bold mb-4 md:mb-6 max-w-4xl mx-auto leading-[1.2] md:leading-[1.2] bg-gradient-text animate-gradient-x px-4">
+            <h1 className="text-4xl md:text-7xl font-bold mb-4 md:mb-6 max-w-4xl mx-auto leading-[1.4] md:leading-[1.4] bg-gradient-text animate-gradient-x px-4">
               Sound Waves to Clean Energy
             </h1>
             <p className="text-base md:text-xl text-gray-300 max-w-3xl mx-auto mb-8 md:mb-12 px-4">
