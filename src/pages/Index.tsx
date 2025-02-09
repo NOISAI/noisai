@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { HeroSection } from "@/components/sections/HeroSection";
@@ -143,14 +142,12 @@ export default function Index() {
               <div className="border-t border-gray-800 pt-8">
                 <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                   <div className="flex items-center text-green-500 font-bold text-xl">
-                    <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-                      <path d="M18.63 13A17.89 17.89 0 0 1 18 12" />
-                      <path d="M6.26 19.86C4.8 18.94 3.5 17.8 2.37 16.46" />
-                      <path d="M2.37 7.54C3.5 6.2 4.8 5.06 6.26 4.14" />
-                      <path d="M18.63 11A17.89 17.89 0 0 1 18 12" />
-                    </svg>
-                    NoisAI
+                    <img 
+                      src="/lovable-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
+                      alt="NOISAI Logo" 
+                      className="w-6 h-6 mr-2"
+                    />
+                    NOISAI
                   </div>
                   <nav className="flex gap-8 text-gray-400">
                     <a href="#" className="hover:text-white transition-colors">Technology</a>
@@ -160,7 +157,7 @@ export default function Index() {
                   </nav>
                 </div>
                 <div className="text-center text-gray-500 mt-8">
-                  © 2025 NoisAI. All rights reserved.
+                  © 2024 NOISAI. All rights reserved.
                 </div>
               </div>
             </div>
