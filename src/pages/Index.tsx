@@ -300,6 +300,38 @@ export default function Index() {
                 </div>
               </div>
             </section>
+
+            <section className="w-full max-w-7xl mx-auto mt-32 px-4 mb-32">
+              <h2 className="text-4xl font-bold text-center text-white mb-16">Time for Transformation</h2>
+              
+              <div className="flex flex-col items-center text-center space-y-8">
+                <div className="flex items-center gap-8 flex-wrap justify-center">
+                  <div className="flex flex-col items-center space-y-4">
+                    <img 
+                      src="/lovable-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
+                      alt="NOISAI Logo Vertical" 
+                      className="w-8 h-8 -rotate-90"
+                    />
+                    <span className="text-[#22C55E] text-xl">=</span>
+                    <span className="text-white text-xl">Time</span>
+                  </div>
+                  
+                  <div className="flex flex-col items-center space-y-4">
+                    <img 
+                      src="/lovable-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
+                      alt="NOISAI Logo Horizontal" 
+                      className="w-8 h-8"
+                    />
+                    <span className="text-[#22C55E] text-xl">=</span>
+                    <span className="text-white text-xl">Transformation</span>
+                  </div>
+                </div>
+                
+                <p className="text-gray-300 text-lg max-w-2xl mx-auto mt-8">
+                  NOISAI is here to make it happen - transforming the way we think about and harness energy, one sound wave at a time.
+                </p>
+              </div>
+            </section>
           </div>
         </div>
       )}
