@@ -20,6 +20,9 @@ export default function Index() {
     console.log("Spline loaded");
     setSpline(splineApp);
     setIsLoaded(true);
+    if (isMobile) {
+      handleStart();
+    }
   };
 
   // Handle click to start
