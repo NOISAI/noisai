@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { HeroSection } from "@/components/sections/HeroSection";
@@ -158,7 +157,7 @@ export default function Index() {
                   </nav>
                 </div>
                 <div className="text-center text-gray-500 mt-8">
-                  © 2024 NOISAI. All rights reserved.
+                  © 202 NOISAI. All rights reserved.
                 </div>
               </div>
             </div>
