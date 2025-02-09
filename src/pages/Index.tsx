@@ -120,7 +120,7 @@ export default function Index() {
               <div className="flex flex-col items-center text-center mb-16 space-y-6">
                 <h2 className="text-4xl md:text-5xl font-bold text-white">Join the Energy Revolution</h2>
                 <p className="text-gray-300 text-lg max-w-2xl">
-                  Connect your wallet to start earning energy credits and participate in our decentralized energy marketplace.
+                  Invest now in NOISAI vision. Participate in our decentralized energy marketplace and be part of NOISAI green energy innovation
                 </p>
                 <div className="flex flex-col md:flex-row gap-4 mt-8">
                   <button className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg flex items-center justify-center gap-2 transition-colors">
