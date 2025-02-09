@@ -95,7 +95,7 @@ export default function Index() {
 
   return (
     <main 
-      className="relative w-screen min-h-screen bg-[#0B0F17]"
+      className="relative w-screen min-h-screen bg-[#0B0F17] cursor-pointer"
       onClick={handleStart}
     >
       {!showContent && (
