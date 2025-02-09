@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
@@ -220,7 +221,7 @@ export default function Index() {
             <section className="w-full max-w-7xl mx-auto mt-32 px-4">
               <div className="h-[600px] w-full">
                 <Spline
-                  scene="https://my.spline.design/prismcoin-d9b9de647a523480d64a23a47e237a46/"
+                  scene="https://prod.spline.design/prismcoin-d9b9de647a523480d64a23a47e237a46/scene.splinecode"
                   className="w-full h-full"
                 />
               </div>
