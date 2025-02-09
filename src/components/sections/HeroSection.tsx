@@ -34,11 +34,6 @@ export const HeroSection = ({
             className="w-full h-full"
             onLoad={onSplineLoad}
           />
-          {isMobile && !hasStarted && isLoaded && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <p className="text-white text-lg animate-pulse">Click anywhere to begin</p>
-            </div>
-          )}
         </div>
       )}
 
