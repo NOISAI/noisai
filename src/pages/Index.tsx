@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
 import { Button } from "@/components/ui/button";
-import { Github, Link, Zap, Activity, Battery, Coins, Users, Waves } from "lucide-react";
+import { Github, Link, Zap, Activity, Battery, Coins, Users, ArrowDownLeft, ArrowUpRight } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function Index() {
@@ -28,15 +28,29 @@ export default function Index() {
     return (Math.random() * 2 - 1) * 0.5;
   };
 
+  // New function to handle token circulation logic
+  const calculateTokenChange = (currentTokens) => {
+    const changePercentage = getRandomChange() * 0.2; // 20% max change
+    const change = currentTokens * changePercentage;
+    return Math.max(45000, Math.min(70000, currentTokens + change));
+  };
+
+  // New function to handle user and node changes
+  const calculateUserNodeChange = (current) => {
+    const changePercentage = getRandomChange() * 0.1; // 10% max change
+    const change = current * changePercentage;
+    return Math.max(current * 0.8, current + change); // Never drop below 80% of current value
+  };
+
   useEffect(() => {
     const interval = setInterval(() => {
       setLiveStats(prev => ({
         energyGenerated: Math.max(0, +(prev.energyGenerated * (1 + getRandomChange())).toFixed(2)),
-        activeNodes: Math.max(0, Math.floor(prev.activeNodes * (1 + getRandomChange()))),
+        activeNodes: Math.floor(calculateUserNodeChange(prev.activeNodes)),
         networkEfficiency: Math.min(100, Math.max(80, +(prev.networkEfficiency * (1 + getRandomChange() * 0.1)).toFixed(1))),
-        tokens: Math.max(0, Math.floor(prev.tokens * (1 + getRandomChange()))),
-        activeUsers: Math.max(0, Math.floor(prev.activeUsers * (1 + getRandomChange()))),
-        dailyTransactions: Math.max(0, Math.floor(prev.dailyTransactions * (1 + getRandomChange())))
+        tokens: Math.floor(calculateTokenChange(prev.tokens)),
+        activeUsers: Math.floor(calculateUserNodeChange(prev.activeUsers)),
+        dailyTransactions: Math.max(1000, Math.floor(prev.dailyTransactions * (1 + getRandomChange())))
       }));
     }, 2000);
 
@@ -219,7 +233,10 @@ export default function Index() {
                 <div className="glass-panel p-6 transform transition-all duration-300 hover:scale-105 hover:translate-z-10 shadow-xl">
                   <div className="flex justify-between items-start mb-4">
                     <div className="p-3 bg-[#22C55E]/10 rounded-lg">
-                      <Waves className="w-6 h-6 text-[#22C55E]" />
+                      <div className="flex space-x-1">
+                        <ArrowDownLeft className="w-6 h-6 text-[#22C55E]" />
+                        <ArrowUpRight className="w-6 h-6 text-[#22C55E]" />
+                      </div>
                     </div>
                     <span className="text-[#22C55E] text-sm">{getRandomChange() > 0 ? '+' : ''}{(getRandomChange() * 20).toFixed(1)}% ↗</span>
                   </div>
