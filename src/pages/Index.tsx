@@ -220,7 +220,7 @@ export default function Index() {
             <section className="w-full max-w-7xl mx-auto mt-32 px-4">
               <div className="h-[600px] w-full">
                 <Spline
-                  scene="Please provide a valid Spline scene URL"
+                  scene="https://prod.spline.design/6Wq1Q7YGyM-iab9i/scene.splinecode"
                   className="w-full h-full"
                 />
               </div>
