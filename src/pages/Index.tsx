@@ -80,7 +80,7 @@ export default function Index() {
           <div className="w-full min-h-screen flex flex-col items-center justify-center">
             <div className="absolute top-8 left-8">
               <div className="flex items-center gap-2">
-                <div className={`transition-transform duration-1000 ${
+                <div className={`transition-transform duration-[5000ms] ${
                   !showLogoText ? '-rotate-90' : 'rotate-0'
                 }`}>
                   <img 
