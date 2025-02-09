@@ -9,13 +9,13 @@ export const TokenomicsSection = () => {
     <section className="w-full max-w-4xl mx-auto mt-20 px-4">
       <h2 className="text-3xl font-bold text-center text-white mb-8">Tokenomics</h2>
       
-      <Collapsible className="w-full">
+      <Collapsible className="w-full group">
         <CollapsibleTrigger className="w-full">
           <div className="w-full bg-[#1A1F2C] rounded-lg hover:bg-[#1A1F2C]/80 transition-colors">
             <div className="flex items-center justify-between p-4">
               <h3 className="text-lg font-semibold text-white">NOIS Token Distribution</h3>
               <ChevronDown 
-                className="w-5 h-5 text-white transition-transform duration-300 group-data-[state=open]:rotate-180" 
+                className="w-5 h-5 text-white transition-transform duration-300 [&[data-state=open]]:rotate-180" 
                 strokeWidth={3}
               />
             </div>
