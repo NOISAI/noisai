@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
@@ -66,13 +65,6 @@ export default function Index() {
     console.log("Spline loaded");
     setSpline(splineApp);
     setIsLoaded(true);
-    
-    // Auto-start animation on mobile after a short delay
-    if (isMobile) {
-      setTimeout(() => {
-        handleStart();
-      }, 1000);
-    }
   };
 
   const handleStart = () => {
@@ -83,14 +75,11 @@ export default function Index() {
         spline.emitEvent('mouseDown');
         setIsAnimating(true);
 
-        // Shorter animation duration for mobile
-        const animationDuration = isMobile ? 15000 : 25000;
-
         const timer = setTimeout(() => {
-          console.log("Animation complete, showing content");
+          console.log("25 seconds elapsed, showing content");
           setShowContent(true);
           setIsAnimating(false);
-        }, animationDuration);
+        }, 25000);
 
         return () => clearTimeout(timer);
       } catch (error) {
@@ -103,17 +92,14 @@ export default function Index() {
 
   useEffect(() => {
     if (showContent) {
-      // Shorter delay for mobile devices
-      const initialDelay = isMobile ? 2000 : 5000;
-      
       setTimeout(() => {
         setShowRotation(true);
         setTimeout(() => {
           setShowLogoText(true);
         }, 500);
-      }, initialDelay);
+      }, 5000);
     }
-  }, [showContent, isMobile]);
+  }, [showContent]);
 
   return (
     <main 
@@ -127,13 +113,6 @@ export default function Index() {
             className="w-full h-full"
             onLoad={onSplineLoad}
           />
-          {isMobile && !showContent && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="bg-black/50 p-4 rounded-lg text-white text-center">
-                <p>Tap anywhere to continue</p>
-              </div>
-            </div>
-          )}
         </div>
       )}
 
@@ -319,38 +298,6 @@ export default function Index() {
                     Earn and trade energy credits on our blockchain network, creating a decentralized energy marketplace
                   </p>
                 </div>
-              </div>
-            </section>
-
-            <section className="w-full max-w-7xl mx-auto mt-32 px-4 mb-32">
-              <h2 className="text-4xl font-bold text-center text-white mb-16">Time for Transformation</h2>
-              
-              <div className="flex flex-col items-center text-center space-y-8">
-                <div className="flex items-center gap-8 flex-wrap justify-center">
-                  <div className="flex flex-col items-center space-y-4">
-                    <img 
-                      src="/lovable-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
-                      alt="NOISAI Logo Vertical" 
-                      className="w-8 h-8 -rotate-90"
-                    />
-                    <span className="text-[#22C55E] text-xl">=</span>
-                    <span className="text-white text-xl">Time</span>
-                  </div>
-                  
-                  <div className="flex flex-col items-center space-y-4">
-                    <img 
-                      src="/lovable-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
-                      alt="NOISAI Logo Horizontal" 
-                      className="w-8 h-8"
-                    />
-                    <span className="text-[#22C55E] text-xl">=</span>
-                    <span className="text-white text-xl">Transformation</span>
-                  </div>
-                </div>
-                
-                <p className="text-gray-300 text-lg max-w-2xl mx-auto mt-8">
-                  NOISAI is here to make it happen - transforming the way we think about and harness energy, one sound wave at a time.
-                </p>
               </div>
             </section>
           </div>
