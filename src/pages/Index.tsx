@@ -238,7 +238,10 @@ export default function Index() {
                   <div className="w-full bg-[#1A1F2C] rounded-lg hover:bg-[#1A1F2C]/80 transition-colors">
                     <div className="flex items-center justify-between p-4">
                       <h3 className="text-lg font-semibold text-white">NOIS Token Distribution</h3>
-                      <ChevronDown className="w-5 h-5 text-white stroke-[3] transition-transform duration-300 data-[state=open]:rotate-180" />
+                      <ChevronDown 
+                        className="w-5 h-5 text-white transform transition-transform duration-300 data-[state=open]:rotate-180" 
+                        strokeWidth={3}
+                      />
                     </div>
                   </div>
                 </CollapsibleTrigger>
