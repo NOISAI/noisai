@@ -17,15 +17,21 @@ export const WelcomeVoice = ({ isLoaded, hasStarted }: WelcomeVoiceProps) => {
         try {
           setIsPlaying(true);
           
-          // Get the API key from Supabase secrets
+          console.log('Fetching ElevenLabs API key from Supabase...');
           const { data: secretData, error: secretError } = await supabase
             .from('secrets')
             .select('value')
             .eq('name', 'ELEVENLABS_API_KEY')
-            .single();
+            .maybeSingle();
 
-          if (secretError || !secretData) {
+          if (secretError) {
+            console.error('Error fetching API key:', secretError);
             throw new Error('Failed to get API key');
+          }
+
+          if (!secretData) {
+            console.error('No API key found in secrets');
+            throw new Error('No API key found');
           }
 
           const apiKey = secretData.value;
@@ -64,6 +70,7 @@ export const WelcomeVoice = ({ isLoaded, hasStarted }: WelcomeVoiceProps) => {
           }
         } catch (error) {
           console.error('Error playing welcome voice:', error);
+          setIsPlaying(false); // Reset playing state on error
         }
       };
 
