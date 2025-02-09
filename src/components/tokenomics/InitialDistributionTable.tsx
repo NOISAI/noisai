@@ -13,20 +13,40 @@ export const InitialDistributionTable = () => {
         </TableHeader>
         <TableBody className="mt-4">
           <TableRow className="border-0">
-            <TableCell className="text-gray-300 py-3">Community Rewards</TableCell>
-            <TableCell className="text-right text-[#22C55E] py-3">40%</TableCell>
+            <TableCell className="text-gray-300 py-3">Community & Rewards</TableCell>
+            <TableCell className="text-right text-[#22C55E] py-3">18% (37,800,000)</TableCell>
+          </TableRow>
+          <TableRow className="border-0">
+            <TableCell className="text-gray-300 py-3">Seed Sale</TableCell>
+            <TableCell className="text-right text-[#22C55E] py-3">10% (21,000,000)</TableCell>
+          </TableRow>
+          <TableRow className="border-0">
+            <TableCell className="text-gray-300 py-3">Private Sale</TableCell>
+            <TableCell className="text-right text-[#22C55E] py-3">10% (21,000,000)</TableCell>
           </TableRow>
           <TableRow className="border-0">
             <TableCell className="text-gray-300 py-3">Development Fund</TableCell>
-            <TableCell className="text-right text-[#22C55E] py-3">25%</TableCell>
+            <TableCell className="text-right text-[#22C55E] py-3">20% (42,000,000)</TableCell>
           </TableRow>
           <TableRow className="border-0">
             <TableCell className="text-gray-300 py-3">Team & Advisors</TableCell>
-            <TableCell className="text-right text-[#22C55E] py-3">15%</TableCell>
+            <TableCell className="text-right text-[#22C55E] py-3">15% (31,500,000)</TableCell>
           </TableRow>
           <TableRow className="border-0">
             <TableCell className="text-gray-300 py-3">Ecosystem Growth</TableCell>
-            <TableCell className="text-right text-[#22C55E] py-3">20%</TableCell>
+            <TableCell className="text-right text-[#22C55E] py-3">12% (25,200,000)</TableCell>
+          </TableRow>
+          <TableRow className="border-0">
+            <TableCell className="text-gray-300 py-3">Public Sale</TableCell>
+            <TableCell className="text-right text-[#22C55E] py-3">8% (16,800,000)</TableCell>
+          </TableRow>
+          <TableRow className="border-0">
+            <TableCell className="text-gray-300 py-3">Liquidity & Market Making</TableCell>
+            <TableCell className="text-right text-[#22C55E] py-3">5% (10,500,000)</TableCell>
+          </TableRow>
+          <TableRow className="border-0">
+            <TableCell className="text-gray-300 py-3">Reserve Fund</TableCell>
+            <TableCell className="text-right text-[#22C55E] py-3">2% (4,200,000)</TableCell>
           </TableRow>
         </TableBody>
       </Table>
