@@ -65,6 +65,12 @@ export default function Index() {
     console.log("Spline loaded");
     setSpline(splineApp);
     setIsLoaded(true);
+    
+    if (isMobile) {
+      setTimeout(() => {
+        handleStart();
+      }, 1000);
+    }
   };
 
   const handleStart = () => {
@@ -75,11 +81,13 @@ export default function Index() {
         spline.emitEvent('mouseDown');
         setIsAnimating(true);
 
+        const animationDuration = isMobile ? 15000 : 25000;
+        
         const timer = setTimeout(() => {
-          console.log("25 seconds elapsed, showing content");
+          console.log("Animation complete, showing content");
           setShowContent(true);
           setIsAnimating(false);
-        }, 25000);
+        }, animationDuration);
 
         return () => clearTimeout(timer);
       } catch (error) {
@@ -92,14 +100,16 @@ export default function Index() {
 
   useEffect(() => {
     if (showContent) {
+      const initialDelay = isMobile ? 2000 : 5000;
+      
       setTimeout(() => {
         setShowRotation(true);
         setTimeout(() => {
           setShowLogoText(true);
         }, 500);
-      }, 5000);
+      }, initialDelay);
     }
-  }, [showContent]);
+  }, [showContent, isMobile]);
 
   return (
     <main 
@@ -108,6 +118,11 @@ export default function Index() {
     >
       {!showContent && (
         <div className="fixed inset-0">
+          {isMobile && !hasStarted && (
+            <div className="absolute inset-0 flex items-center justify-center z-10">
+              <p className="text-white text-lg animate-pulse">Tap to begin</p>
+            </div>
+          )}
           <Spline
             scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
             className="w-full h-full"
