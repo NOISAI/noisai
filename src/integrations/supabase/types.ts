@@ -41,7 +41,9 @@ export type Database = {
       [_ in never]: never
     }
     CompositeTypes: {
-      [_ in never]: never
+      json: {
+        value: string | null
+      }
     }
   }
 }
