@@ -24,28 +24,29 @@ export const WelcomeVoice = ({ isLoaded, hasStarted }: WelcomeVoiceProps) => {
             .from('secrets')
             .select('value')
             .eq('name', 'ELEVENLABS_API_KEY')
-            .maybeSingle();
+            .single();
 
           if (secretError) {
             console.error('Error fetching API key:', secretError);
-            throw new Error('Failed to get API key');
+            throw new Error(`Failed to get API key: ${secretError.message}`);
           }
 
-          if (!secretData) {
-            console.error('No API key found in secrets');
-            throw new Error('No API key found');
+          if (!secretData?.value) {
+            console.error('No API key found or API key is empty');
+            throw new Error('API key is missing or empty');
           }
 
           const apiKey = secretData.value;
-          console.log('API key retrieved successfully');
+          console.log('API key retrieved successfully, length:', apiKey.length);
 
           const voiceId = "EXAVITQu4vr4xnSDxMaL"; // Sarah voice
           const text = "Hello, I am, NOISAI";
           
           console.log('Making ElevenLabs API request...');
-          const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`, {
+          const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
             method: 'POST',
             headers: {
+              'Accept': 'audio/mpeg',
               'Content-Type': 'application/json',
               'xi-api-key': apiKey,
             },
@@ -60,9 +61,15 @@ export const WelcomeVoice = ({ isLoaded, hasStarted }: WelcomeVoiceProps) => {
           });
 
           if (!response.ok) {
-            const errorData = await response.json();
-            console.error('ElevenLabs API error:', errorData);
-            throw new Error(`Failed to generate speech: ${errorData.detail?.message || 'Unknown error'}`);
+            let errorMessage = 'Failed to generate speech';
+            try {
+              const errorData = await response.json();
+              console.error('ElevenLabs API error:', errorData);
+              errorMessage = `API Error: ${errorData.detail?.message || errorData.message || 'Unknown error'}`;
+            } catch (e) {
+              console.error('Error parsing API error response:', e);
+            }
+            throw new Error(errorMessage);
           }
 
           console.log('Successfully received audio response from ElevenLabs');
@@ -74,15 +81,15 @@ export const WelcomeVoice = ({ isLoaded, hasStarted }: WelcomeVoiceProps) => {
             audioRef.current.src = audioUrl;
             audioRef.current.volume = 1.0;
             
-            // Add audio loading event listener
-            audioRef.current.onloadeddata = () => {
-              console.log('Audio data loaded successfully');
-            };
-
-            // Add canplaythrough event listener
-            audioRef.current.oncanplaythrough = () => {
-              console.log('Audio can play through');
-            };
+            // Add event listeners for debugging
+            audioRef.current.onloadstart = () => console.log('Audio loading started');
+            audioRef.current.onloadedmetadata = () => console.log('Audio metadata loaded');
+            audioRef.current.onloadeddata = () => console.log('Audio data loaded');
+            audioRef.current.oncanplay = () => console.log('Audio can start playing');
+            audioRef.current.oncanplaythrough = () => console.log('Audio can play through');
+            audioRef.current.onplay = () => console.log('Audio playback started');
+            audioRef.current.onplaying = () => console.log('Audio is playing');
+            audioRef.current.onerror = (e) => console.error('Audio element error:', e);
 
             console.log('Attempting to play audio...');
             try {
@@ -99,7 +106,7 @@ export const WelcomeVoice = ({ isLoaded, hasStarted }: WelcomeVoiceProps) => {
               }
             } catch (playError) {
               console.error('Error playing audio:', playError);
-              throw new Error('Failed to play audio');
+              throw new Error(`Failed to play audio: ${playError}`);
             }
           } else {
             console.error('Audio element reference is null');
@@ -109,7 +116,7 @@ export const WelcomeVoice = ({ isLoaded, hasStarted }: WelcomeVoiceProps) => {
           console.error('Error playing welcome voice:', error);
           toast({
             title: "Audio Error",
-            description: "Failed to play welcome message. Please check your audio settings and browser permissions.",
+            description: error.message || "Failed to play welcome message. Please check your audio settings and browser permissions.",
             variant: "destructive"
           });
           setIsPlaying(false);
@@ -132,7 +139,7 @@ export const WelcomeVoice = ({ isLoaded, hasStarted }: WelcomeVoiceProps) => {
         setIsPlaying(false);
       }}
       style={{ display: 'none' }}
-      controls // Temporarily add controls for debugging
+      controls // Keeping controls for debugging
     />
   );
 };
