@@ -1,6 +1,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/components/ui/use-toast';
 
 interface WelcomeVoiceProps {
   isLoaded: boolean;
@@ -10,6 +11,7 @@ interface WelcomeVoiceProps {
 export const WelcomeVoice = ({ isLoaded, hasStarted }: WelcomeVoiceProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     if (isLoaded && hasStarted && !isPlaying) {
@@ -61,28 +63,54 @@ export const WelcomeVoice = ({ isLoaded, hasStarted }: WelcomeVoiceProps) => {
             throw new Error('Failed to generate speech');
           }
 
+          console.log('Successfully received audio response from ElevenLabs');
           const audioBlob = await response.blob();
           const audioUrl = URL.createObjectURL(audioBlob);
           
+          console.log('Setting up audio element...');
           if (audioRef.current) {
             audioRef.current.src = audioUrl;
-            await audioRef.current.play();
+            audioRef.current.volume = 1.0; // Ensure volume is at maximum
+            console.log('Playing audio...');
+            try {
+              await audioRef.current.play();
+              console.log('Audio started playing successfully');
+            } catch (playError) {
+              console.error('Error playing audio:', playError);
+              throw new Error('Failed to play audio');
+            }
+          } else {
+            console.error('Audio element reference is null');
+            throw new Error('Audio element not found');
           }
         } catch (error) {
           console.error('Error playing welcome voice:', error);
-          setIsPlaying(false); // Reset playing state on error
+          toast({
+            title: "Audio Error",
+            description: "Failed to play welcome message. Please check your audio settings.",
+            variant: "destructive"
+          });
+          setIsPlaying(false);
         }
       };
 
       playVoice();
     }
-  }, [isLoaded, hasStarted, isPlaying]);
+  }, [isLoaded, hasStarted, isPlaying, toast]);
 
   return (
     <audio 
       ref={audioRef}
-      onEnded={() => setIsPlaying(false)}
+      onEnded={() => {
+        console.log('Audio playback ended');
+        setIsPlaying(false);
+      }}
+      onError={(e) => {
+        console.error('Audio element error:', e);
+        setIsPlaying(false);
+      }}
       style={{ display: 'none' }}
+      controls // Temporarily add controls for debugging
     />
   );
 };
