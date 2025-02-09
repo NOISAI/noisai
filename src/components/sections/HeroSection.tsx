@@ -65,7 +65,7 @@ export const HeroSection = ({
                 className="bg-[#22C55E] hover:bg-[#22C55E]/90 text-white px-6 md:px-8 py-4 md:py-6 text-base md:text-lg h-auto w-full md:w-auto"
               >
                 <Link className="mr-2 h-5 w-5" />
-                Invest on NOISAI
+                Invest in NOISAI
               </Button>
               <Button
                 variant="outline"
