@@ -1,5 +1,6 @@
 
 import { useEffect, useRef, useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 interface WelcomeVoiceProps {
   isLoaded: boolean;
@@ -15,15 +16,28 @@ export const WelcomeVoice = ({ isLoaded, hasStarted }: WelcomeVoiceProps) => {
       const playVoice = async () => {
         try {
           setIsPlaying(true);
-          const apiKey = import.meta.env.VITE_ELEVENLABS_API_KEY;
+          
+          // Get the API key from Supabase secrets
+          const { data: secretData, error: secretError } = await supabase
+            .from('secrets')
+            .select('value')
+            .eq('name', 'ELEVENLABS_API_KEY')
+            .single();
+
+          if (secretError || !secretData) {
+            throw new Error('Failed to get API key');
+          }
+
+          const apiKey = secretData.value;
           const voiceId = "EXAVITQu4vr4xnSDxMaL"; // Sarah voice
           const text = "Hello, I am, NOISAI";
           
+          console.log('Making ElevenLabs API request...');
           const response = await fetch("https://api.elevenlabs.io/v1/text-to-speech/" + voiceId, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'xi-api-key': apiKey!,
+              'xi-api-key': apiKey,
             },
             body: JSON.stringify({
               text: text,
@@ -36,6 +50,8 @@ export const WelcomeVoice = ({ isLoaded, hasStarted }: WelcomeVoiceProps) => {
           });
 
           if (!response.ok) {
+            const errorData = await response.json();
+            console.error('ElevenLabs API error:', errorData);
             throw new Error('Failed to generate speech');
           }
 
