@@ -24,19 +24,24 @@ export const WelcomeVoice = ({ isLoaded, hasStarted }: WelcomeVoiceProps) => {
             .from('secrets')
             .select('value')
             .eq('name', 'ELEVENLABS_API_KEY')
-            .single();
+            .maybeSingle();
 
           if (secretError) {
             console.error('Error fetching API key:', secretError);
             throw new Error(`Failed to get API key: ${secretError.message}`);
           }
 
-          if (!secretData?.value) {
-            console.error('No API key found or API key is empty');
-            throw new Error('API key is missing or empty');
+          if (!secretData) {
+            console.error('No API key found in the secrets table');
+            throw new Error('API key not found in database');
           }
 
           const apiKey = secretData.value;
+          if (!apiKey || apiKey.length < 32) {
+            console.error('Invalid API key format');
+            throw new Error('Invalid API key format');
+          }
+
           console.log('API key retrieved successfully, length:', apiKey.length);
 
           const voiceId = "EXAVITQu4vr4xnSDxMaL"; // Sarah voice
