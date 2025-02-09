@@ -5,6 +5,7 @@ import { Logo } from "@/components/header/Logo";
 import { HeroSection } from "@/components/hero/HeroSection";
 import { NetworkStats } from "@/components/stats/NetworkStats";
 import { WhyChooseSection } from "@/components/features/WhyChooseSection";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function Index() {
   const [showContent, setShowContent] = useState(false);
@@ -14,6 +15,7 @@ export default function Index() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
+  const isMobile = useIsMobile();
 
   const onSplineLoad = (splineApp) => {
     console.log("Spline loaded");
@@ -26,14 +28,17 @@ export default function Index() {
       setHasStarted(true);
       try {
         console.log("Starting animation");
-        spline.emitEvent('mouseDown');
+        if (!isMobile) {
+          spline.emitEvent('mouseDown');
+        }
         setIsAnimating(true);
 
+        // Show content immediately on mobile, or after animation on desktop
         const timer = setTimeout(() => {
-          console.log("25 seconds elapsed, showing content");
+          console.log("Animation complete, showing content");
           setShowContent(true);
           setIsAnimating(false);
-        }, 25000);
+        }, isMobile ? 0 : 25000);
 
         return () => clearTimeout(timer);
       } catch (error) {
@@ -45,22 +50,29 @@ export default function Index() {
   };
 
   useEffect(() => {
+    // Handle initial state for mobile devices
+    if (isMobile && isLoaded && !hasStarted) {
+      handleStart();
+    }
+  }, [isMobile, isLoaded]);
+
+  useEffect(() => {
     if (showContent) {
       setTimeout(() => {
         setShowRotation(true);
         setTimeout(() => {
           setShowLogoText(true);
         }, 500);
-      }, 5000);
+      }, isMobile ? 0 : 5000);
     }
-  }, [showContent]);
+  }, [showContent, isMobile]);
 
   return (
     <main 
       className="relative w-screen min-h-screen bg-[#0B0F17] cursor-pointer"
       onClick={handleStart}
     >
-      {!showContent && (
+      {!showContent && !isMobile && (
         <div className="fixed inset-0">
           <Spline
             scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
@@ -70,16 +82,14 @@ export default function Index() {
         </div>
       )}
 
-      {showContent && (
-        <div className="relative w-full min-h-screen opacity-0 animate-[fade-in_1.5s_ease-out_forwards] px-4 md:px-0">
-          <div className="w-full min-h-screen flex flex-col items-center justify-center">
-            <Logo showRotation={showRotation} showLogoText={showLogoText} />
-            <HeroSection onSplineLoad={onSplineLoad} />
-            <NetworkStats />
-            <WhyChooseSection />
-          </div>
+      <div className={`relative w-full min-h-screen ${showContent ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1500`}>
+        <div className="w-full min-h-screen flex flex-col items-center justify-center">
+          <Logo showRotation={showRotation} showLogoText={showLogoText} />
+          <HeroSection onSplineLoad={onSplineLoad} />
+          <NetworkStats />
+          <WhyChooseSection />
         </div>
-      )}
+      </div>
 
       <style>
         {`
@@ -127,4 +137,4 @@ export default function Index() {
       </style>
     </main>
   );
-}
+};
