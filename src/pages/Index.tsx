@@ -9,6 +9,7 @@ import { FeatureCard } from "@/components/features/FeatureCard";
 import { BlockchainIntegration } from "@/components/features/BlockchainIntegration";
 import { Header } from "@/components/layout/Header";
 import { getRandomChange, calculateTokenChange, calculateUserNodeChange, calculateSupplyPercentage, formatTokenValue } from "@/utils/statsCalculations";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 export default function Index() {
   const [showContent, setShowContent] = useState(false);
@@ -229,64 +230,72 @@ export default function Index() {
             <section className="w-full max-w-7xl mx-auto mt-32 px-4">
               <h2 className="text-4xl font-bold text-center text-white mb-16">Tokenomics</h2>
               
-              <div className="bg-[#0D1117] rounded-2xl">
-                <div className="flex items-center justify-between p-6 cursor-pointer">
-                  <h3 className="text-xl font-semibold text-white">NOIS Token Distribution</h3>
-                  <ChevronDown className="w-6 h-6 text-white" />
-                </div>
+              <Collapsible className="w-full">
+                <CollapsibleTrigger className="w-full">
+                  <div className="w-full bg-[#1A1F2C] rounded-lg hover:bg-[#1A1F2C]/80 transition-colors">
+                    <div className="flex items-center justify-between p-6">
+                      <h3 className="text-xl font-semibold text-white">NOIS Token Distribution</h3>
+                      <ChevronDown className="w-6 h-6 text-white transition-transform duration-200" />
+                    </div>
+                  </div>
+                </CollapsibleTrigger>
+                
+                <CollapsibleContent className="mt-2">
+                  <div className="bg-[#1A1F2C] rounded-lg p-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div className="space-y-6">
+                        <h4 className="text-lg font-medium text-white mb-4">Initial Distribution</h4>
+                        
+                        <div className="space-y-4">
+                          <div className="flex justify-between items-center">
+                            <span className="text-gray-300">Community Rewards</span>
+                            <span className="text-[#22C55E]">40%</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-gray-300">Development Fund</span>
+                            <span className="text-[#22C55E]">25%</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-gray-300">Team & Advisors</span>
+                            <span className="text-[#22C55E]">15%</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-gray-300">Ecosystem Growth</span>
+                            <span className="text-[#22C55E]">20%</span>
+                          </div>
+                        </div>
+                      </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
-                  <div className="space-y-6">
-                    <h4 className="text-lg font-medium text-white mb-4">Initial Distribution</h4>
-                    
-                    <div className="space-y-4">
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-300">Community Rewards</span>
-                        <span className="text-[#22C55E]">40%</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-300">Development Fund</span>
-                        <span className="text-[#22C55E]">25%</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-300">Team & Advisors</span>
-                        <span className="text-[#22C55E]">15%</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-300">Ecosystem Growth</span>
-                        <span className="text-[#22C55E]">20%</span>
+                      <div className="space-y-6">
+                        <h4 className="text-lg font-medium text-white mb-4">Token Utility</h4>
+                        
+                        <ul className="space-y-3 text-gray-300">
+                          <li className="flex items-center">
+                            <div className="w-1.5 h-1.5 rounded-full bg-[#22C55E] mr-2"></div>
+                            Governance voting rights
+                          </li>
+                          <li className="flex items-center">
+                            <div className="w-1.5 h-1.5 rounded-full bg-[#22C55E] mr-2"></div>
+                            Energy credit trading
+                          </li>
+                          <li className="flex items-center">
+                            <div className="w-1.5 h-1.5 rounded-full bg-[#22C55E] mr-2"></div>
+                            Network fee payments
+                          </li>
+                          <li className="flex items-center">
+                            <div className="w-1.5 h-1.5 rounded-full bg-[#22C55E] mr-2"></div>
+                            Staking rewards
+                          </li>
+                          <li className="flex items-center">
+                            <div className="w-1.5 h-1.5 rounded-full bg-[#22C55E] mr-2"></div>
+                            Protocol participation
+                          </li>
+                        </ul>
                       </div>
                     </div>
                   </div>
-
-                  <div className="space-y-6">
-                    <h4 className="text-lg font-medium text-white mb-4">Token Utility</h4>
-                    
-                    <ul className="space-y-3 text-gray-300">
-                      <li className="flex items-center">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#22C55E] mr-2"></div>
-                        Governance voting rights
-                      </li>
-                      <li className="flex items-center">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#22C55E] mr-2"></div>
-                        Energy credit trading
-                      </li>
-                      <li className="flex items-center">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#22C55E] mr-2"></div>
-                        Network fee payments
-                      </li>
-                      <li className="flex items-center">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#22C55E] mr-2"></div>
-                        Staking rewards
-                      </li>
-                      <li className="flex items-center">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#22C55E] mr-2"></div>
-                        Protocol participation
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+                </CollapsibleContent>
+              </Collapsible>
             </section>
 
             <style>
