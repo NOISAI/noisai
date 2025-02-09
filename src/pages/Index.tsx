@@ -1,7 +1,7 @@
+
 import { useState, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Header } from "@/components/layout/Header";
-import { SplineViewer } from "@/components/spline/SplineViewer";
 import { HeroSection } from "@/components/hero/HeroSection";
 import { NetworkStats } from "@/components/stats/NetworkStats";
 import { WhyChooseSection } from "@/components/features/WhyChooseSection";
@@ -13,7 +13,6 @@ export default function Index() {
   const [showContent, setShowContent] = useState(false);
   const [showLogoText, setShowLogoText] = useState(false);
   const [showRotation, setShowRotation] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const isMobile = useIsMobile();
@@ -65,8 +64,6 @@ export default function Index() {
     }
   }, [showContent]);
 
-  const splineSceneUrl = "https://prod.spline.design/Wfx6S6vnF-LjKSSy/scene.splinecode";
-
   return (
     <main 
       className="relative w-screen min-h-screen bg-[#0B0F17]"
@@ -74,7 +71,6 @@ export default function Index() {
     >
       {!showContent && (
         <div className="fixed inset-0">
-          <SplineViewer url={splineSceneUrl} />
           {isMobile && !hasStarted && (
             <div className="absolute inset-0 flex items-center justify-center">
               <p className="text-white text-lg animate-pulse">Click anywhere to begin</p>
@@ -87,28 +83,14 @@ export default function Index() {
         <div className="relative w-full min-h-screen opacity-0 animate-[fade-in_1.5s_ease-out_forwards] px-4 md:px-0">
           <div className="w-full min-h-screen flex flex-col items-center justify-center">
             <Header showRotation={showRotation} showLogoText={showLogoText} />
-
-            <div className={`w-full ${isMobile ? 'h-[340px] mt-16' : 'h-[400px] mt-8'}`}>
-              <SplineViewer url={splineSceneUrl} />
-            </div>
-
             <HeroSection />
-
             <NetworkStats 
               liveStats={liveStats}
               calculateSupplyPercentage={calculateSupplyPercentage}
               formatTokenValue={formatTokenValue}
             />
-
             <WhyChooseSection />
-
             <BlockchainIntegration />
-
-            <section className="w-full max-w-7xl mx-auto mt-32 px-4">
-              <div className="h-[600px] w-full">
-                <SplineViewer url={splineSceneUrl} />
-              </div>
-            </section>
           </div>
         </div>
       )}
