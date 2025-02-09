@@ -10,7 +10,8 @@ import { BlockchainIntegration } from "@/components/features/BlockchainIntegrati
 import { Header } from "@/components/layout/Header";
 import { getRandomChange, calculateTokenChange, calculateUserNodeChange, calculateSupplyPercentage, formatTokenValue } from "@/utils/statsCalculations";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { InitialDistributionTable } from "@/components/tokenomics/InitialDistributionTable";
+import { TokenUtilityTable } from "@/components/tokenomics/TokenUtilityTable";
 
 export default function Index() {
   const [showContent, setShowContent] = useState(false);
@@ -244,63 +245,8 @@ export default function Index() {
                 <CollapsibleContent className="mt-2">
                   <div className="bg-[#1A1F2C] rounded-lg p-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead className="text-white">Initial Distribution</TableHead>
-                            <TableHead className="text-right text-white">Percentage</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          <TableRow>
-                            <TableCell className="text-gray-300">Community Rewards</TableCell>
-                            <TableCell className="text-right text-[#22C55E]">40%</TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell className="text-gray-300">Development Fund</TableCell>
-                            <TableCell className="text-right text-[#22C55E]">25%</TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell className="text-gray-300">Team & Advisors</TableCell>
-                            <TableCell className="text-right text-[#22C55E]">15%</TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell className="text-gray-300">Ecosystem Growth</TableCell>
-                            <TableCell className="text-right text-[#22C55E]">20%</TableCell>
-                          </TableRow>
-                        </TableBody>
-                      </Table>
-
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead className="text-white">Token Utility</TableHead>
-                            <TableHead className="text-right"></TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          <TableRow>
-                            <TableCell className="text-gray-300">Governance voting rights</TableCell>
-                            <TableCell className="text-right">•</TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell className="text-gray-300">Energy credit trading</TableCell>
-                            <TableCell className="text-right">•</TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell className="text-gray-300">Network fee payments</TableCell>
-                            <TableCell className="text-right">•</TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell className="text-gray-300">Staking rewards</TableCell>
-                            <TableCell className="text-right">•</TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell className="text-gray-300">Protocol participation</TableCell>
-                            <TableCell className="text-right">•</TableCell>
-                          </TableRow>
-                        </TableBody>
-                      </Table>
+                      <InitialDistributionTable />
+                      <TokenUtilityTable />
                     </div>
                   </div>
                 </CollapsibleContent>
