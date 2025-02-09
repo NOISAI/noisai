@@ -63,15 +63,6 @@ export default function Index() {
       className="relative w-screen min-h-screen bg-[#0B0F17]"
       onClick={handleStart}
     >
-      {/* Start Message - Only show before animation starts */}
-      {isLoaded && !hasStarted && (
-        <div className="absolute inset-0 flex items-center justify-center z-10">
-          <p className="text-white text-2xl md:text-3xl font-bold animate-pulse cursor-pointer">
-            Click anywhere to begin
-          </p>
-        </div>
-      )}
-
       {/* 3D Scene - Only show when content is not visible */}
       {!showContent && (
         <div className="fixed inset-0">
