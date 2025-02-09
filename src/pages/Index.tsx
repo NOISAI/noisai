@@ -9,7 +9,7 @@ import { WhyChooseSection } from "@/components/features/WhyChooseSection";
 import { BlockchainIntegration } from "@/components/features/BlockchainIntegration";
 import { getRandomChange, calculateTokenChange, calculateUserNodeChange, calculateSupplyPercentage, formatTokenValue } from "@/utils/statsCalculations";
 import "@/styles/animations.css";
-import "@/types/spline-viewer";
+import "../types/spline-viewer";
 
 export default function Index() {
   const [showContent, setShowContent] = useState(false);
