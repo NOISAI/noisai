@@ -35,7 +35,7 @@ export default function Index() {
           console.log("Animation complete, showing content");
           setShowContent(true);
           setIsAnimating(false);
-        }, isMobile ? 15000 : 25000); // Shorter animation time for mobile
+        }, 25000);
 
         return () => clearTimeout(timer);
       } catch (error) {
@@ -60,7 +60,7 @@ export default function Index() {
         setTimeout(() => {
           setShowLogoText(true);
         }, 500);
-      }, 2000); // Consistent delay for both mobile and desktop
+      }, 2000);
     }
   }, [showContent]);
 
