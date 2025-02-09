@@ -1,14 +1,14 @@
-# Welcome to your Lovable project
+# Welcome to NOISAI
 
 ## Project info
 
 **URL**: https://lovable.dev/projects/6b788806-7c86-4041-abad-dcf5e70cdf73
 
-## How can I edit this code?
+## What is NOISAI? 
 
-There are several ways of editing your application.
+Revolutionary technology that converts ambient sound into renewable electricity, powered by blockchain and AI.
 
-**Use Lovable**
+**Why Choose NOISAI?**
 
 Simply visit the [Lovable Project](https://lovable.dev/projects/6b788806-7c86-4041-abad-dcf5e70cdf73) and start prompting.
 
@@ -16,7 +16,8 @@ Changes made via Lovable will be committed automatically to this repo.
 
 **Use your preferred IDE**
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+**Sound Energy Harvesting**
+Innovative technology that captures and converts ambient sound waves into usable electrical energy
 
 The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
