@@ -15,8 +15,8 @@ export const TokenomicsSection = () => {
             <div className="flex items-center justify-between p-4">
               <h3 className="text-lg font-semibold text-white">NOIS Token Distribution</h3>
               <ChevronDown 
-                className="w-5 h-5 text-white transition-transform duration-300 data-[state=open]:rotate-180" 
-                strokeWidth={3}
+                className="w-5 h-5 text-white transition-transform duration-300 group-data-[state=open]:rotate-180" 
+                aria-hidden="true"
               />
             </div>
           </div>
