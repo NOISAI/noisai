@@ -53,7 +53,9 @@ export default function Index() {
     if (showContent) {
       const timer = setTimeout(() => {
         setStartRotation(true);
-        setShowLogoText(true);  // Show text immediately when rotation starts
+        setTimeout(() => {
+          setShowLogoText(true);  // Show text after 0.5s delay
+        }, 500);
       }, 5000);
 
       return () => clearTimeout(timer);
