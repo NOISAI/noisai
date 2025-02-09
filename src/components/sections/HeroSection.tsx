@@ -46,7 +46,7 @@ export const HeroSection = ({
         <>
           <Header showRotation={showRotation} showLogoText={showLogoText} />
 
-          <div className="w-full h-[300px] md:h-[400px] mb-8">
+          <div className="mt-32 w-full h-[300px] md:h-[400px] mb-8">
             <Spline 
               scene="https://prod.spline.design/Wfx6S6vnF-LjKSSy/scene.splinecode"
               className="w-full h-full"
