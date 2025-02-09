@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
 import { Button } from "@/components/ui/button";
-import { Github, Link, Zap, Activity, Battery, Coins, Users, ArrowDownLeft, ArrowUpRight } from "lucide-react";
+import { Github, Link, Zap, Activity, Battery, Coins, Users, ArrowDownLeft, ArrowUpRight, Waves, Brain, Cpu } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function Index() {
@@ -28,22 +28,13 @@ export default function Index() {
     return (Math.random() * 2 - 1) * 0.5;
   };
 
-  // Updated token circulation logic with gradual increase
   const calculateTokenChange = (currentTokens) => {
-    // Base growth rate (0.5% to 2% increase per update)
     const baseGrowthRate = 0.005 + (Math.random() * 0.015);
-    
-    // Accelerated growth for early stages
     const growthMultiplier = currentTokens < 1000000 ? 2 : 1;
-    
-    // Calculate change
     const change = currentTokens * baseGrowthRate * growthMultiplier;
-    
-    // Ensure we don't exceed max cap of 210 million
     return Math.min(210000000, currentTokens + change);
   };
 
-  // Keep existing node and user change logic
   const calculateUserNodeChange = (current) => {
     const changePercentage = getRandomChange() * 0.1;
     const change = current * changePercentage;
@@ -266,6 +257,42 @@ export default function Index() {
                   <h3 className="text-white text-lg mb-2">Daily Transactions</h3>
                   <p className="text-4xl font-bold text-[#22C55E] mb-2">{liveStats.dailyTransactions}</p>
                   <p className="text-gray-300 text-sm">Energy credit transfers per day</p>
+                </div>
+              </div>
+            </section>
+
+            <section className="w-full max-w-7xl mx-auto mt-32 px-4 mb-32">
+              <h2 className="text-4xl font-bold text-center text-white mb-16">Why Choose NoisAI?</h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="glass-panel p-8 transform transition-all duration-300 hover:scale-105 hover:translate-z-10">
+                  <div className="p-4 bg-[#22C55E]/10 rounded-lg w-fit mb-6">
+                    <Waves className="w-8 h-8 text-[#22C55E]" />
+                  </div>
+                  <h3 className="text-white text-xl font-semibold mb-4">Sound Energy Harvesting</h3>
+                  <p className="text-gray-300">
+                    Innovative technology that captures and converts ambient sound waves into usable electrical energy
+                  </p>
+                </div>
+
+                <div className="glass-panel p-8 transform transition-all duration-300 hover:scale-105 hover:translate-z-10">
+                  <div className="p-4 bg-[#22C55E]/10 rounded-lg w-fit mb-6">
+                    <Brain className="w-8 h-6 text-[#22C55E]" />
+                  </div>
+                  <h3 className="text-white text-xl font-semibold mb-4">AI-Powered Optimization</h3>
+                  <p className="text-gray-300">
+                    Advanced AI algorithms maximize energy conversion efficiency and system performance
+                  </p>
+                </div>
+
+                <div className="glass-panel p-8 transform transition-all duration-300 hover:scale-105 hover:translate-z-10">
+                  <div className="p-4 bg-[#22C55E]/10 rounded-lg w-fit mb-6">
+                    <Cpu className="w-8 h-8 text-[#22C55E]" />
+                  </div>
+                  <h3 className="text-white text-xl font-semibold mb-4">Tokenized Energy Credits</h3>
+                  <p className="text-gray-300">
+                    Earn and trade energy credits on our blockchain network, creating a decentralized energy marketplace
+                  </p>
                 </div>
               </div>
             </section>
