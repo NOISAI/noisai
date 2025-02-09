@@ -158,7 +158,7 @@ export default function Index() {
                     <a href="#" className="hover:text-white transition-colors">Technology</a>
                     <a href="#tokenomics" className="hover:text-white transition-colors">Tokenomics</a>
                     <a href="#features" className="hover:text-white transition-colors">Governance</a>
-                    <a href="#" className="hover:text-white transition-colors">Contact</a>
+                    <a href="mailto:info@noisai.tech" className="hover:text-white transition-colors">Contact</a>
                   </nav>
                 </div>
                 <div className="text-center text-gray-500 mt-8">
