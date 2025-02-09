@@ -108,7 +108,7 @@ export default function Index() {
             </div>
 
             {/* New Spline Scene */}
-            <div className={`w-full ${isMobile ? 'h-[340px] mt-10' : 'h-[400px] mt-0'}`}>
+            <div className={`w-full ${isMobile ? 'h-[340px] mt-16' : 'h-[400px] mt-8'}`}>
               <Spline
                 scene="https://prod.spline.design/WPMa2X2U2NClGTaW/scene.splinecode"
                 className="w-full h-full"
