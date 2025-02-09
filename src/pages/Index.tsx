@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
@@ -19,7 +20,7 @@ export default function Index() {
     energyGenerated: 2.51,
     activeNodes: 1254,
     networkEfficiency: 94.8,
-    tokens: 1000, // Starting from 1,000
+    tokens: 1000,
     activeUsers: 4532,
     dailyTransactions: 12496
   });
@@ -113,6 +114,11 @@ export default function Index() {
             className="w-full h-full"
             onLoad={onSplineLoad}
           />
+          {isMobile && !hasStarted && isLoaded && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <p className="text-white text-lg animate-pulse">Click anywhere to begin</p>
+            </div>
+          )}
         </div>
       )}
 
@@ -326,10 +332,7 @@ export default function Index() {
           }
 
           .glass-panel {
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-            transform-style: preserve-3d;
-            perspective: 1000px;
+            @apply bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl;
           }
 
           .glass-panel:hover {
