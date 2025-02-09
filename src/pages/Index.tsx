@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
@@ -299,6 +300,10 @@ export default function Index() {
                   </p>
                 </div>
               </div>
+            </section>
+
+            <section className="w-full max-w-7xl mx-auto mt-32 px-4 mb-32">
+              <h2 className="text-4xl font-bold text-center text-white mb-16">Time for Transformation</h2>
             </section>
           </div>
         </div>
