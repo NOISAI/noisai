@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
 import { Button } from "@/components/ui/button";
-import { Github, Link, Zap, Activity, Battery, Coins, Users, ArrowDownLeft, ArrowUpRight, Waves, Brain, Cpu } from "lucide-react";
+import { Github, Link, Zap, Activity, Battery, Coins, Users, ArrowDownLeft, ArrowUpRight, Brain } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function Index() {
@@ -281,7 +281,7 @@ export default function Index() {
 
                 <div className="glass-panel p-8 transform transition-all duration-300 hover:scale-105 hover:translate-z-10">
                   <div className="p-4 bg-[#22C55E]/10 rounded-lg w-fit mb-6">
-                    <Brain className="w-8 h-6 text-[#22C55E]" />
+                    <Brain className="w-8 h-8 text-[#22C55E]" />
                   </div>
                   <h3 className="text-white text-xl font-semibold mb-4">AI-Powered Optimization</h3>
                   <p className="text-gray-300">
@@ -291,7 +291,7 @@ export default function Index() {
 
                 <div className="glass-panel p-8 transform transition-all duration-300 hover:scale-105 hover:translate-z-10">
                   <div className="p-4 bg-[#22C55E]/10 rounded-lg w-fit mb-6">
-                    <Cpu className="w-8 h-8 text-[#22C55E]" />
+                    <Coins className="w-8 h-8 text-[#22C55E]" />
                   </div>
                   <h3 className="text-white text-xl font-semibold mb-4">Tokenized Energy Credits</h3>
                   <p className="text-gray-300">
