@@ -243,7 +243,7 @@ export default function Index() {
                 
                 <CollapsibleContent className="mt-2">
                   <div className="bg-[#1A1F2C] rounded-lg p-4">
-                    <div className="grid grid-cols-1 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <Table>
                         <TableHeader>
                           <TableRow>
