@@ -1,6 +1,4 @@
-
 import { useState, useEffect } from "react";
-import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
 import { Button } from "@/components/ui/button";
 import { Github, Link, Zap, Activity, Battery, Coins, Users, ArrowLeftRight, Brain } from "lucide-react";
@@ -15,7 +13,6 @@ export default function Index() {
   const [showContent, setShowContent] = useState(false);
   const [showLogoText, setShowLogoText] = useState(false);
   const [showRotation, setShowRotation] = useState(false);
-  const [spline, setSpline] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
@@ -45,32 +42,17 @@ export default function Index() {
     return () => clearInterval(interval);
   }, []);
 
-  const onSplineLoad = (splineApp) => {
-    console.log("Spline loaded");
-    setSpline(splineApp);
-    setIsLoaded(true);
-  };
-
   const handleStart = () => {
-    if (isLoaded && spline && !isAnimating && !hasStarted) {
+    if (!isAnimating && !hasStarted) {
       setHasStarted(true);
-      try {
-        console.log("Starting animation");
-        spline.emitEvent('mouseDown');
-        setIsAnimating(true);
+      setIsAnimating(true);
 
-        const timer = setTimeout(() => {
-          console.log("25 seconds elapsed, showing content");
-          setShowContent(true);
-          setIsAnimating(false);
-        }, 25000);
-
-        return () => clearTimeout(timer);
-      } catch (error) {
-        console.error("Error starting animation:", error);
+      const timer = setTimeout(() => {
         setShowContent(true);
         setIsAnimating(false);
-      }
+      }, 2000);
+
+      return () => clearTimeout(timer);
     }
   };
 
@@ -81,7 +63,7 @@ export default function Index() {
         setTimeout(() => {
           setShowLogoText(true);
         }, 500);
-      }, 5000);
+      }, 1000);
     }
   }, [showContent]);
 
@@ -92,12 +74,12 @@ export default function Index() {
     >
       {!showContent && (
         <div className="fixed inset-0">
-          <Spline
-            scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
-            className="w-full h-full"
-            onLoad={onSplineLoad}
+          <spline-viewer
+            url="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
+            loading-anim
+            events-target="global"
           />
-          {isMobile && !hasStarted && isLoaded && (
+          {isMobile && !hasStarted && (
             <div className="absolute inset-0 flex items-center justify-center">
               <p className="text-white text-lg animate-pulse">Click anywhere to begin</p>
             </div>
@@ -111,9 +93,10 @@ export default function Index() {
             <Header showRotation={showRotation} showLogoText={showLogoText} />
 
             <div className={`w-full ${isMobile ? 'h-[340px] mt-16' : 'h-[400px] mt-8'}`}>
-              <Spline
-                scene="https://prod.spline.design/WPMa2X2U2NClGTaW/scene.splinecode"
-                className="w-full h-full"
+              <spline-viewer
+                url="https://prod.spline.design/WPMa2X2U2NClGTaW/scene.splinecode"
+                loading-anim
+                events-target="global"
               />
             </div>
 
@@ -220,9 +203,10 @@ export default function Index() {
 
             <section className="w-full max-w-7xl mx-auto mt-32 px-4">
               <div className="h-[600px] w-full">
-                <Spline
-                  scene="https://prod.spline.design/prismcoin-d9b9de647a523480d64a23a47e237a46/scene.splinecode"
-                  className="w-full h-full"
+                <spline-viewer
+                  url="https://prod.spline.design/prismcoin-d9b9de647a523480d64a23a47e237a46/scene.splinecode"
+                  loading-anim
+                  events-target="global"
                 />
               </div>
             </section>
