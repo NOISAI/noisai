@@ -30,7 +30,7 @@ export const HeroSection = ({
       {!showContent && (
         <div className="fixed inset-0">
           <Spline
-            scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
+            scene="https://prod.spline.design/Wfx6S6vnF-LjKSSy/scene.splinecode"
             className="w-full h-full"
             onLoad={onSplineLoad}
           />
@@ -48,7 +48,7 @@ export const HeroSection = ({
 
           <div className={`w-full ${isMobile ? 'h-[340px] mt-16' : 'h-[400px] mt-8'}`}>
             <Spline
-              scene="https://prod.spline.design/WPMa2X2U2NClGTaW/scene.splinecode"
+              scene="https://prod.spline.design/Wfx6S6vnF-LjKSSy/scene.splinecode"
               className="w-full h-full"
             />
           </div>
@@ -81,3 +81,4 @@ export const HeroSection = ({
     </>
   );
 };
+
