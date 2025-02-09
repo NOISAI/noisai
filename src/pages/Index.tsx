@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
@@ -170,7 +169,7 @@ export default function Index() {
                   icon={Coins}
                   title="NOISAI Tokens"
                   value={formatTokenValue(liveStats.tokens)}
-                  description="Total tokens in circulation"
+                  description={`${calculateSupplyPercentage(liveStats.tokens)}% of total supply`}
                   change={`${getRandomChange() > 0 ? '+' : ''}${(getRandomChange() * 20).toFixed(1)}% ↗`}
                 />
                 <StatCard
