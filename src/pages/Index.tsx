@@ -50,6 +50,11 @@ export default function Index() {
     return Math.max(current * 0.8, current + change);
   };
 
+  const calculateSupplyPercentage = (currentTokens) => {
+    const maxSupply = 210000000; // 210 million max supply
+    return ((currentTokens / maxSupply) * 100).toFixed(4);
+  };
+
   useEffect(() => {
     const interval = setInterval(() => {
       setLiveStats(prev => ({
@@ -222,12 +227,17 @@ export default function Index() {
                     <span className="text-[#22C55E] text-sm">{getRandomChange() > 0 ? '+' : ''}{(getRandomChange() * 20).toFixed(1)}% ↗</span>
                   </div>
                   <h3 className="text-white text-lg mb-2">NOISAI Tokens</h3>
-                  <p className="text-4xl font-bold text-[#22C55E] mb-2">
-                    {liveStats.tokens >= 1000000 
-                      ? `${(liveStats.tokens / 1000000).toFixed(2)}M`
-                      : `${(liveStats.tokens / 1000).toFixed(1)}K`
-                    }
-                  </p>
+                  <div>
+                    <p className="text-4xl font-bold text-[#22C55E] mb-2">
+                      {liveStats.tokens >= 1000000 
+                        ? `${(liveStats.tokens / 1000000).toFixed(2)}M`
+                        : `${(liveStats.tokens / 1000).toFixed(1)}K`
+                      }
+                    </p>
+                    <p className="text-sm text-[#22C55E]/80 mb-2">
+                      {calculateSupplyPercentage(liveStats.tokens)}% of max supply
+                    </p>
+                  </div>
                   <p className="text-gray-300 text-sm">Total tokens in circulation</p>
                 </div>
 
