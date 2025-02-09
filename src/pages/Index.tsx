@@ -1,10 +1,9 @@
 
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
-import { Logo } from "@/components/header/Logo";
-import { HeroSection } from "@/components/hero/HeroSection";
-import { NetworkStats } from "@/components/stats/NetworkStats";
-import { WhyChooseSection } from "@/components/features/WhyChooseSection";
+import { Motion } from "@/components/ui/motion";
+import { Button } from "@/components/ui/button";
+import { Github, Link } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function Index() {
@@ -17,12 +16,14 @@ export default function Index() {
   const [hasStarted, setHasStarted] = useState(false);
   const isMobile = useIsMobile();
 
+  // Handle Spline load
   const onSplineLoad = (splineApp) => {
     console.log("Spline loaded");
     setSpline(splineApp);
     setIsLoaded(true);
   };
 
+  // Handle click to start
   const handleStart = () => {
     if (isLoaded && spline && !isAnimating && !hasStarted) {
       setHasStarted(true);
@@ -31,8 +32,9 @@ export default function Index() {
         spline.emitEvent('mouseDown');
         setIsAnimating(true);
 
+        // Set timer for 25 seconds
         const timer = setTimeout(() => {
-          console.log("Animation complete, showing content");
+          console.log("25 seconds elapsed, showing content");
           setShowContent(true);
           setIsAnimating(false);
         }, 25000);
@@ -46,13 +48,7 @@ export default function Index() {
     }
   };
 
-  useEffect(() => {
-    // Auto-start on mobile after load
-    if (isMobile && isLoaded && !hasStarted) {
-      handleStart();
-    }
-  }, [isMobile, isLoaded]);
-
+  // Show logo text and rotation after content appears
   useEffect(() => {
     if (showContent) {
       setTimeout(() => {
@@ -60,15 +56,16 @@ export default function Index() {
         setTimeout(() => {
           setShowLogoText(true);
         }, 500);
-      }, 2000);
+      }, 5000);
     }
   }, [showContent]);
 
   return (
     <main 
-      className="relative w-screen min-h-screen bg-[#0B0F17] cursor-pointer"
+      className="relative w-screen min-h-screen bg-[#0B0F17]"
       onClick={handleStart}
     >
+      {/* 3D Scene - Only show when content is not visible */}
       {!showContent && (
         <div className="fixed inset-0">
           <Spline
@@ -79,14 +76,64 @@ export default function Index() {
         </div>
       )}
 
-      <div className={`relative w-full min-h-screen ${showContent ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1500`}>
-        <div className="w-full min-h-screen flex flex-col items-center justify-center">
-          <Logo showRotation={showRotation} showLogoText={showLogoText} />
-          <HeroSection onSplineLoad={onSplineLoad} />
-          <NetworkStats />
-          <WhyChooseSection />
+      {/* Content - Only render after animation completes */}
+      {showContent && (
+        <div className="relative w-full min-h-screen opacity-0 animate-[fade-in_1.5s_ease-out_forwards] px-4 md:px-0">
+          <div className="w-full min-h-screen flex flex-col items-center justify-center">
+            <div className="absolute top-8 left-8">
+              <div className="flex items-center gap-2">
+                <div className={`transition-transform duration-1000 ${
+                  !showRotation ? '-rotate-90' : 'rotate-0'
+                }`}>
+                  <img 
+                    src="/lovable-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
+                    alt="NOISAI Logo" 
+                    className="w-8 h-8"
+                  />
+                </div>
+                <span 
+                  className={`text-[#22C55E] text-2xl font-bold transition-opacity duration-500
+                    ${showLogoText ? 'opacity-100' : 'opacity-0'}`}
+                >
+                  NOISAI
+                </span>
+              </div>
+            </div>
+
+            {/* New Spline Scene */}
+            <div className={`w-full ${isMobile ? 'h-[340px] mt-16' : 'h-[400px] mt-8'}`}>
+              <Spline
+                scene="https://prod.spline.design/WPMa2X2U2NClGTaW/scene.splinecode"
+                className="w-full h-full"
+              />
+            </div>
+
+            <Motion className="text-center space-y-6 md:space-y-8 mt-8 md:mt-0">
+              <h1 className="text-4xl md:text-7xl font-bold mb-4 md:mb-6 max-w-4xl mx-auto leading-tight bg-gradient-text animate-gradient-x px-4">
+                Sound Waves to Clean Energy
+              </h1>
+              <p className="text-base md:text-xl text-gray-300 max-w-3xl mx-auto mb-8 md:mb-12 px-4">
+                Revolutionary technology that converts ambient sound into renewable electricity, powered by blockchain and AI
+              </p>
+              <div className="flex flex-wrap justify-center gap-4 px-4">
+                <Button
+                  className="bg-[#22C55E] hover:bg-[#22C55E]/90 text-white px-6 md:px-8 py-4 md:py-6 text-base md:text-lg h-auto w-full md:w-auto"
+                >
+                  <Link className="mr-2 h-5 w-5" />
+                  Invest on NOISAI
+                </Button>
+                <Button
+                  variant="outline"
+                  className="bg-transparent border-gray-700 text-gray-300 hover:bg-gray-800 px-6 md:px-8 py-4 md:py-6 text-base md:text-lg h-auto w-full md:w-auto"
+                >
+                  <Github className="mr-2 h-5 w-5" />
+                  View on GitHub
+                </Button>
+              </div>
+            </Motion>
+          </div>
         </div>
-      </div>
+      )}
 
       <style>
         {`
@@ -109,18 +156,6 @@ export default function Index() {
             animation: gradient 15s ease-in-out infinite;
           }
 
-          .glass-panel {
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-            transform-style: preserve-3d;
-            perspective: 1000px;
-          }
-
-          .glass-panel:hover {
-            border-color: #22C55E;
-            transform: scale(1.05) translateZ(20px);
-          }
-
           @keyframes gradient {
             0% { background-position: 0% 50%; }
             16.66% { background-position: 0% 50%; }
@@ -134,4 +169,4 @@ export default function Index() {
       </style>
     </main>
   );
-};
+}
