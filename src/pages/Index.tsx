@@ -227,68 +227,66 @@ export default function Index() {
               </div>
             </section>
 
-            <section className="w-full max-w-7xl mx-auto mt-32 px-4">
-              <h2 className="text-4xl font-bold text-center text-white mb-16">Tokenomics</h2>
+            <section className="w-full max-w-4xl mx-auto mt-20 px-4">
+              <h2 className="text-3xl font-bold text-center text-white mb-8">Tokenomics</h2>
               
               <Collapsible className="w-full">
                 <CollapsibleTrigger className="w-full">
                   <div className="w-full bg-[#1A1F2C] rounded-lg hover:bg-[#1A1F2C]/80 transition-colors">
-                    <div className="flex items-center justify-between p-6">
-                      <h3 className="text-xl font-semibold text-white">NOIS Token Distribution</h3>
-                      <ChevronDown className="w-6 h-6 text-white transition-transform duration-200" />
+                    <div className="flex items-center justify-between p-4">
+                      <h3 className="text-lg font-semibold text-white">NOIS Token Distribution</h3>
+                      <ChevronDown className="w-5 h-5 text-white transition-transform duration-200" />
                     </div>
                   </div>
                 </CollapsibleTrigger>
                 
                 <CollapsibleContent className="mt-2">
-                  <div className="bg-[#1A1F2C] rounded-lg p-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      <div className="space-y-6">
-                        <h4 className="text-lg font-medium text-white mb-4">Initial Distribution</h4>
-                        
-                        <div className="space-y-4">
+                  <div className="bg-[#1A1F2C] rounded-lg p-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <h4 className="text-base font-medium text-white mb-3">Initial Distribution</h4>
+                        <div className="space-y-2">
                           <div className="flex justify-between items-center">
-                            <span className="text-gray-300">Community Rewards</span>
-                            <span className="text-[#22C55E]">40%</span>
+                            <span className="text-sm text-gray-300">Community Rewards</span>
+                            <span className="text-sm text-[#22C55E]">40%</span>
                           </div>
                           <div className="flex justify-between items-center">
-                            <span className="text-gray-300">Development Fund</span>
-                            <span className="text-[#22C55E]">25%</span>
+                            <span className="text-sm text-gray-300">Development Fund</span>
+                            <span className="text-sm text-[#22C55E]">25%</span>
                           </div>
                           <div className="flex justify-between items-center">
-                            <span className="text-gray-300">Team & Advisors</span>
-                            <span className="text-[#22C55E]">15%</span>
+                            <span className="text-sm text-gray-300">Team & Advisors</span>
+                            <span className="text-sm text-[#22C55E]">15%</span>
                           </div>
                           <div className="flex justify-between items-center">
-                            <span className="text-gray-300">Ecosystem Growth</span>
-                            <span className="text-[#22C55E]">20%</span>
+                            <span className="text-sm text-gray-300">Ecosystem Growth</span>
+                            <span className="text-sm text-[#22C55E]">20%</span>
                           </div>
                         </div>
                       </div>
 
-                      <div className="space-y-6">
-                        <h4 className="text-lg font-medium text-white mb-4">Token Utility</h4>
-                        
-                        <ul className="space-y-3 text-gray-300">
+                      <div>
+                        <h4 className="text-base font-medium text-white mb-3">Token Utility</h4>
+                        <ul className="space-y-2 text-sm">
                           <li className="flex items-center">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[#22C55E] mr-2"></div>
-                            Governance voting rights
+                            <div className="w-1 h-1 rounded-full bg-[#22C55E] mr-2"></div>
+                            <span className="text-gray-300">Governance voting rights</span>
                           </li>
                           <li className="flex items-center">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[#22C55E] mr-2"></div>
-                            Energy credit trading
+                            <div className="w-1 h-1 rounded-full bg-[#22C55E] mr-2"></div>
+                            <span className="text-gray-300">Energy credit trading</span>
                           </li>
                           <li className="flex items-center">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[#22C55E] mr-2"></div>
-                            Network fee payments
+                            <div className="w-1 h-1 rounded-full bg-[#22C55E] mr-2"></div>
+                            <span className="text-gray-300">Network fee payments</span>
                           </li>
                           <li className="flex items-center">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[#22C55E] mr-2"></div>
-                            Staking rewards
+                            <div className="w-1 h-1 rounded-full bg-[#22C55E] mr-2"></div>
+                            <span className="text-gray-300">Staking rewards</span>
                           </li>
                           <li className="flex items-center">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[#22C55E] mr-2"></div>
-                            Protocol participation
+                            <div className="w-1 h-1 rounded-full bg-[#22C55E] mr-2"></div>
+                            <span className="text-gray-300">Protocol participation</span>
                           </li>
                         </ul>
                       </div>
