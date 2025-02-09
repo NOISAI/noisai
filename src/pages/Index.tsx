@@ -10,6 +10,7 @@ import { BlockchainIntegration } from "@/components/features/BlockchainIntegrati
 import { Header } from "@/components/layout/Header";
 import { getRandomChange, calculateTokenChange, calculateUserNodeChange, calculateSupplyPercentage, formatTokenValue } from "@/utils/statsCalculations";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 export default function Index() {
   const [showContent, setShowContent] = useState(false);
@@ -242,54 +243,64 @@ export default function Index() {
                 
                 <CollapsibleContent className="mt-2">
                   <div className="bg-[#1A1F2C] rounded-lg p-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <h4 className="text-base font-medium text-white mb-3">Initial Distribution</h4>
-                        <div className="space-y-2">
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm text-gray-300">Community Rewards</span>
-                            <span className="text-sm text-[#22C55E]">40%</span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm text-gray-300">Development Fund</span>
-                            <span className="text-sm text-[#22C55E]">25%</span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm text-gray-300">Team & Advisors</span>
-                            <span className="text-sm text-[#22C55E]">15%</span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm text-gray-300">Ecosystem Growth</span>
-                            <span className="text-sm text-[#22C55E]">20%</span>
-                          </div>
-                        </div>
-                      </div>
+                    <div className="grid grid-cols-1 gap-4">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead className="text-white">Initial Distribution</TableHead>
+                            <TableHead className="text-right text-white">Percentage</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          <TableRow>
+                            <TableCell className="text-gray-300">Community Rewards</TableCell>
+                            <TableCell className="text-right text-[#22C55E]">40%</TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell className="text-gray-300">Development Fund</TableCell>
+                            <TableCell className="text-right text-[#22C55E]">25%</TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell className="text-gray-300">Team & Advisors</TableCell>
+                            <TableCell className="text-right text-[#22C55E]">15%</TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell className="text-gray-300">Ecosystem Growth</TableCell>
+                            <TableCell className="text-right text-[#22C55E]">20%</TableCell>
+                          </TableRow>
+                        </TableBody>
+                      </Table>
 
-                      <div>
-                        <h4 className="text-base font-medium text-white mb-3">Token Utility</h4>
-                        <ul className="space-y-2 text-sm">
-                          <li className="flex items-center">
-                            <div className="w-1 h-1 rounded-full bg-[#22C55E] mr-2"></div>
-                            <span className="text-gray-300">Governance voting rights</span>
-                          </li>
-                          <li className="flex items-center">
-                            <div className="w-1 h-1 rounded-full bg-[#22C55E] mr-2"></div>
-                            <span className="text-gray-300">Energy credit trading</span>
-                          </li>
-                          <li className="flex items-center">
-                            <div className="w-1 h-1 rounded-full bg-[#22C55E] mr-2"></div>
-                            <span className="text-gray-300">Network fee payments</span>
-                          </li>
-                          <li className="flex items-center">
-                            <div className="w-1 h-1 rounded-full bg-[#22C55E] mr-2"></div>
-                            <span className="text-gray-300">Staking rewards</span>
-                          </li>
-                          <li className="flex items-center">
-                            <div className="w-1 h-1 rounded-full bg-[#22C55E] mr-2"></div>
-                            <span className="text-gray-300">Protocol participation</span>
-                          </li>
-                        </ul>
-                      </div>
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead className="text-white">Token Utility</TableHead>
+                            <TableHead className="text-right"></TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          <TableRow>
+                            <TableCell className="text-gray-300">Governance voting rights</TableCell>
+                            <TableCell className="text-right">•</TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell className="text-gray-300">Energy credit trading</TableCell>
+                            <TableCell className="text-right">•</TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell className="text-gray-300">Network fee payments</TableCell>
+                            <TableCell className="text-right">•</TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell className="text-gray-300">Staking rewards</TableCell>
+                            <TableCell className="text-right">•</TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell className="text-gray-300">Protocol participation</TableCell>
+                            <TableCell className="text-right">•</TableCell>
+                          </TableRow>
+                        </TableBody>
+                      </Table>
                     </div>
                   </div>
                 </CollapsibleContent>
