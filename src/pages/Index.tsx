@@ -128,76 +128,76 @@ export default function Index() {
               <h2 className="text-4xl font-bold text-center text-white mb-12">Live Network Stats</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="glass-panel p-6">
+                <div className="glass-panel p-6 transform transition-transform hover:scale-105 hover:translate-z-10 shadow-xl">
                   <div className="flex justify-between items-start mb-4">
                     <div className="p-3 bg-[#22C55E]/10 rounded-lg">
                       <Zap className="w-6 h-6 text-[#22C55E]" />
                     </div>
                     <span className="text-[#22C55E] text-sm">+12.5% ↗</span>
                   </div>
-                  <h3 className="text-gray-300 text-lg mb-2">Energy Generated</h3>
+                  <h3 className="text-gray-100 text-lg mb-2">Energy Generated</h3>
                   <p className="text-4xl font-bold text-[#22C55E] mb-2">2.51 MWh</p>
-                  <p className="text-gray-500 text-sm">Total network energy production</p>
+                  <p className="text-gray-300 text-sm">Total network energy production</p>
                 </div>
 
-                <div className="glass-panel p-6">
+                <div className="glass-panel p-6 transform transition-transform hover:scale-105 hover:translate-z-10 shadow-xl">
                   <div className="flex justify-between items-start mb-4">
                     <div className="p-3 bg-[#22C55E]/10 rounded-lg">
                       <Activity className="w-6 h-6 text-[#22C55E]" />
                     </div>
                     <span className="text-[#22C55E] text-sm">+8.3% ↗</span>
                   </div>
-                  <h3 className="text-gray-300 text-lg mb-2">Active Nodes</h3>
+                  <h3 className="text-gray-100 text-lg mb-2">Active Nodes</h3>
                   <p className="text-4xl font-bold text-[#22C55E] mb-2">1254</p>
-                  <p className="text-gray-500 text-sm">Connected energy harvesting devices</p>
+                  <p className="text-gray-300 text-sm">Connected energy harvesting devices</p>
                 </div>
 
-                <div className="glass-panel p-6">
+                <div className="glass-panel p-6 transform transition-transform hover:scale-105 hover:translate-z-10 shadow-xl">
                   <div className="flex justify-between items-start mb-4">
                     <div className="p-3 bg-[#22C55E]/10 rounded-lg">
                       <Battery className="w-6 h-6 text-[#22C55E]" />
                     </div>
                     <span className="text-[#22C55E] text-sm">+2.1% ↗</span>
                   </div>
-                  <h3 className="text-gray-300 text-lg mb-2">Network Efficiency</h3>
+                  <h3 className="text-gray-100 text-lg mb-2">Network Efficiency</h3>
                   <p className="text-4xl font-bold text-[#22C55E] mb-2">94.8%</p>
-                  <p className="text-gray-500 text-sm">Sound to energy conversion rate</p>
+                  <p className="text-gray-300 text-sm">Sound to energy conversion rate</p>
                 </div>
 
-                <div className="glass-panel p-6">
+                <div className="glass-panel p-6 transform transition-transform hover:scale-105 hover:translate-z-10 shadow-xl">
                   <div className="flex justify-between items-start mb-4">
                     <div className="p-3 bg-[#22C55E]/10 rounded-lg">
                       <Coins className="w-6 h-6 text-[#22C55E]" />
                     </div>
                     <span className="text-[#22C55E] text-sm">+15.4% ↗</span>
                   </div>
-                  <h3 className="text-gray-300 text-lg mb-2">NOIS Tokens</h3>
+                  <h3 className="text-gray-100 text-lg mb-2">NOIS Tokens</h3>
                   <p className="text-4xl font-bold text-[#22C55E] mb-2">157375</p>
-                  <p className="text-gray-500 text-sm">Total tokens in circulation</p>
+                  <p className="text-gray-300 text-sm">Total tokens in circulation</p>
                 </div>
 
-                <div className="glass-panel p-6">
+                <div className="glass-panel p-6 transform transition-transform hover:scale-105 hover:translate-z-10 shadow-xl">
                   <div className="flex justify-between items-start mb-4">
                     <div className="p-3 bg-[#22C55E]/10 rounded-lg">
                       <Users className="w-6 h-6 text-[#22C55E]" />
                     </div>
                     <span className="text-[#22C55E] text-sm">+5.7% ↗</span>
                   </div>
-                  <h3 className="text-gray-300 text-lg mb-2">Active Users</h3>
+                  <h3 className="text-gray-100 text-lg mb-2">Active Users</h3>
                   <p className="text-4xl font-bold text-[#22C55E] mb-2">4532</p>
-                  <p className="text-gray-500 text-sm">Current network participants</p>
+                  <p className="text-gray-300 text-sm">Current network participants</p>
                 </div>
 
-                <div className="glass-panel p-6">
+                <div className="glass-panel p-6 transform transition-transform hover:scale-105 hover:translate-z-10 shadow-xl">
                   <div className="flex justify-between items-start mb-4">
                     <div className="p-3 bg-[#22C55E]/10 rounded-lg">
                       <Waves className="w-6 h-6 text-[#22C55E]" />
                     </div>
                     <span className="text-[#22C55E] text-sm">+10.2% ↗</span>
                   </div>
-                  <h3 className="text-gray-300 text-lg mb-2">Daily Transactions</h3>
+                  <h3 className="text-gray-100 text-lg mb-2">Daily Transactions</h3>
                   <p className="text-4xl font-bold text-[#22C55E] mb-2">12496</p>
-                  <p className="text-gray-500 text-sm">Energy credit transfers per day</p>
+                  <p className="text-gray-300 text-sm">Energy credit transfers per day</p>
                 </div>
               </div>
             </section>
