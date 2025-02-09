@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
@@ -65,6 +66,13 @@ export default function Index() {
     console.log("Spline loaded");
     setSpline(splineApp);
     setIsLoaded(true);
+    
+    // Auto-start animation on mobile after a short delay
+    if (isMobile) {
+      setTimeout(() => {
+        handleStart();
+      }, 1000);
+    }
   };
 
   const handleStart = () => {
@@ -75,11 +83,14 @@ export default function Index() {
         spline.emitEvent('mouseDown');
         setIsAnimating(true);
 
+        // Shorter animation duration for mobile
+        const animationDuration = isMobile ? 15000 : 25000;
+
         const timer = setTimeout(() => {
-          console.log("25 seconds elapsed, showing content");
+          console.log("Animation complete, showing content");
           setShowContent(true);
           setIsAnimating(false);
-        }, 25000);
+        }, animationDuration);
 
         return () => clearTimeout(timer);
       } catch (error) {
@@ -92,14 +103,17 @@ export default function Index() {
 
   useEffect(() => {
     if (showContent) {
+      // Shorter delay for mobile devices
+      const initialDelay = isMobile ? 2000 : 5000;
+      
       setTimeout(() => {
         setShowRotation(true);
         setTimeout(() => {
           setShowLogoText(true);
         }, 500);
-      }, 5000);
+      }, initialDelay);
     }
-  }, [showContent]);
+  }, [showContent, isMobile]);
 
   return (
     <main 
@@ -113,6 +127,13 @@ export default function Index() {
             className="w-full h-full"
             onLoad={onSplineLoad}
           />
+          {isMobile && !showContent && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="bg-black/50 p-4 rounded-lg text-white text-center">
+                <p>Tap anywhere to continue</p>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
