@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { HeroSection } from "@/components/sections/HeroSection";
@@ -99,7 +100,9 @@ export default function Index() {
           {showContent && (
             <>
               <LiveStats liveStats={liveStats} />
-              <Features />
+              <section id="features">
+                <Features />
+              </section>
               <BlockchainIntegration />
 
               <section className="w-full max-w-7xl mx-auto mt-32 px-4">
@@ -110,7 +113,9 @@ export default function Index() {
                 </div>
               </section>
 
-              <TokenomicsSection />
+              <section id="tokenomics">
+                <TokenomicsSection />
+              </section>
             </>
           )}
 
@@ -151,8 +156,8 @@ export default function Index() {
                   </div>
                   <nav className="flex gap-8 text-gray-400">
                     <a href="#" className="hover:text-white transition-colors">Technology</a>
-                    <a href="#" className="hover:text-white transition-colors">Tokenomics</a>
-                    <a href="#" className="hover:text-white transition-colors">Governance</a>
+                    <a href="#tokenomics" className="hover:text-white transition-colors">Tokenomics</a>
+                    <a href="#features" className="hover:text-white transition-colors">Governance</a>
                     <a href="#" className="hover:text-white transition-colors">Contact</a>
                   </nav>
                 </div>
