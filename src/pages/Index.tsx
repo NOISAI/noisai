@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
 import { Button } from "@/components/ui/button";
-import { Github, Link } from "lucide-react";
+import { Github, Link, Zap, Activity, Battery, Coins, Users, Waves } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function Index() {
@@ -16,14 +15,12 @@ export default function Index() {
   const [hasStarted, setHasStarted] = useState(false);
   const isMobile = useIsMobile();
 
-  // Handle Spline load
   const onSplineLoad = (splineApp) => {
     console.log("Spline loaded");
     setSpline(splineApp);
     setIsLoaded(true);
   };
 
-  // Handle click to start
   const handleStart = () => {
     if (isLoaded && spline && !isAnimating && !hasStarted) {
       setHasStarted(true);
@@ -32,7 +29,6 @@ export default function Index() {
         spline.emitEvent('mouseDown');
         setIsAnimating(true);
 
-        // Set timer for 25 seconds
         const timer = setTimeout(() => {
           console.log("25 seconds elapsed, showing content");
           setShowContent(true);
@@ -48,7 +44,6 @@ export default function Index() {
     }
   };
 
-  // Show logo text and rotation after content appears
   useEffect(() => {
     if (showContent) {
       setTimeout(() => {
@@ -65,7 +60,6 @@ export default function Index() {
       className="relative w-screen min-h-screen bg-[#0B0F17]"
       onClick={handleStart}
     >
-      {/* 3D Scene - Only show when content is not visible */}
       {!showContent && (
         <div className="fixed inset-0">
           <Spline
@@ -76,7 +70,6 @@ export default function Index() {
         </div>
       )}
 
-      {/* Content - Only render after animation completes */}
       {showContent && (
         <div className="relative w-full min-h-screen opacity-0 animate-[fade-in_1.5s_ease-out_forwards] px-4 md:px-0">
           <div className="w-full min-h-screen flex flex-col items-center justify-center">
@@ -100,7 +93,6 @@ export default function Index() {
               </div>
             </div>
 
-            {/* New Spline Scene */}
             <div className={`w-full ${isMobile ? 'h-[340px] mt-16' : 'h-[400px] mt-8'}`}>
               <Spline
                 scene="https://prod.spline.design/WPMa2X2U2NClGTaW/scene.splinecode"
@@ -131,6 +123,84 @@ export default function Index() {
                 </Button>
               </div>
             </Motion>
+
+            <section className="w-full max-w-7xl mx-auto mt-20 px-4">
+              <h2 className="text-4xl font-bold text-center text-white mb-12">Live Network Stats</h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="glass-panel p-6">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="p-3 bg-[#22C55E]/10 rounded-lg">
+                      <Zap className="w-6 h-6 text-[#22C55E]" />
+                    </div>
+                    <span className="text-[#22C55E] text-sm">+12.5% ↗</span>
+                  </div>
+                  <h3 className="text-gray-300 text-lg mb-2">Energy Generated</h3>
+                  <p className="text-4xl font-bold text-[#22C55E] mb-2">2.51 MWh</p>
+                  <p className="text-gray-500 text-sm">Total network energy production</p>
+                </div>
+
+                <div className="glass-panel p-6">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="p-3 bg-[#22C55E]/10 rounded-lg">
+                      <Activity className="w-6 h-6 text-[#22C55E]" />
+                    </div>
+                    <span className="text-[#22C55E] text-sm">+8.3% ↗</span>
+                  </div>
+                  <h3 className="text-gray-300 text-lg mb-2">Active Nodes</h3>
+                  <p className="text-4xl font-bold text-[#22C55E] mb-2">1254</p>
+                  <p className="text-gray-500 text-sm">Connected energy harvesting devices</p>
+                </div>
+
+                <div className="glass-panel p-6">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="p-3 bg-[#22C55E]/10 rounded-lg">
+                      <Battery className="w-6 h-6 text-[#22C55E]" />
+                    </div>
+                    <span className="text-[#22C55E] text-sm">+2.1% ↗</span>
+                  </div>
+                  <h3 className="text-gray-300 text-lg mb-2">Network Efficiency</h3>
+                  <p className="text-4xl font-bold text-[#22C55E] mb-2">94.8%</p>
+                  <p className="text-gray-500 text-sm">Sound to energy conversion rate</p>
+                </div>
+
+                <div className="glass-panel p-6">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="p-3 bg-[#22C55E]/10 rounded-lg">
+                      <Coins className="w-6 h-6 text-[#22C55E]" />
+                    </div>
+                    <span className="text-[#22C55E] text-sm">+15.4% ↗</span>
+                  </div>
+                  <h3 className="text-gray-300 text-lg mb-2">NOIS Tokens</h3>
+                  <p className="text-4xl font-bold text-[#22C55E] mb-2">157375</p>
+                  <p className="text-gray-500 text-sm">Total tokens in circulation</p>
+                </div>
+
+                <div className="glass-panel p-6">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="p-3 bg-[#22C55E]/10 rounded-lg">
+                      <Users className="w-6 h-6 text-[#22C55E]" />
+                    </div>
+                    <span className="text-[#22C55E] text-sm">+5.7% ↗</span>
+                  </div>
+                  <h3 className="text-gray-300 text-lg mb-2">Active Users</h3>
+                  <p className="text-4xl font-bold text-[#22C55E] mb-2">4532</p>
+                  <p className="text-gray-500 text-sm">Current network participants</p>
+                </div>
+
+                <div className="glass-panel p-6">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="p-3 bg-[#22C55E]/10 rounded-lg">
+                      <Waves className="w-6 h-6 text-[#22C55E]" />
+                    </div>
+                    <span className="text-[#22C55E] text-sm">+10.2% ↗</span>
+                  </div>
+                  <h3 className="text-gray-300 text-lg mb-2">Daily Transactions</h3>
+                  <p className="text-4xl font-bold text-[#22C55E] mb-2">12496</p>
+                  <p className="text-gray-500 text-sm">Energy credit transfers per day</p>
+                </div>
+              </div>
+            </section>
           </div>
         </div>
       )}
