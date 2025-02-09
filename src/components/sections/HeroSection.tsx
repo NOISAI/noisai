@@ -46,7 +46,14 @@ export const HeroSection = ({
         <>
           <Header showRotation={showRotation} showLogoText={showLogoText} />
 
-          <Motion className="text-center space-y-6 md:space-y-8 mt-8">
+          <div className="w-full h-[300px] md:h-[400px] mb-8">
+            <Spline 
+              scene="https://prod.spline.design/Wfx6S6vnF-LjKSSy/scene.splinecode"
+              className="w-full h-full"
+            />
+          </div>
+
+          <Motion className="text-center space-y-6 md:space-y-8">
             <h1 className="text-4xl md:text-7xl font-bold mb-4 md:mb-6 max-w-4xl mx-auto leading-tight bg-gradient-text animate-gradient-x px-4">
               Sound Waves to Clean Energy
             </h1>

@@ -98,13 +98,6 @@ export default function Index() {
 
           {showContent && (
             <>
-              <div className="w-full h-[400px] md:h-[600px] mt-16 md:mt-24">
-                <Spline 
-                  scene="https://prod.spline.design/Wfx6S6vnF-LjKSSy/scene.splinecode"
-                  className="w-full h-full"
-                />
-              </div>
-
               <LiveStats liveStats={liveStats} />
               <section id="features">
                 <Features />
