@@ -67,13 +67,11 @@ export default function Index() {
         spline.emitEvent('mouseDown');
         setIsAnimating(true);
         
-        const timer = setTimeout(() => {
+        setTimeout(() => {
           console.log("Animation complete, showing content");
           setShowContent(true);
           setIsAnimating(false);
         }, 25000);
-
-        return () => clearTimeout(timer);
       } catch (error) {
         console.error("Error starting animation:", error);
         setShowContent(true);
@@ -110,20 +108,22 @@ export default function Index() {
         </div>
       )}
 
-      {showContent && (
-        <div className="relative w-full min-h-screen opacity-0 animate-[fade-in_1.5s_ease-out_forwards] px-4 md:px-0">
-          <div className="w-full min-h-screen flex flex-col items-center justify-center">
-            <Logo showRotation={showRotation} showLogoText={showLogoText} />
-            <Hero />
-            <NetworkStats 
-              liveStats={liveStats}
-              getRandomChange={getRandomChange}
-              calculateSupplyPercentage={calculateSupplyPercentage}
-            />
-            <Features />
-          </div>
+      <div 
+        className={`relative w-full min-h-screen ${
+          showContent ? 'opacity-0 animate-[fade-in_1.5s_ease-out_forwards]' : 'opacity-0'
+        } px-4 md:px-0`}
+      >
+        <div className="w-full min-h-screen flex flex-col items-center justify-center">
+          <Logo showRotation={showRotation} showLogoText={showLogoText} />
+          <Hero />
+          <NetworkStats 
+            liveStats={liveStats}
+            getRandomChange={getRandomChange}
+            calculateSupplyPercentage={calculateSupplyPercentage}
+          />
+          <Features />
         </div>
-      )}
+      </div>
 
       <style>
         {`
