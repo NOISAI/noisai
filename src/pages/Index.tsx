@@ -5,6 +5,10 @@ import { Motion } from "@/components/ui/motion";
 import { Button } from "@/components/ui/button";
 import { Github, Link, Zap, Activity, Battery, Coins, Users, ArrowDownLeft, ArrowUpRight, Brain } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { StatCard } from "@/components/stats/StatCard";
+import { FeatureCard } from "@/components/features/FeatureCard";
+import { Header } from "@/components/layout/Header";
+import { getRandomChange, calculateTokenChange, calculateUserNodeChange, calculateSupplyPercentage, formatTokenValue } from "@/utils/statsCalculations";
 
 export default function Index() {
   const [showContent, setShowContent] = useState(false);
@@ -24,28 +28,6 @@ export default function Index() {
     activeUsers: 4532,
     dailyTransactions: 12496
   });
-
-  const getRandomChange = () => {
-    return (Math.random() * 2 - 1) * 0.5;
-  };
-
-  const calculateTokenChange = (currentTokens) => {
-    const baseGrowthRate = 0.005 + (Math.random() * 0.015);
-    const growthMultiplier = currentTokens < 1000000 ? 2 : 1;
-    const change = currentTokens * baseGrowthRate * growthMultiplier;
-    return Math.min(210000000, currentTokens + change);
-  };
-
-  const calculateUserNodeChange = (current) => {
-    const changePercentage = getRandomChange() * 0.1;
-    const change = current * changePercentage;
-    return Math.max(current * 0.8, current + change);
-  };
-
-  const calculateSupplyPercentage = (currentTokens) => {
-    const maxSupply = 210000000; // 210 million max supply
-    return ((currentTokens / maxSupply) * 100).toFixed(4);
-  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -125,25 +107,7 @@ export default function Index() {
       {showContent && (
         <div className="relative w-full min-h-screen opacity-0 animate-[fade-in_1.5s_ease-out_forwards] px-4 md:px-0">
           <div className="w-full min-h-screen flex flex-col items-center justify-center">
-            <div className="absolute top-8 left-8">
-              <div className="flex items-center gap-2">
-                <div className={`transition-transform duration-1000 ${
-                  !showRotation ? '-rotate-90' : 'rotate-0'
-                }`}>
-                  <img 
-                    src="/lovable-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
-                    alt="NOISAI Logo" 
-                    className="w-8 h-8"
-                  />
-                </div>
-                <span 
-                  className={`text-[#22C55E] text-2xl font-bold transition-opacity duration-500
-                    ${showLogoText ? 'opacity-100' : 'opacity-0'}`}
-                >
-                  NOISAI
-                </span>
-              </div>
-            </div>
+            <Header showRotation={showRotation} showLogoText={showLogoText} />
 
             <div className={`w-full ${isMobile ? 'h-[340px] mt-16' : 'h-[400px] mt-8'}`}>
               <Spline
@@ -180,90 +144,48 @@ export default function Index() {
               <h2 className="text-4xl font-bold text-center text-white mb-12">Live Network Stats</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="glass-panel p-6 transform transition-all duration-300 hover:scale-105 hover:translate-z-10 shadow-xl">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="p-3 bg-[#22C55E]/10 rounded-lg">
-                      <Zap className="w-6 h-6 text-[#22C55E]" />
-                    </div>
-                    <span className="text-[#22C55E] text-sm">{getRandomChange() > 0 ? '+' : ''}{(getRandomChange() * 20).toFixed(1)}% ↗</span>
-                  </div>
-                  <h3 className="text-white text-lg mb-2">Energy Generated</h3>
-                  <p className="text-4xl font-bold text-[#22C55E] mb-2">{liveStats.energyGenerated} MWh</p>
-                  <p className="text-gray-300 text-sm">Total network energy production</p>
-                </div>
-
-                <div className="glass-panel p-6 transform transition-all duration-300 hover:scale-105 hover:translate-z-10 shadow-xl">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="p-3 bg-[#22C55E]/10 rounded-lg">
-                      <Activity className="w-6 h-6 text-[#22C55E]" />
-                    </div>
-                    <span className="text-[#22C55E] text-sm">{getRandomChange() > 0 ? '+' : ''}{(getRandomChange() * 20).toFixed(1)}% ↗</span>
-                  </div>
-                  <h3 className="text-white text-lg mb-2">Active Nodes</h3>
-                  <p className="text-4xl font-bold text-[#22C55E] mb-2">{liveStats.activeNodes}</p>
-                  <p className="text-gray-300 text-sm">Connected energy harvesting devices</p>
-                </div>
-
-                <div className="glass-panel p-6 transform transition-all duration-300 hover:scale-105 hover:translate-z-10 shadow-xl">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="p-3 bg-[#22C55E]/10 rounded-lg">
-                      <Battery className="w-6 h-6 text-[#22C55E]" />
-                    </div>
-                    <span className="text-[#22C55E] text-sm">{getRandomChange() > 0 ? '+' : ''}{(getRandomChange() * 20).toFixed(1)}% ↗</span>
-                  </div>
-                  <h3 className="text-white text-lg mb-2">Network Efficiency</h3>
-                  <p className="text-4xl font-bold text-[#22C55E] mb-2">{liveStats.networkEfficiency}%</p>
-                  <p className="text-gray-300 text-sm">Sound to energy conversion rate</p>
-                </div>
-
-                <div className="glass-panel p-6 transform transition-all duration-300 hover:scale-105 hover:translate-z-10 shadow-xl">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="p-3 bg-[#22C55E]/10 rounded-lg">
-                      <Coins className="w-6 h-6 text-[#22C55E]" />
-                    </div>
-                    <span className="text-[#22C55E] text-sm">{getRandomChange() > 0 ? '+' : ''}{(getRandomChange() * 20).toFixed(1)}% ↗</span>
-                  </div>
-                  <h3 className="text-white text-lg mb-2">NOISAI Tokens</h3>
-                  <div>
-                    <p className="text-4xl font-bold text-[#22C55E] mb-2">
-                      {liveStats.tokens >= 1000000 
-                        ? `${(liveStats.tokens / 1000000).toFixed(2)}M`
-                        : `${(liveStats.tokens / 1000).toFixed(1)}K`
-                      }
-                    </p>
-                    <p className="text-sm text-[#22C55E]/80 mb-2">
-                      {calculateSupplyPercentage(liveStats.tokens)}% of max supply
-                    </p>
-                  </div>
-                  <p className="text-gray-300 text-sm">Total tokens in circulation</p>
-                </div>
-
-                <div className="glass-panel p-6 transform transition-all duration-300 hover:scale-105 hover:translate-z-10 shadow-xl">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="p-3 bg-[#22C55E]/10 rounded-lg">
-                      <Users className="w-6 h-6 text-[#22C55E]" />
-                    </div>
-                    <span className="text-[#22C55E] text-sm">{getRandomChange() > 0 ? '+' : ''}{(getRandomChange() * 20).toFixed(1)}% ↗</span>
-                  </div>
-                  <h3 className="text-white text-lg mb-2">Active Users</h3>
-                  <p className="text-4xl font-bold text-[#22C55E] mb-2">{liveStats.activeUsers}</p>
-                  <p className="text-gray-300 text-sm">Current network participants</p>
-                </div>
-
-                <div className="glass-panel p-6 transform transition-all duration-300 hover:scale-105 hover:translate-z-10 shadow-xl">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="p-3 bg-[#22C55E]/10 rounded-lg">
-                      <div className="flex space-x-1">
-                        <ArrowDownLeft className="w-6 h-6 text-[#22C55E]" />
-                        <ArrowUpRight className="w-6 h-6 text-[#22C55E]" />
-                      </div>
-                    </div>
-                    <span className="text-[#22C55E] text-sm">{getRandomChange() > 0 ? '+' : ''}{(getRandomChange() * 20).toFixed(1)}% ↗</span>
-                  </div>
-                  <h3 className="text-white text-lg mb-2">Daily Transactions</h3>
-                  <p className="text-4xl font-bold text-[#22C55E] mb-2">{liveStats.dailyTransactions}</p>
-                  <p className="text-gray-300 text-sm">Energy credit transfers per day</p>
-                </div>
+                <StatCard
+                  icon={Zap}
+                  title="Energy Generated"
+                  value={`${liveStats.energyGenerated} MWh`}
+                  description="Total network energy production"
+                  change={`${getRandomChange() > 0 ? '+' : ''}${(getRandomChange() * 20).toFixed(1)}% ↗`}
+                />
+                <StatCard
+                  icon={Activity}
+                  title="Active Nodes"
+                  value={liveStats.activeNodes}
+                  description="Connected energy harvesting devices"
+                  change={`${getRandomChange() > 0 ? '+' : ''}${(getRandomChange() * 20).toFixed(1)}% ↗`}
+                />
+                <StatCard
+                  icon={Battery}
+                  title="Network Efficiency"
+                  value={`${liveStats.networkEfficiency}%`}
+                  description="Sound to energy conversion rate"
+                  change={`${getRandomChange() > 0 ? '+' : ''}${(getRandomChange() * 20).toFixed(1)}% ↗`}
+                />
+                <StatCard
+                  icon={Coins}
+                  title="NOISAI Tokens"
+                  value={formatTokenValue(liveStats.tokens)}
+                  description="Total tokens in circulation"
+                  change={`${getRandomChange() > 0 ? '+' : ''}${(getRandomChange() * 20).toFixed(1)}% ↗`}
+                />
+                <StatCard
+                  icon={Users}
+                  title="Active Users"
+                  value={liveStats.activeUsers}
+                  description="Current network participants"
+                  change={`${getRandomChange() > 0 ? '+' : ''}${(getRandomChange() * 20).toFixed(1)}% ↗`}
+                />
+                <StatCard
+                  icon={ArrowDownLeft}
+                  title="Daily Transactions"
+                  value={liveStats.dailyTransactions}
+                  description="Energy credit transfers per day"
+                  change={`${getRandomChange() > 0 ? '+' : ''}${(getRandomChange() * 20).toFixed(1)}% ↗`}
+                />
               </div>
             </section>
 
@@ -271,39 +193,25 @@ export default function Index() {
               <h2 className="text-4xl font-bold text-center text-white mb-16">Why Choose NOISAI?</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="glass-panel p-8 transform transition-all duration-300 hover:scale-105 hover:translate-z-10">
-                  <div className="p-4 bg-[#22C55E]/10 rounded-lg w-fit mb-6">
-                    <img 
-                      src="/lovable-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
-                      alt="NOISAI Logo" 
-                      className="w-8 h-8"
-                    />
-                  </div>
-                  <h3 className="text-white text-xl font-semibold mb-4">Sound Energy Harvesting</h3>
-                  <p className="text-gray-300">
-                    Innovative technology that captures and converts ambient sound waves into usable electrical energy
-                  </p>
-                </div>
-
-                <div className="glass-panel p-8 transform transition-all duration-300 hover:scale-105 hover:translate-z-10">
-                  <div className="p-4 bg-[#22C55E]/10 rounded-lg w-fit mb-6">
-                    <Brain className="w-8 h-8 text-[#22C55E]" />
-                  </div>
-                  <h3 className="text-white text-xl font-semibold mb-4">AI-Powered Optimization</h3>
-                  <p className="text-gray-300">
-                    Advanced AI algorithms maximize energy conversion efficiency and system performance
-                  </p>
-                </div>
-
-                <div className="glass-panel p-8 transform transition-all duration-300 hover:scale-105 hover:translate-z-10">
-                  <div className="p-4 bg-[#22C55E]/10 rounded-lg w-fit mb-6">
-                    <Coins className="w-8 h-8 text-[#22C55E]" />
-                  </div>
-                  <h3 className="text-white text-xl font-semibold mb-4">Tokenized Energy Credits</h3>
-                  <p className="text-gray-300">
-                    Earn and trade energy credits on our blockchain network, creating a decentralized energy marketplace
-                  </p>
-                </div>
+                <FeatureCard
+                  icon={<img 
+                    src="/lovable-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
+                    alt="NOISAI Logo" 
+                    className="w-8 h-8"
+                  />}
+                  title="Sound Energy Harvesting"
+                  description="Innovative technology that captures and converts ambient sound waves into usable electrical energy"
+                />
+                <FeatureCard
+                  icon={<Brain className="w-8 h-8 text-[#22C55E]" />}
+                  title="AI-Powered Optimization"
+                  description="Advanced AI algorithms maximize energy conversion efficiency and system performance"
+                />
+                <FeatureCard
+                  icon={<Coins className="w-8 h-8 text-[#22C55E]" />}
+                  title="Tokenized Energy Credits"
+                  description="Earn and trade energy credits on our blockchain network, creating a decentralized energy marketplace"
+                />
               </div>
             </section>
           </div>
