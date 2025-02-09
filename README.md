@@ -3,7 +3,7 @@
 
 ## Project info
 
-**URL**: 
+**URL**: https://www.noisai.tech/
 
 ## What is NOISAI? ##
 
@@ -11,7 +11,7 @@ Revolutionary technology that converts ambient sound into renewable electricity,
 
 **Why Choose NOISAI?**
 
-Simply visit us: 
+Simply visit us: https://www.noisai.tech/
 
 Changes made via Lovable will be committed automatically to this repo.
 
