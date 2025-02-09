@@ -28,17 +28,14 @@ export default function Index() {
       setHasStarted(true);
       try {
         console.log("Starting animation");
-        if (!isMobile) {
-          spline.emitEvent('mouseDown');
-        }
+        spline.emitEvent('mouseDown');
         setIsAnimating(true);
 
-        // Show content immediately on mobile, or after animation on desktop
         const timer = setTimeout(() => {
           console.log("Animation complete, showing content");
           setShowContent(true);
           setIsAnimating(false);
-        }, isMobile ? 0 : 25000);
+        }, isMobile ? 15000 : 25000); // Shorter animation time for mobile
 
         return () => clearTimeout(timer);
       } catch (error) {
@@ -50,7 +47,7 @@ export default function Index() {
   };
 
   useEffect(() => {
-    // Handle initial state for mobile devices
+    // Auto-start on mobile after load
     if (isMobile && isLoaded && !hasStarted) {
       handleStart();
     }
@@ -63,16 +60,16 @@ export default function Index() {
         setTimeout(() => {
           setShowLogoText(true);
         }, 500);
-      }, isMobile ? 0 : 5000);
+      }, 2000); // Consistent delay for both mobile and desktop
     }
-  }, [showContent, isMobile]);
+  }, [showContent]);
 
   return (
     <main 
       className="relative w-screen min-h-screen bg-[#0B0F17] cursor-pointer"
       onClick={handleStart}
     >
-      {!showContent && !isMobile && (
+      {!showContent && (
         <div className="fixed inset-0">
           <Spline
             scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
