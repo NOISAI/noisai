@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
 import { Button } from "@/components/ui/button";
-import { Github, Link, Zap, Activity, Battery, Coins, Users, ArrowDownLeft, ArrowUpRight, Brain } from "lucide-react";
+import { Github, Link, Zap, Activity, Battery, Coins, Users, ArrowLeftRight, Brain } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { StatCard } from "@/components/stats/StatCard";
 import { FeatureCard } from "@/components/features/FeatureCard";
@@ -180,7 +180,7 @@ export default function Index() {
                   change={`${getRandomChange() > 0 ? '+' : ''}${(getRandomChange() * 20).toFixed(1)}% ↗`}
                 />
                 <StatCard
-                  icon={ArrowDownLeft}
+                  icon={ArrowLeftRight}
                   title="Daily Transactions"
                   value={liveStats.dailyTransactions}
                   description="Energy credit transfers per day"
