@@ -19,7 +19,7 @@ export default function Index() {
     energyGenerated: 2.51,
     activeNodes: 1254,
     networkEfficiency: 94.8,
-    tokens: 100000000, // Starting from 100 million
+    tokens: 1000, // Starting from 1,000
     activeUsers: 4532,
     dailyTransactions: 12496
   });
@@ -28,11 +28,19 @@ export default function Index() {
     return (Math.random() * 2 - 1) * 0.5;
   };
 
-  // Updated token circulation logic
+  // Updated token circulation logic with gradual increase
   const calculateTokenChange = (currentTokens) => {
-    const changePercentage = getRandomChange() * 0.1; // 10% max change
-    const change = currentTokens * changePercentage;
-    return Math.max(100000000, Math.min(210000000, currentTokens + change)); // Between 100M and 210M
+    // Base growth rate (0.5% to 2% increase per update)
+    const baseGrowthRate = 0.005 + (Math.random() * 0.015);
+    
+    // Accelerated growth for early stages
+    const growthMultiplier = currentTokens < 1000000 ? 2 : 1;
+    
+    // Calculate change
+    const change = currentTokens * baseGrowthRate * growthMultiplier;
+    
+    // Ensure we don't exceed max cap of 210 million
+    return Math.min(210000000, currentTokens + change);
   };
 
   // Keep existing node and user change logic
@@ -52,7 +60,7 @@ export default function Index() {
         activeUsers: Math.floor(calculateUserNodeChange(prev.activeUsers)),
         dailyTransactions: Math.max(1000, Math.floor(prev.dailyTransactions * (1 + getRandomChange())))
       }));
-    }, 5000); // Updated to 5 seconds
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);
@@ -215,7 +223,10 @@ export default function Index() {
                   </div>
                   <h3 className="text-white text-lg mb-2">NOISAI Tokens</h3>
                   <p className="text-4xl font-bold text-[#22C55E] mb-2">
-                    {(liveStats.tokens / 1000000).toFixed(2)}M
+                    {liveStats.tokens >= 1000000 
+                      ? `${(liveStats.tokens / 1000000).toFixed(2)}M`
+                      : `${(liveStats.tokens / 1000).toFixed(1)}K`
+                    }
                   </p>
                   <p className="text-gray-300 text-sm">Total tokens in circulation</p>
                 </div>
