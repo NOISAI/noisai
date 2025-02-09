@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { HeroSection } from "@/components/sections/HeroSection";
@@ -99,19 +98,18 @@ export default function Index() {
 
           {showContent && (
             <>
+              <div className="w-full h-[400px] md:h-[600px] mt-16 md:mt-24">
+                <Spline 
+                  scene="https://prod.spline.design/Wfx6S6vnF-LjKSSy/scene.splinecode"
+                  className="w-full h-full"
+                />
+              </div>
+
               <LiveStats liveStats={liveStats} />
               <section id="features">
                 <Features />
               </section>
               <BlockchainIntegration />
-
-              <section className="w-full max-w-7xl mx-auto mt-32 px-4">
-                <div className="h-[600px] w-full">
-                  <Spline 
-                    scene="https://prod.spline.design/Wfx6S6vnF-LjKSSy/scene.splinecode"
-                  />
-                </div>
-              </section>
 
               <section id="tokenomics">
                 <TokenomicsSection />
