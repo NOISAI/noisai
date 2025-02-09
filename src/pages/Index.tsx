@@ -9,7 +9,7 @@ import { BlockchainIntegration } from "@/components/features/BlockchainIntegrati
 import { Header } from "@/components/layout/Header";
 import { getRandomChange, calculateTokenChange, calculateUserNodeChange, calculateSupplyPercentage, formatTokenValue } from "@/utils/statsCalculations";
 
-import "../types/spline-viewer";
+import "@/types/spline-viewer";
 
 export default function Index() {
   const [showContent, setShowContent] = useState(false);
