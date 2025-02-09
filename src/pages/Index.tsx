@@ -171,7 +171,7 @@ export default function Index() {
                     </div>
                     <span className="text-[#22C55E] text-sm">+15.4% ↗</span>
                   </div>
-                  <h3 className="text-gray-100 text-lg mb-2">NOIS Tokens</h3>
+                  <h3 className="text-gray-100 text-lg mb-2">NOISAI Tokens</h3>
                   <p className="text-4xl font-bold text-[#22C55E] mb-2">157375</p>
                   <p className="text-gray-300 text-sm">Total tokens in circulation</p>
                 </div>
@@ -224,6 +224,15 @@ export default function Index() {
             -webkit-text-fill-color: transparent;
             background-size: 400% 400%;
             animation: gradient 15s ease-in-out infinite;
+          }
+
+          .glass-panel {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: border-color 0.3s ease;
+          }
+
+          .glass-panel:hover {
+            border-color: #22C55E;
           }
 
           @keyframes gradient {
