@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Spline from "@splinetool/react-spline";
 import { Motion } from "@/components/ui/motion";
 import { Button } from "@/components/ui/button";
 import { Github, Link, Zap, Activity, Battery, Coins, Users, ArrowLeftRight, Brain } from "lucide-react";
@@ -74,10 +75,9 @@ export default function Index() {
     >
       {!showContent && (
         <div className="fixed inset-0">
-          <spline-viewer
-            url="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
-            loading-anim
-            events-target="global"
+          <Spline
+            scene="https://prod.spline.design/rGP8VoiJZXNCrcRD/scene.splinecode"
+            className="w-full h-full"
           />
           {isMobile && !hasStarted && (
             <div className="absolute inset-0 flex items-center justify-center">
@@ -93,10 +93,9 @@ export default function Index() {
             <Header showRotation={showRotation} showLogoText={showLogoText} />
 
             <div className={`w-full ${isMobile ? 'h-[340px] mt-16' : 'h-[400px] mt-8'}`}>
-              <spline-viewer
-                url="https://prod.spline.design/WPMa2X2U2NClGTaW/scene.splinecode"
-                loading-anim
-                events-target="global"
+              <Spline
+                scene="https://prod.spline.design/WPMa2X2U2NClGTaW/scene.splinecode"
+                className="w-full h-full"
               />
             </div>
 
@@ -203,10 +202,9 @@ export default function Index() {
 
             <section className="w-full max-w-7xl mx-auto mt-32 px-4">
               <div className="h-[600px] w-full">
-                <spline-viewer
-                  url="https://prod.spline.design/prismcoin-d9b9de647a523480d64a23a47e237a46/scene.splinecode"
-                  loading-anim
-                  events-target="global"
+                <Spline
+                  scene="https://prod.spline.design/prismcoin-d9b9de647a523480d64a23a47e237a46/scene.splinecode"
+                  className="w-full h-full"
                 />
               </div>
             </section>
