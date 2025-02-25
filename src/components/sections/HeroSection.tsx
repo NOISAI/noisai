@@ -70,6 +70,7 @@ export const HeroSection = ({
               <Button
                 variant="outline"
                 className="bg-transparent border-gray-700 text-gray-300 hover:bg-gray-800 px-6 md:px-8 py-4 md:py-6 text-base md:text-lg h-auto w-full md:w-auto"
+                onClick={() => window.open('https://github.com/NOISAI', '_blank')}
               >
                 <Github className="mr-2 h-5 w-5" />
                 View on GitHub
