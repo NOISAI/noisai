@@ -15,10 +15,15 @@ export const Footer = () => {
               <Link2 className="w-5 h-5" />
               Invest in NOISAI
             </button>
-            <button className="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg flex items-center justify-center gap-2 transition-colors">
+            <a 
+              href="https://noisai.gitbook.io/noisai-whitepaper" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg flex items-center justify-center gap-2 transition-colors"
+            >
               <Eye className="w-5 h-5" />
               View Whitepaper
-            </button>
+            </a>
           </div>
         </div>
 
@@ -47,3 +52,4 @@ export const Footer = () => {
     </footer>
   );
 };
+
