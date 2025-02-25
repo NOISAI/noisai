@@ -17,15 +17,19 @@ export const InitialDistributionTable = () => {
             <TableCell className="text-right text-[#22C55E] py-3">18%</TableCell>
           </TableRow>
           <TableRow className="border-0">
-            <TableCell className="text-gray-300 py-3">Seed Sale</TableCell>
+            <TableCell className="text-gray-300 py-3">Seed</TableCell>
+            <TableCell className="text-right text-[#22C55E] py-3">8%</TableCell>
+          </TableRow>
+          <TableRow className="border-0">
+            <TableCell className="text-gray-300 py-3">Private</TableCell>
             <TableCell className="text-right text-[#22C55E] py-3">10%</TableCell>
           </TableRow>
           <TableRow className="border-0">
-            <TableCell className="text-gray-300 py-3">Private Sale</TableCell>
-            <TableCell className="text-right text-[#22C55E] py-3">10%</TableCell>
+            <TableCell className="text-gray-300 py-3">RF</TableCell>
+            <TableCell className="text-right text-[#22C55E] py-3">4%</TableCell>
           </TableRow>
           <TableRow className="border-0">
-            <TableCell className="text-gray-300 py-3">Development Fund</TableCell>
+            <TableCell className="text-gray-300 py-3">Development Funds</TableCell>
             <TableCell className="text-right text-[#22C55E] py-3">20%</TableCell>
           </TableRow>
           <TableRow className="border-0">
@@ -41,12 +45,8 @@ export const InitialDistributionTable = () => {
             <TableCell className="text-right text-[#22C55E] py-3">8%</TableCell>
           </TableRow>
           <TableRow className="border-0">
-            <TableCell className="text-gray-300 py-3">Liquidity & Market Making</TableCell>
+            <TableCell className="text-gray-300 py-3">Liquidity & MM</TableCell>
             <TableCell className="text-right text-[#22C55E] py-3">5%</TableCell>
-          </TableRow>
-          <TableRow className="border-0">
-            <TableCell className="text-gray-300 py-3">Reserve Fund</TableCell>
-            <TableCell className="text-right text-[#22C55E] py-3">2%</TableCell>
           </TableRow>
         </TableBody>
       </Table>
