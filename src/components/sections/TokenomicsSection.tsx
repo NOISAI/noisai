@@ -4,9 +4,8 @@ import { InitialDistributionTable } from "@/components/tokenomics/InitialDistrib
 import { TokenUtilityTable } from "@/components/tokenomics/TokenUtilityTable";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
-import chartjs3d from '@devxio/chartjs-plugin-3d';
 
-ChartJS.register(ArcElement, Tooltip, Legend, chartjs3d);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const data = {
   labels: [
@@ -33,8 +32,10 @@ const data = {
       "#D4D81D",
       "#F97316"
     ],
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.2)' // Adding subtle borders to enhance 3D effect
+    borderWidth: 2,
+    borderColor: 'rgba(255,255,255,0.2)', // Adding subtle borders for depth
+    offset: 4, // Adding segment separation for better 3D effect
+    hoverOffset: 8
   }]
 };
 
@@ -71,15 +72,11 @@ const options = {
           return `${label}: ${value}% (${tokens})`;
         }
       }
-    },
-    '3d': {
-      alpha: 45, // Increased rotation angle
-      beta: 45,  // Increased tilt
-      depth: 70  // Significantly increased depth
     }
   },
-  rotation: -45, // Added rotation to enhance 3D perspective
-  cutout: '60%', // Adjusted donut hole size
+  rotation: -45, // Rotation for 3D-like effect
+  cutout: '60%', // Donut hole size
+  radius: '90%', // Slightly larger radius
 };
 
 export const TokenomicsSection = () => {
@@ -95,7 +92,7 @@ export const TokenomicsSection = () => {
           
           <AccordionContent className="mt-2">
             <div className="bg-[#1A1F2C] rounded-lg p-4">
-              <div className="w-full h-[500px] mb-8"> {/* Increased height for better visualization */}
+              <div className="w-full h-[500px] mb-8">
                 <Doughnut data={data} options={options} />
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
