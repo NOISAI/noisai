@@ -5,12 +5,20 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Motion } from "@/components/ui/motion";
 import { Mail, Wallet } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export default function SignIn() {
   const [isLoading, setIsLoading] = useState<{[key: string]: boolean}>({
     google: false,
     wallet: false
   });
+  const [showWalletDialog, setShowWalletDialog] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -18,42 +26,59 @@ export default function SignIn() {
     setIsLoading({ ...isLoading, google: true });
     
     try {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // In a real application, this would use the Google OAuth API
+      // For demonstration, we'll open a new window to simulate the Google auth flow
+      const googleAuthWindow = window.open(
+        "https://accounts.google.com/", 
+        "googleAuth", 
+        "width=500,height=600"
+      );
       
-      toast({
-        title: "Signed in successfully",
-        description: "Welcome back to NOISAI!",
-        variant: "default",
-      });
+      // Simulate a successful auth after a delay
+      setTimeout(() => {
+        if (googleAuthWindow) {
+          googleAuthWindow.close();
+        }
+        
+        toast({
+          title: "Signed in successfully",
+          description: "Welcome back to NOISAI!",
+          variant: "default",
+        });
+        
+        navigate("/investor-dashboard");
+      }, 2000);
       
-      // Navigate to investor dashboard
-      navigate("/investor-dashboard");
     } catch (error) {
       toast({
         title: "Error signing in",
         description: "Unable to connect with Google. Please try again.",
         variant: "destructive",
       });
-    } finally {
       setIsLoading({ ...isLoading, google: false });
     }
   };
 
-  const handleWalletSignIn = async () => {
+  const handleWalletSignIn = () => {
     setIsLoading({ ...isLoading, wallet: true });
-    
+    // Open the wallet connection dialog
+    setShowWalletDialog(true);
+  };
+
+  const connectWallet = async (walletType: string) => {
     try {
-      // Simulate API call delay
+      // In a real app, this would connect to the actual wallet
+      // For demonstration, we'll simulate a successful connection
       await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setShowWalletDialog(false);
       
       toast({
         title: "Wallet connected",
-        description: "Successfully connected your Web3 wallet!",
+        description: `Successfully connected your ${walletType} wallet!`,
         variant: "default",
       });
       
-      // Navigate to investor dashboard
       navigate("/investor-dashboard");
     } catch (error) {
       toast({
@@ -129,6 +154,53 @@ export default function SignIn() {
         </a>
         .
       </p>
+
+      {/* Wallet Connection Dialog */}
+      <Dialog open={showWalletDialog} onOpenChange={setShowWalletDialog}>
+        <DialogContent className="bg-gray-900 border border-gray-800 text-white">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold text-white">Connect Web3 Wallet</DialogTitle>
+            <DialogDescription className="text-gray-400">
+              Choose which wallet you'd like to connect with
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <Button 
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2 justify-center py-6 h-14"
+              onClick={() => connectWallet("MetaMask")}
+            >
+              <img 
+                src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" 
+                alt="MetaMask" 
+                className="w-6 h-6" 
+              />
+              MetaMask
+            </Button>
+            <Button 
+              className="w-full bg-blue-900 hover:bg-blue-800 text-white flex items-center gap-2 justify-center py-6 h-14"
+              onClick={() => connectWallet("WalletConnect")}
+            >
+              <img 
+                src="https://1000logos.net/wp-content/uploads/2022/05/WalletConnect-Logo.png" 
+                alt="WalletConnect" 
+                className="w-6 h-6 rounded-full bg-white p-0.5" 
+              />
+              WalletConnect
+            </Button>
+            <Button 
+              className="w-full bg-purple-700 hover:bg-purple-800 text-white flex items-center gap-2 justify-center py-6 h-14"
+              onClick={() => connectWallet("Coinbase Wallet")}
+            >
+              <img 
+                src="https://play-lh.googleusercontent.com/PjoJoG27miSglVBXoXrxBSLveV6e3EeBPpNY55aiUUBM9Q1RCETKCOqdOkX2ZydqVf0" 
+                alt="Coinbase Wallet" 
+                className="w-6 h-6 rounded-full" 
+              />
+              Coinbase Wallet
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
