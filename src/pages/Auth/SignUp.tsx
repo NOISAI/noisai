@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Motion } from "@/components/ui/motion";
-import { Google, Wallet } from "lucide-react";
+import { Mail, Wallet } from "lucide-react";
 
 export default function SignUp() {
   const [isLoading, setIsLoading] = useState<{[key: string]: boolean}>({
@@ -90,7 +90,7 @@ export default function SignUp() {
             className="w-full bg-white hover:bg-gray-200 text-black py-6 h-14 flex items-center justify-center space-x-2"
             disabled={isLoading.google}
           >
-            <Google className="h-5 w-5" />
+            <Mail className="h-5 w-5" />
             <span>{isLoading.google ? "Connecting..." : "Sign up with Google"}</span>
           </Button>
 
