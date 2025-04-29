@@ -28,7 +28,7 @@ export default function SignIn() {
       toast({
         title: "Signed in successfully",
         description: "Welcome back to NOISAI!",
-        variant: "success",
+        variant: "default", // Changed from "success" to "default"
       });
       
       // Navigate to investor dashboard (to be created)

@@ -29,7 +29,7 @@ export default function SignUp() {
       toast({
         title: "Account created successfully",
         description: "Welcome to NOISAI investment platform!",
-        variant: "success",
+        variant: "default", // Changed from "success" to "default"
       });
       
       // Navigate to onboarding or investor dashboard
