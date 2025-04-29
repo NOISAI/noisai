@@ -1,5 +1,6 @@
 
 import { Link2, Eye } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const Footer = () => {
   return (
@@ -11,10 +12,10 @@ export const Footer = () => {
             Invest now in NOISAI vision. Participate in our decentralized energy marketplace and be part of NOISAI green energy innovation
           </p>
           <div className="flex flex-col md:flex-row gap-4 mt-8">
-            <button className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg flex items-center justify-center gap-2 transition-colors">
+            <Link to="/sign-in" className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg flex items-center justify-center gap-2 transition-colors">
               <Link2 className="w-5 h-5" />
               Invest in NOISAI
-            </button>
+            </Link>
             <a 
               href="https://noisai.gitbook.io/noisai-whitepaper" 
               target="_blank" 
@@ -52,4 +53,3 @@ export const Footer = () => {
     </footer>
   );
 };
-

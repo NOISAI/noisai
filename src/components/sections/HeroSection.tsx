@@ -5,6 +5,7 @@ import { Github, Link } from "lucide-react";
 import Spline from "@splinetool/react-spline";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Header } from "@/components/layout/Header";
+import { Link as RouterLink } from "react-router-dom";
 
 interface HeroSectionProps {
   showContent: boolean;
@@ -61,12 +62,14 @@ export const HeroSection = ({
               Revolutionary technology that converts ambient sound into renewable electricity, powered by blockchain and AI
             </h3>
             <div className="flex flex-wrap justify-center gap-4 px-4">
-              <Button
-                className="bg-[#22C55E] hover:bg-[#22C55E]/90 text-white px-6 md:px-8 py-4 md:py-6 text-base md:text-lg h-auto w-full md:w-auto"
-              >
-                <Link className="mr-2 h-5 w-5" />
-                Invest in NOISAI
-              </Button>
+              <RouterLink to="/sign-in">
+                <Button
+                  className="bg-[#22C55E] hover:bg-[#22C55E]/90 text-white px-6 md:px-8 py-4 md:py-6 text-base md:text-lg h-auto w-full md:w-auto"
+                >
+                  <Link className="mr-2 h-5 w-5" />
+                  Invest in NOISAI
+                </Button>
+              </RouterLink>
               <Button
                 variant="outline"
                 className="bg-transparent border-gray-700 text-gray-300 hover:bg-gray-800 px-6 md:px-8 py-4 md:py-6 text-base md:text-lg h-auto w-full md:w-auto"

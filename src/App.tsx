@@ -7,6 +7,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import SignIn from "./pages/Auth/SignIn";
+import SignUp from "./pages/Auth/SignUp";
+import InvestorDashboard from "./pages/InvestorDashboard";
 
 const queryClient = new QueryClient();
 
@@ -18,6 +21,9 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/investor-dashboard" element={<InvestorDashboard />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
