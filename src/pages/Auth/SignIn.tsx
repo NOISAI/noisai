@@ -2,25 +2,21 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Motion } from "@/components/ui/motion";
+import { Google, Wallet } from "lucide-react";
 
 export default function SignIn() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState<{[key: string]: boolean}>({
+    google: false,
+    wallet: false
+  });
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
+  const handleGoogleSignIn = async () => {
+    setIsLoading({ ...isLoading, google: true });
     
-    // For demonstration purposes, we'll simulate a successful login
-    // In a real app, this would connect to your authentication backend
     try {
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 1000));
@@ -28,19 +24,45 @@ export default function SignIn() {
       toast({
         title: "Signed in successfully",
         description: "Welcome back to NOISAI!",
-        variant: "default", // Changed from "success" to "default"
+        variant: "default",
       });
       
-      // Navigate to investor dashboard (to be created)
+      // Navigate to investor dashboard
       navigate("/investor-dashboard");
     } catch (error) {
       toast({
         title: "Error signing in",
-        description: "Please check your credentials and try again.",
+        description: "Unable to connect with Google. Please try again.",
         variant: "destructive",
       });
     } finally {
-      setIsLoading(false);
+      setIsLoading({ ...isLoading, google: false });
+    }
+  };
+
+  const handleWalletSignIn = async () => {
+    setIsLoading({ ...isLoading, wallet: true });
+    
+    try {
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      toast({
+        title: "Wallet connected",
+        description: "Successfully connected your Web3 wallet!",
+        variant: "default",
+      });
+      
+      // Navigate to investor dashboard
+      navigate("/investor-dashboard");
+    } catch (error) {
+      toast({
+        title: "Connection error",
+        description: "Unable to connect your Web3 wallet. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading({ ...isLoading, wallet: false });
     }
   };
 
@@ -62,73 +84,38 @@ export default function SignIn() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-          <div className="space-y-4">
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-5 w-5" />
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="pl-10 bg-gray-900 border-gray-800 text-white"
-              />
-            </div>
-            
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-5 w-5" />
-              <Input
-                id="password"
-                name="password"
-                type={showPassword ? "text" : "password"}
-                autoComplete="current-password"
-                required
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="pl-10 pr-10 bg-gray-900 border-gray-800 text-white"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
-              >
-                {showPassword ? (
-                  <EyeOff className="h-5 w-5" />
-                ) : (
-                  <Eye className="h-5 w-5" />
-                )}
-              </button>
-            </div>
-          </div>
+        <div className="mt-8 space-y-4">
+          <Button
+            onClick={handleGoogleSignIn}
+            className="w-full bg-white hover:bg-gray-200 text-black py-6 h-14 flex items-center justify-center space-x-2"
+            disabled={isLoading.google}
+          >
+            <Google className="h-5 w-5" />
+            <span>{isLoading.google ? "Connecting..." : "Sign in with Google"}</span>
+          </Button>
 
-          <div className="flex items-center justify-between">
-            <div className="text-sm">
-              <a href="#" className="text-[#22C55E] hover:text-[#22C55E]/80">
-                Forgot your password?
-              </a>
-            </div>
+          <div className="relative flex py-5 items-center">
+            <div className="flex-grow border-t border-gray-800"></div>
+            <span className="flex-shrink mx-4 text-gray-500">or</span>
+            <div className="flex-grow border-t border-gray-800"></div>
           </div>
 
           <Button
-            type="submit"
-            className="w-full bg-[#22C55E] hover:bg-[#22C55E]/90 text-white py-2 h-12"
-            disabled={isLoading}
+            onClick={handleWalletSignIn}
+            className="w-full bg-[#22C55E] hover:bg-[#22C55E]/90 text-white py-6 h-14 flex items-center justify-center space-x-2"
+            disabled={isLoading.wallet}
           >
-            {isLoading ? "Signing in..." : "Sign in"}
+            <Wallet className="h-5 w-5" />
+            <span>{isLoading.wallet ? "Connecting..." : "Connect Web3 Wallet"}</span>
           </Button>
+        </div>
 
-          <div className="text-center mt-4 text-gray-400">
-            Don't have an account?{" "}
-            <Link to="/sign-up" className="text-[#22C55E] hover:text-[#22C55E]/80">
-              Sign up
-            </Link>
-          </div>
-        </form>
+        <div className="text-center mt-6 text-gray-400">
+          Don't have an account?{" "}
+          <Link to="/sign-up" className="text-[#22C55E] hover:text-[#22C55E]/80">
+            Sign up
+          </Link>
+        </div>
       </Motion>
 
       <p className="mt-10 text-center text-sm text-gray-500">
