@@ -17,7 +17,7 @@ import {
 import { mockInvestments } from "@/data/mockInvestments";
 import { initEmailJS } from "@/services/emailService";
 import InvestmentTable from "@/components/investor/InvestmentTable";
-import InvestmentForm from "@/components/investor/InvestmentForm";
+import InvestmentForm from "@/components/investor/investment-form/InvestmentForm";
 import { Investment } from "@/types/investment";
 
 const InvestmentsList = () => {
