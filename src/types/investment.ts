@@ -7,8 +7,8 @@ export const investmentFormSchema = z.object({
     .refine((val) => !isNaN(Number(val)), {
       message: "Must be a valid number",
     })
-    .refine((val) => Number(val) >= 10000, {
-      message: "Minimum investment is $10,000",
+    .refine((val) => Number(val) >= 10, {
+      message: "Minimum investment is $10",
     }),
   email: z.string().email("Please enter a valid email address"),
   tokenType: z.enum(["USDT", "USDC"]).optional(),

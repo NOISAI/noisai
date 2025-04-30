@@ -27,13 +27,13 @@ const InvestmentAmountField = ({ form }: InvestmentAmountFieldProps) => {
             <Input 
               {...field} 
               type="number" 
-              min="10000"
-              placeholder="10000" 
+              min="10"
+              placeholder="10" 
               className="bg-gray-800 border-gray-700 text-white"
             />
           </FormControl>
           <FormDescription className="text-gray-400">
-            Minimum investment is $10,000
+            Minimum investment is $10
           </FormDescription>
           <FormMessage className="text-red-500" />
         </FormItem>
