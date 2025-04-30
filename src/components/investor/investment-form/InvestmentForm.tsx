@@ -39,7 +39,7 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
   const form = useForm<InvestmentFormData>({
     resolver: zodResolver(investmentFormSchema),
     defaultValues: {
-      amount: "10000",
+      amount: "10",
       email: "",
       tokenType: "USDC"
     },
@@ -48,7 +48,7 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
   const handleInvest = async (data: InvestmentFormData) => {
     if (!investment) return;
     
-    setIsSubmitting(true);
+    setIsSubmitting(false); // Reset submission state before starting
     
     try {
       // Check if MetaMask is installed
@@ -58,7 +58,6 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
           description: "Please install MetaMask browser extension to make an investment.",
           variant: "destructive",
         });
-        setIsSubmitting(false);
         return;
       }
       
@@ -69,7 +68,6 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
       } catch (error) {
         console.error("Network error:", error);
         setNetworkError("Please connect to the Sepolia test network in MetaMask.");
-        setIsSubmitting(false);
         return;
       }
 
@@ -82,20 +80,25 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
         description: "There was a problem with your investment request. Please try again or contact support.",
         variant: "destructive",
       });
-      setIsSubmitting(false);
     }
   };
   
   const confirmInvestment = async () => {
     try {
+      setIsSubmitting(true); // Set submitting state on confirmation
+      
       const data = form.getValues();
       const tokenType = data.tokenType as "USDT" | "USDC";
+      
+      console.log("Initiating blockchain transaction...");
       
       // Initiate the blockchain transaction
       const result = await makeInvestment(
         Number(data.amount),
         tokenType
       );
+      
+      console.log("Transaction initiated:", result);
       
       // Create transaction record
       const newTransaction: TransactionDetails = {

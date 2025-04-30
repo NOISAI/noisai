@@ -40,23 +40,28 @@ export const ensureSepoliaNetwork = async (): Promise<boolean> => {
   try {
     // Check current network
     const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+    console.log("Current chain ID:", chainId);
     
     if (chainId !== SEPOLIA_NETWORK_CONFIG.chainId) {
+      console.log("Need to switch to Sepolia network");
       try {
         // Try to switch to Sepolia
         await window.ethereum.request({
           method: 'wallet_switchEthereumChain',
           params: [{ chainId: SEPOLIA_NETWORK_CONFIG.chainId }],
         });
+        console.log("Successfully switched to Sepolia");
         return true;
       } catch (switchError: any) {
         // This error code indicates that the chain has not been added to MetaMask
         if (switchError.code === 4902) {
           try {
+            console.log("Adding Sepolia network to MetaMask");
             await window.ethereum.request({
               method: 'wallet_addEthereumChain',
               params: [SEPOLIA_NETWORK_CONFIG],
             });
+            console.log("Successfully added Sepolia network");
             return true;
           } catch (addError) {
             console.error("Failed to add Sepolia network:", addError);
@@ -68,6 +73,7 @@ export const ensureSepoliaNetwork = async (): Promise<boolean> => {
         }
       }
     }
+    console.log("Already on Sepolia network");
     return true;
   } catch (error) {
     console.error("Error ensuring Sepolia network:", error);
@@ -84,6 +90,7 @@ export const getCurrentWalletAddress = async (): Promise<string> => {
   try {
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
     if (accounts.length === 0) throw new Error("No accounts found");
+    console.log("Connected wallet address:", accounts[0]);
     return accounts[0];
   } catch (error) {
     console.error("Error getting wallet address:", error);
@@ -97,6 +104,8 @@ export const makeInvestment = async (
   tokenType: "USDT" | "USDC"
 ): Promise<{ hash: string }> => {
   try {
+    console.log(`Starting investment: ${amount} ${tokenType}`);
+    
     // 1. Ensure we're on Sepolia network
     await ensureSepoliaNetwork();
     
@@ -105,23 +114,33 @@ export const makeInvestment = async (
     
     // 3. Create a contract instance using minimal ABI (just for transfer)
     const tokenAddress = TOKEN_CONTRACTS[tokenType];
+    console.log(`Using token address: ${tokenAddress}`);
     
     // 4. Convert amount to token units (assuming 6 decimals for USDC/USDT)
     const decimals = 6;
     const amountInWei = BigInt(Math.floor(amount * 10 ** decimals));
+    console.log(`Amount in wei: ${amountInWei}`);
     
     // 5. Create transaction parameters
+    const transferData = getTransferData(NOISAI_WALLET, amountInWei.toString());
+    console.log(`Transfer data: ${transferData}`);
+    
     const transactionParameters = {
       to: tokenAddress,
       from: fromAddress,
-      data: getTransferData(NOISAI_WALLET, amountInWei.toString()),
+      data: transferData,
     };
+    
+    console.log("Transaction parameters:", transactionParameters);
 
     // 6. Send the transaction
+    console.log("Sending transaction...");
     const txHash = await window.ethereum.request({
       method: 'eth_sendTransaction',
       params: [transactionParameters],
     });
+    
+    console.log("Transaction sent successfully! Hash:", txHash);
 
     return { hash: txHash };
   } catch (error) {
@@ -132,9 +151,7 @@ export const makeInvestment = async (
 
 // Generate transfer function data
 function getTransferData(to: string, value: string): string {
-  // This is a simplified implementation.
-  // In a production environment, you would use ethers.js or web3.js
-  // to properly encode the function call.
+  console.log(`Generating transfer data for recipient: ${to}, value: ${value}`);
   
   // Encode the function signature: transfer(address,uint256)
   const functionSignature = '0xa9059cbb';
@@ -142,10 +159,12 @@ function getTransferData(to: string, value: string): string {
   // Encode the address (remove '0x' and pad to 32 bytes)
   const paddedAddress = to.slice(2).padStart(64, '0');
   
-  // Encode the value (remove '0x' if present and pad to 32 bytes)
-  // Fix the toString() bug - we don't need to pass any argument since value is already a string
+  // Encode the value (convert to hex and pad to 32 bytes)
   const valueStr = BigInt(value).toString(16).padStart(64, '0');
   
   // Combine all parts
-  return `${functionSignature}${paddedAddress}${valueStr}`;
+  const data = `${functionSignature}${paddedAddress}${valueStr}`;
+  console.log(`Generated data: ${data}`);
+  
+  return data;
 }

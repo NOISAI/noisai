@@ -1,7 +1,7 @@
 
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { InvestmentFormData } from "@/types/investment";
+import { Loader } from "lucide-react";
 
 interface ConfirmationDialogProps {
   showDialog: boolean;
@@ -51,6 +51,7 @@ const ConfirmationDialog = ({
             variant="outline" 
             onClick={() => setShowDialog(false)}
             className="text-gray-400 border-gray-800 hover:bg-gray-800"
+            disabled={isSubmitting}
           >
             Cancel
           </Button>
@@ -59,7 +60,12 @@ const ConfirmationDialog = ({
             disabled={isSubmitting}
             className="bg-[#22C55E] hover:bg-[#22C55E]/90 text-black"
           >
-            {isSubmitting ? "Processing..." : "Confirm & Sign"}
+            {isSubmitting ? (
+              <span className="flex items-center gap-2">
+                <Loader className="h-4 w-4 animate-spin" />
+                Processing...
+              </span>
+            ) : "Confirm & Sign"}
           </Button>
         </DialogFooter>
       </DialogContent>
