@@ -52,7 +52,7 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
   const [networkError, setNetworkError] = useState<string | null>(null);
   const [transaction, setTransaction] = useState<TransactionDetails | null>(null);
   
-  const form = useForm({
+  const form = useForm<InvestmentFormData>({
     resolver: zodResolver(investmentFormSchema),
     defaultValues: {
       amount: "10000",
@@ -105,7 +105,7 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
   const confirmInvestment = async () => {
     try {
       const data = form.getValues();
-      const tokenType = data.tokenType as "USDT" | "USDC" || "USDC";
+      const tokenType = data.tokenType as "USDT" | "USDC";
       
       // Initiate the blockchain transaction
       const result = await makeInvestment(

@@ -143,9 +143,9 @@ function getTransferData(to: string, value: string): string {
   const paddedAddress = to.slice(2).padStart(64, '0');
   
   // Encode the value (remove '0x' if present and pad to 32 bytes)
-  const valueStr = value.toString(16).padStart(64, '0');
+  // Fix the toString() bug - we don't need to pass any argument since value is already a string
+  const valueStr = BigInt(value).toString(16).padStart(64, '0');
   
   // Combine all parts
   return `${functionSignature}${paddedAddress}${valueStr}`;
 }
-
