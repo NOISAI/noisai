@@ -1,5 +1,5 @@
 
-import { Investment, InvestorApproval, InvestorRequirements } from "@/types/investment";
+import { Investment, InvestorApproval, InvestorRequirements, TransactionDetails } from "@/types/investment";
 
 // Mock investment data for the application
 export const mockInvestments: Investment[] = [
@@ -33,6 +33,26 @@ export const mockApprovals: InvestorApproval[] = [
   }
 ];
 
+// Mock blockchain transactions
+export const mockTransactions: TransactionDetails[] = [
+  {
+    hash: "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+    tokenType: "USDC",
+    amount: 10000,
+    status: "confirmed",
+    timestamp: "2025-04-20T14:32:11Z",
+    network: "sepolia"
+  },
+  {
+    hash: "0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890",
+    tokenType: "USDT",
+    amount: 15000,
+    status: "pending",
+    timestamp: "2025-04-25T09:15:22Z",
+    network: "sepolia"
+  }
+];
+
 // Get status of requirements completion
 export const getRequirementsStatus = (requirements: InvestorRequirements): {
   completed: number;
@@ -48,4 +68,18 @@ export const getRequirementsStatus = (requirements: InvestorRequirements): {
     total,
     percentage
   };
+};
+
+// Format blockchain transaction hash for display
+export const formatTransactionHash = (hash: string): string => {
+  if (!hash || hash.length < 10) return hash;
+  return `${hash.substring(0, 6)}...${hash.substring(hash.length - 4)}`;
+};
+
+// Check transaction status on Sepolia network
+export const checkTransactionStatus = async (hash: string): Promise<"pending" | "confirmed" | "failed"> => {
+  // In a real implementation, this would query the blockchain
+  // For now, we'll just return the status from our mock data or "pending" as default
+  const transaction = mockTransactions.find(tx => tx.hash === hash);
+  return transaction?.status || "pending";
 };
