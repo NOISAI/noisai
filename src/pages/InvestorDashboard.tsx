@@ -10,7 +10,6 @@ import PortfolioOverview from "@/components/investor/PortfolioOverview";
 import InvestmentsList from "@/components/investor/InvestmentsList";
 import InteractionHistory from "@/components/investor/InteractionHistory";
 import DocumentManagement from "@/components/investor/DocumentManagement";
-import WalletManagement from "@/components/investor/WalletManagement";
 import ProfileManagement from "@/components/investor/ProfileManagement";
 
 export default function InvestorDashboard() {
@@ -86,14 +85,6 @@ export default function InvestorDashboard() {
 
           <TabsContent value="documents">
             <DocumentManagement />
-          </TabsContent>
-
-          <TabsContent value="wallets">
-            <WalletManagement 
-              walletAddress={walletAddress} 
-              isConnecting={isConnecting} 
-              connectWallet={connectWallet} 
-            />
           </TabsContent>
 
           <TabsContent value="profile">
