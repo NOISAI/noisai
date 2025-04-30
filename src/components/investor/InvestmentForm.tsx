@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
+import { Check, FileText, CalendarCheck, IdCard, File } from "lucide-react";
 import { 
   Form,
   FormField,
@@ -50,7 +51,7 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
       
       toast({
         title: "Investment Request Submitted",
-        description: "Your investment request has been sent to info@noisai.tech for review.",
+        description: "Your investment request has been sent to NOISAI for review. You'll need to complete all required steps before approval.",
       });
       
       form.reset();
@@ -114,10 +115,44 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
             </FormItem>
           )}
         />
+
+        <div className="pt-4 space-y-4">
+          <h3 className="text-white font-semibold">Required Steps for Approval:</h3>
+          <div className="space-y-2 text-sm">
+            <div className="flex items-center gap-2 text-gray-400">
+              <div className="w-6 h-6 rounded-full border border-gray-700 flex items-center justify-center">
+                <FileText className="w-3.5 h-3.5" />
+              </div>
+              <span>Sign investment contract</span>
+            </div>
+            
+            <div className="flex items-center gap-2 text-gray-400">
+              <div className="w-6 h-6 rounded-full border border-gray-700 flex items-center justify-center">
+                <CalendarCheck className="w-3.5 h-3.5" />
+              </div>
+              <span>Complete intro meeting with NOISAI team</span>
+            </div>
+            
+            <div className="flex items-center gap-2 text-gray-400">
+              <div className="w-6 h-6 rounded-full border border-gray-700 flex items-center justify-center">
+                <IdCard className="w-3.5 h-3.5" />
+              </div>
+              <span>Upload identification documents</span>
+            </div>
+            
+            <div className="flex items-center gap-2 text-gray-400">
+              <div className="w-6 h-6 rounded-full border border-gray-700 flex items-center justify-center">
+                <File className="w-3.5 h-3.5" />
+              </div>
+              <span>Submit any additional required documentation</span>
+            </div>
+          </div>
+        </div>
         
         <div className="pt-4 text-sm text-gray-400">
-          <p>By submitting this form, your investment request will be sent to info@noisai.tech for review.</p>
-          <p className="mt-2">Our team will contact you with next steps for completing your investment.</p>
+          <p>By submitting this form, your investment request will be sent to NOISAI for review.</p>
+          <p className="mt-2">After submission, you'll need to complete all required steps before your investment can be approved.</p>
+          <p className="mt-2 text-[#22C55E]">Once all requirements are met, an admin will review and approve your investment.</p>
         </div>
         
         <div className="flex justify-end space-x-2 pt-4">

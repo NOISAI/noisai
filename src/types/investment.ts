@@ -16,6 +16,14 @@ export const investmentFormSchema = z.object({
 // Type for form data based on the schema
 export type InvestmentFormData = z.infer<typeof investmentFormSchema>;
 
+// Investor approval requirements status
+export interface InvestorRequirements {
+  contractSigned: boolean;
+  meetingCompleted: boolean;
+  idUploaded: boolean;
+  docsUploaded: boolean;
+}
+
 // Investment data type
 export interface Investment {
   id: number;
@@ -27,4 +35,14 @@ export interface Investment {
   status: string;
   roi: string;
   endDate: string;
+}
+
+// Extended investment with approval status for an investor
+export interface InvestorApproval {
+  investorEmail: string;
+  investmentId: number;
+  status: "pending" | "approved" | "rejected";
+  requirements: InvestorRequirements;
+  requestDate: string;
+  amountRequested: number;
 }

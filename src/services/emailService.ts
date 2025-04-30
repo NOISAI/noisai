@@ -27,7 +27,13 @@ export const sendInvestmentInterestEmail = async (data: {
              Amount: $${Number(data.amount).toLocaleString()}
              Investor Email: ${data.investorEmail}
              Date: ${new Date().toLocaleDateString()}
-             Time: ${new Date().toLocaleTimeString()}`
+             Time: ${new Date().toLocaleTimeString()}
+             
+             The investor needs to complete these requirements before approval:
+             - Sign investment contract
+             - Complete intro meeting
+             - Upload ID verification
+             - Submit additional documentation`
   };
 
   console.log('Sending email with params:', emailParams);
