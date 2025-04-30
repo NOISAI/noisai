@@ -37,7 +37,7 @@ export function AuthWrapper({ mode }: AuthWrapperProps) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center justify-center px-4">      
+    <div className="w-full max-w-md">      
       {mode === "signIn" ? (
         <ClerkSignIn 
           appearance={{

@@ -6,7 +6,7 @@ import { Motion } from "@/components/ui/motion";
 export default function SignUp() {
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center px-4">
-      <Motion className="w-full max-w-md space-y-8 mb-8">
+      <Motion className="w-full max-w-md space-y-8 mb-8 mt-16">
         <div className="text-center">
           <Link to="/" className="inline-flex items-center mb-8">
             <img 
