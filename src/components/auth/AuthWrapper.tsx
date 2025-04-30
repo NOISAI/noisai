@@ -1,3 +1,4 @@
+
 import { 
   SignIn as ClerkSignIn, 
   SignUp as ClerkSignUp, 
@@ -44,7 +45,7 @@ export function AuthWrapper({ mode }: AuthWrapperProps) {
             }
           }}
           signUpUrl="/sign-up"
-          redirectUrl="/investor-dashboard"
+          fallbackRedirectUrl="/investor-dashboard"
         />
       ) : (
         <ClerkSignUp 
@@ -68,7 +69,7 @@ export function AuthWrapper({ mode }: AuthWrapperProps) {
             }
           }}
           signInUrl="/sign-in"
-          redirectUrl="/investor-dashboard"
+          fallbackRedirectUrl="/investor-dashboard"
         />
       )}
     </div>
