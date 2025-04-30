@@ -58,7 +58,7 @@ const InvestmentsList = () => {
           <DialogContent className="bg-gray-900 border border-gray-800">
             <DialogHeader>
               <DialogTitle className="text-white">Invest in {selectedInvestment?.name}</DialogTitle>
-              <DialogDescription>
+              <DialogDescription className="text-white">
                 Enter your investment details to participate in this funding round.
               </DialogDescription>
             </DialogHeader>
