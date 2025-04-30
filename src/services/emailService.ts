@@ -1,14 +1,10 @@
 
 import emailjs from 'emailjs-com';
-
-// EmailJS configuration
-const EMAILJS_SERVICE_ID = 'service_noisai';  // Replace with your EmailJS service ID
-const EMAILJS_TEMPLATE_ID = 'template_investment';  // Replace with your EmailJS template ID
-const EMAILJS_USER_ID = 'Du9xFraDxhJYnMU_I';  // Updated with a valid EmailJS public key
+import { EMAIL_CONFIG } from '@/config/apiKeys';
 
 // Initialize EmailJS
 export const initEmailJS = () => {
-  emailjs.init(EMAILJS_USER_ID);
+  emailjs.init(EMAIL_CONFIG.USER_ID);
 };
 
 // Send investment interest email
@@ -34,8 +30,8 @@ export const sendInvestmentInterestEmail = async (data: {
   console.log('Sending email with params:', emailParams);
   
   return emailjs.send(
-    EMAILJS_SERVICE_ID,
-    EMAILJS_TEMPLATE_ID,
+    EMAIL_CONFIG.SERVICE_ID,
+    EMAIL_CONFIG.TEMPLATE_ID,
     emailParams
   ).then(response => {
     console.log('Email sent successfully:', response);
