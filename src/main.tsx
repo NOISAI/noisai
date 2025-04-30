@@ -11,7 +11,20 @@ if (!CLERK_PUBLISHABLE_KEY) {
 }
 
 createRoot(document.getElementById("root")!).render(
-  <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
+  <ClerkProvider 
+    publishableKey={CLERK_PUBLISHABLE_KEY}
+    appearance={{
+      baseTheme: undefined,
+      variables: {
+        colorPrimary: "#22C55E"
+      },
+      elements: {
+        // Ensure web3 buttons are styled consistently
+        socialButtonsBlockButton: "hover:bg-gray-200 text-black flex items-center justify-center",
+        socialButtonsBlockButtonText: "font-medium",
+      }
+    }}
+  >
     <App />
   </ClerkProvider>
 );

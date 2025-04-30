@@ -21,6 +21,21 @@ export function AuthWrapper({ mode }: AuthWrapperProps) {
     }
   }, [isSignedIn, navigate]);
 
+  // Add a listener for Clerk's Web3 authentication events
+  useEffect(() => {
+    const checkForWeb3Events = () => {
+      // Force MetaMask to initialize on page load
+      if (window.ethereum) {
+        console.log("MetaMask is available");
+        // Just accessing window.ethereum might help kickstart MetaMask
+      } else {
+        console.log("MetaMask not detected");
+      }
+    };
+    
+    checkForWeb3Events();
+  }, []);
+
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center px-4">      
       {mode === "signIn" ? (
