@@ -38,10 +38,12 @@ export const Footer = () => {
               />
               NOISAI
             </div>
-            <nav className="flex gap-8 text-gray-400">
+            <nav className="flex flex-wrap gap-x-8 gap-y-2 text-gray-400 justify-center">
               <a href="#" className="hover:text-white transition-colors">Technology</a>
               <a href="#tokenomics" className="hover:text-white transition-colors">Tokenomics</a>
               <a href="#features" className="hover:text-white transition-colors">Governance</a>
+              <Link to="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link>
+              <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
               <a href="mailto:info@noisai.tech" className="hover:text-white transition-colors">Contact</a>
             </nav>
           </div>

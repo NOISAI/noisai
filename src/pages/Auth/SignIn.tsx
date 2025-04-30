@@ -23,13 +23,13 @@ export default function SignIn() {
       
       <p className="mt-10 text-center text-sm text-gray-500">
         By continuing, you agree to NOISAI's{" "}
-        <a href="#" className="text-[#22C55E] hover:text-[#22C55E]/80">
+        <Link to="/terms-of-service" className="text-[#22C55E] hover:text-[#22C55E]/80">
           Terms of Service
-        </a>{" "}
+        </Link>{" "}
         and{" "}
-        <a href="#" className="text-[#22C55E] hover:text-[#22C55E]/80">
+        <Link to="/privacy-policy" className="text-[#22C55E] hover:text-[#22C55E]/80">
           Privacy Policy
-        </a>
+        </Link>
         .
       </p>
     </div>
