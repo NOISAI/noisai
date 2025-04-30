@@ -98,8 +98,8 @@ export default function PrivacyPolicy() {
           <p>
             If you have questions or concerns about this Privacy Policy or our data practices, please contact us at:
             <br />
-            <a href="mailto:privacy@noisai.tech" className="text-[#22C55E] hover:underline">
-              privacy@noisai.tech
+            <a href="mailto:info@noisai.tech" className="text-[#22C55E] hover:underline">
+              info@noisai.tech
             </a>
           </p>
         </div>
