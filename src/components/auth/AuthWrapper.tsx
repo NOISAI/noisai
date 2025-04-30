@@ -26,7 +26,6 @@ export function AuthWrapper({ mode }: AuthWrapperProps) {
       {mode === "signIn" ? (
         <ClerkSignIn 
           appearance={{
-            baseTheme: "dark",
             elements: {
               rootBox: "w-full max-w-md",
               card: "bg-gray-900 border border-gray-800 rounded-lg shadow-xl",
@@ -51,7 +50,6 @@ export function AuthWrapper({ mode }: AuthWrapperProps) {
       ) : (
         <ClerkSignUp 
           appearance={{
-            baseTheme: "dark",
             elements: {
               rootBox: "w-full max-w-md",
               card: "bg-gray-900 border border-gray-800 rounded-lg shadow-xl",
