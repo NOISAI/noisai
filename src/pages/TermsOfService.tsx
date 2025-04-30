@@ -76,8 +76,8 @@ export default function TermsOfService() {
           <p>
             If you have any questions about these Terms, please contact us at:
             <br />
-            <a href="mailto:legal@noisai.tech" className="text-[#22C55E] hover:underline">
-              legal@noisai.tech
+            <a href="mailto:info@noisai.tech" className="text-[#22C55E] hover:underline">
+              info@noisai.tech
             </a>
           </p>
         </div>
