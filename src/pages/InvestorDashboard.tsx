@@ -1,14 +1,17 @@
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useClerk } from "@clerk/clerk-react";
+import { Wallet } from "lucide-react";
 
 export default function InvestorDashboard() {
   const { toast } = useToast();
   const { signOut } = useClerk();
   const navigate = useNavigate();
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [isConnecting, setIsConnecting] = useState(false);
 
   useEffect(() => {
     // Welcome toast when dashboard loads
@@ -23,6 +26,39 @@ export default function InvestorDashboard() {
     navigate("/");
   };
 
+  const connectWallet = async () => {
+    if (window.ethereum) {
+      try {
+        setIsConnecting(true);
+        // Request account access
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        
+        if (accounts.length > 0) {
+          setWalletAddress(accounts[0]);
+          toast({
+            title: "Wallet Connected",
+            description: `Connected to ${accounts[0].substring(0, 6)}...${accounts[0].substring(accounts[0].length - 4)}`,
+          });
+        }
+      } catch (error) {
+        console.error("Error connecting to MetaMask", error);
+        toast({
+          title: "Connection Failed",
+          description: "Could not connect to MetaMask. Please try again.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsConnecting(false);
+      }
+    } else {
+      toast({
+        title: "MetaMask Not Found",
+        description: "Please install MetaMask browser extension to connect your wallet.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-black text-white">
       <header className="border-b border-gray-800">
@@ -35,13 +71,31 @@ export default function InvestorDashboard() {
             />
             <span className="text-[#22C55E] text-xl font-bold">NOISAI</span>
           </div>
-          <Button 
-            variant="ghost" 
-            className="text-gray-400 hover:text-white"
-            onClick={handleSignOut}
-          >
-            Sign Out
-          </Button>
+          <div className="flex items-center space-x-4">
+            {walletAddress ? (
+              <div className="text-sm text-gray-400 flex items-center bg-gray-900 px-3 py-1.5 rounded-full border border-gray-800">
+                <Wallet className="w-4 h-4 mr-2 text-[#22C55E]" />
+                <span>{walletAddress.substring(0, 6)}...{walletAddress.substring(walletAddress.length - 4)}</span>
+              </div>
+            ) : (
+              <Button 
+                variant="outline" 
+                className="flex items-center text-[#22C55E] border-gray-800 hover:bg-gray-900"
+                onClick={connectWallet}
+                disabled={isConnecting}
+              >
+                <Wallet className="w-4 h-4 mr-2" />
+                {isConnecting ? "Connecting..." : "Connect Wallet"}
+              </Button>
+            )}
+            <Button 
+              variant="ghost" 
+              className="text-gray-400 hover:text-white"
+              onClick={handleSignOut}
+            >
+              Sign Out
+            </Button>
+          </div>
         </div>
       </header>
 
