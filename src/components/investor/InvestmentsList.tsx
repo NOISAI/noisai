@@ -1,5 +1,5 @@
 
-import { DollarSign } from "lucide-react";
+import { DollarSign, Clock } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -24,59 +24,84 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
 
-// Mock data for investments
+// Updated mock data for investments with seed sale
 const mockInvestments = [
-  { id: 1, name: "NOISAI Seed Round", amount: 50000, date: "2025-01-15", status: "Active", roi: "+12.5%" },
-  { id: 2, name: "NOISAI Series A", amount: 75000, date: "2025-02-28", status: "Pending", roi: "0%" },
+  { 
+    id: 1, 
+    name: "NOISAI Seed Round", 
+    amount: 0, 
+    target: 1000000,
+    raised: 680000,
+    date: "2025-05-15", 
+    status: "Active", 
+    roi: "0%",
+    endDate: "2025-06-30"
+  },
 ];
 
 const InvestmentsList = () => {
   const { toast } = useToast();
+  const [selectedInvestment, setSelectedInvestment] = useState(null);
 
-  const handleSellPosition = (investmentId: number) => {
+  const handleInvest = (investmentId) => {
     toast({
-      title: "Sell Order Initiated",
-      description: "Your sell request has been submitted. Our team will contact you shortly.",
+      title: "Investment Request Submitted",
+      description: "Your investment request has been submitted. Our team will contact you shortly.",
     });
   };
 
   return (
     <Card className="bg-gray-900 border border-gray-800">
       <CardHeader>
-        <CardTitle>Your Investments</CardTitle>
-        <CardDescription>Details of individual investments</CardDescription>
+        <CardTitle>Current Investment Opportunities</CardTitle>
+        <CardDescription>Available NOISAI investment rounds</CardDescription>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow className="border-gray-800">
               <TableHead className="text-gray-400">Name</TableHead>
-              <TableHead className="text-gray-400">Amount</TableHead>
-              <TableHead className="text-gray-400">Date</TableHead>
               <TableHead className="text-gray-400">Status</TableHead>
-              <TableHead className="text-gray-400">ROI</TableHead>
+              <TableHead className="text-gray-400">Progress</TableHead>
+              <TableHead className="text-gray-400">End Date</TableHead>
               <TableHead className="text-gray-400">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {mockInvestments.map(investment => (
               <TableRow key={investment.id} className="border-gray-800">
-                <TableCell className="font-medium">{investment.name}</TableCell>
-                <TableCell>${investment.amount.toLocaleString()}</TableCell>
-                <TableCell>{investment.date}</TableCell>
-                <TableCell>
-                  <span className={investment.status === 'Active' ? 'text-green-500' : 'text-yellow-500'}>
-                    {investment.status}
-                  </span>
+                <TableCell className="font-medium">
+                  <div className="flex flex-col">
+                    <span>{investment.name}</span>
+                    <span className="text-xs text-gray-400">Target: ${investment.target.toLocaleString()}</span>
+                  </div>
                 </TableCell>
                 <TableCell>
-                  <span className={investment.roi.startsWith('+') ? 'text-green-500' : 'text-gray-400'}>
-                    {investment.roi}
-                  </span>
+                  <div className="flex items-center">
+                    <Clock className="w-4 h-4 mr-2 text-yellow-500" />
+                    <span className="text-yellow-500">
+                      Running
+                    </span>
+                  </div>
                 </TableCell>
+                <TableCell>
+                  <div className="w-full space-y-1">
+                    <Progress 
+                      value={(investment.raised / investment.target) * 100} 
+                      className="h-2 bg-gray-800" 
+                    />
+                    <div className="flex justify-between text-xs text-gray-400">
+                      <span>${investment.raised.toLocaleString()} raised</span>
+                      <span>{Math.round((investment.raised / investment.target) * 100)}%</span>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell>{investment.endDate}</TableCell>
                 <TableCell>
                   <Dialog>
                     <DialogTrigger asChild>
@@ -84,21 +109,23 @@ const InvestmentsList = () => {
                         variant="outline" 
                         size="sm" 
                         className="text-[#22C55E] border-gray-800 hover:bg-gray-800"
+                        onClick={() => setSelectedInvestment(investment)}
                       >
                         <DollarSign className="w-4 h-4 mr-1" />
-                        Sell
+                        Invest Now
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="bg-gray-900 border border-gray-800">
                       <DialogHeader>
-                        <DialogTitle className="text-white">Sell Investment Position</DialogTitle>
+                        <DialogTitle className="text-white">Invest in {selectedInvestment?.name}</DialogTitle>
                         <DialogDescription>
-                          Are you sure you want to sell your position in {investment.name}?
+                          Enter your investment details to participate in this funding round.
                         </DialogDescription>
                       </DialogHeader>
                       <div className="py-4">
-                        <p className="text-sm text-gray-400 mb-2">Current value: ${parseInt(investment.roi) + investment.amount}</p>
-                        <p className="text-sm text-gray-400">Expected return: ${investment.amount}</p>
+                        <p className="text-sm text-gray-400 mb-4">Status: <span className="text-yellow-500">Running</span></p>
+                        <p className="text-sm text-gray-400 mb-4">Target Raise: ${selectedInvestment?.target.toLocaleString()}</p>
+                        <p className="text-sm text-gray-400 mb-4">Minimum Investment: $10,000</p>
                       </div>
                       <DialogFooter>
                         <Button 
@@ -108,10 +135,10 @@ const InvestmentsList = () => {
                           Cancel
                         </Button>
                         <Button 
-                          onClick={() => handleSellPosition(investment.id)}
+                          onClick={() => handleInvest(selectedInvestment?.id)}
                           className="bg-[#22C55E] hover:bg-[#22C55E]/90 text-black"
                         >
-                          Confirm Sale
+                          Submit Interest
                         </Button>
                       </DialogFooter>
                     </DialogContent>

@@ -20,8 +20,8 @@ const PortfolioOverview = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">$125,000</p>
-            <p className="text-sm text-gray-400">Across 2 projects</p>
+            <p className="text-3xl font-bold">$0</p>
+            <p className="text-sm text-gray-400">No active investments</p>
           </CardContent>
         </Card>
         
@@ -33,8 +33,8 @@ const PortfolioOverview = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">$140,625</p>
-            <p className="text-sm text-green-500">+12.5% ROI</p>
+            <p className="text-3xl font-bold">$0</p>
+            <p className="text-sm text-gray-400">0% ROI</p>
           </CardContent>
         </Card>
         
@@ -42,12 +42,12 @@ const PortfolioOverview = () => {
           <CardHeader>
             <CardTitle className="flex items-center">
               <Briefcase className="w-5 h-5 mr-2 text-[#22C55E]" />
-              Active Deals
+              Investment Opportunities
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">2</p>
-            <p className="text-sm text-gray-400">1 Pending, 1 Active</p>
+            <p className="text-3xl font-bold">1</p>
+            <p className="text-sm text-yellow-500">Seed Sale Running</p>
           </CardContent>
         </Card>
       </div>
@@ -59,24 +59,27 @@ const PortfolioOverview = () => {
         </CardHeader>
         <CardContent>
           <div className="h-[300px] flex items-center justify-center border border-gray-800 rounded-md bg-gray-950 mb-4">
-            <p className="text-gray-400">Portfolio visualization coming soon</p>
+            <div className="text-center">
+              <p className="text-gray-400 mb-2">No active investments</p>
+              <p className="text-[#22C55E]">NOISAI Seed Sale is now open</p>
+            </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="bg-gray-800 p-4 rounded-md">
               <p className="text-sm text-gray-400">NOISAI Tokens</p>
-              <p className="text-xl font-bold">50,000</p>
+              <p className="text-xl font-bold">0</p>
             </div>
             <div className="bg-gray-800 p-4 rounded-md">
               <p className="text-sm text-gray-400">Equity Share</p>
-              <p className="text-xl font-bold">0.5%</p>
+              <p className="text-xl font-bold">0%</p>
             </div>
             <div className="bg-gray-800 p-4 rounded-md">
-              <p className="text-sm text-gray-400">First Investment</p>
-              <p className="text-xl font-bold">Jan 15, 2025</p>
+              <p className="text-sm text-gray-400">Investment Status</p>
+              <p className="text-xl font-bold text-gray-400">None</p>
             </div>
             <div className="bg-gray-800 p-4 rounded-md">
               <p className="text-sm text-gray-400">Investor Status</p>
-              <p className="text-xl font-bold text-[#22C55E]">Active</p>
+              <p className="text-xl font-bold text-gray-400">Not Active</p>
             </div>
           </div>
         </CardContent>
