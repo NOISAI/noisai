@@ -5,13 +5,13 @@ import { Motion } from "@/components/ui/motion";
 
 export default function SignIn() {
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center justify-between px-4">
+    <div className="min-h-screen bg-black flex flex-col items-center justify-center px-4">
       <Motion className="w-full max-w-md space-y-8 mb-8 mt-16">
         <div className="text-center">
             <img 
               src="/noisai-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
               alt="NOISAI Logo" 
-              className="w-8 h-8 mr-2"
+              className="w-8 h-8 mr-2 items-center"
             />
             <span className="text-[#22C55E] text-2xl font-bold">NOISAI</span>
         </div>
