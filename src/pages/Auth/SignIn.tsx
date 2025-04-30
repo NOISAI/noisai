@@ -7,7 +7,7 @@ export default function SignIn() {
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center px-4">
       <Motion className="w-full max-w-md space-y-8 mb-8 mt-16">
-        <div className="text-center flex-direct inline-flex items-center">
+        <div className="text-center inline-flex items-center mb-8">
             <img 
               src="/noisai-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
               alt="NOISAI Logo" 
