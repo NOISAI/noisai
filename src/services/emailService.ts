@@ -2,12 +2,15 @@
 import emailjs from 'emailjs-com';
 import { EMAIL_CONFIG } from '@/config/apiKeys';
 
-// Initialize EmailJS
+// Initialize EmailJS with the public user key
+// This is safe to use client-side as it's restricted by domain
 export const initEmailJS = () => {
+  console.log('Initializing EmailJS with User ID:', EMAIL_CONFIG.USER_ID);
   emailjs.init(EMAIL_CONFIG.USER_ID);
 };
 
 // Send investment interest email
+// This uses the public EmailJS configuration which is domain-restricted
 export const sendInvestmentInterestEmail = async (data: {
   investorEmail: string;
   investmentName: string;
@@ -28,6 +31,11 @@ export const sendInvestmentInterestEmail = async (data: {
   };
 
   console.log('Sending email with params:', emailParams);
+  console.log('Using EmailJS configuration:', {
+    serviceId: EMAIL_CONFIG.SERVICE_ID,
+    templateId: EMAIL_CONFIG.TEMPLATE_ID,
+    userId: EMAIL_CONFIG.USER_ID.substring(0, 4) + '...'  // Log partial ID for security
+  });
   
   return emailjs.send(
     EMAIL_CONFIG.SERVICE_ID,
