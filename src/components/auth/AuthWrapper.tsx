@@ -1,4 +1,3 @@
-
 import { 
   SignIn as ClerkSignIn, 
   SignUp as ClerkSignUp, 
@@ -6,7 +5,6 @@ import {
 } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { MetaMaskButton } from "./MetaMaskButton";
 
 interface AuthWrapperProps {
   mode: "signIn" | "signUp";
@@ -22,27 +20,8 @@ export function AuthWrapper({ mode }: AuthWrapperProps) {
     }
   }, [isSignedIn, navigate]);
 
-  // Add MetaMask wallet authentication option above the standard Clerk auth
-  const renderMetaMaskOption = () => {
-    return (
-      <div className="w-full max-w-md mb-4">
-        <MetaMaskButton />
-        <div className="relative my-4">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-700"></div>
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-gray-900 text-gray-400">or continue with</span>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center justify-center px-4">
-      {renderMetaMaskOption()}
-      
+    <div className="min-h-screen bg-black flex flex-col items-center justify-center px-4">      
       {mode === "signIn" ? (
         <ClerkSignIn 
           appearance={{
