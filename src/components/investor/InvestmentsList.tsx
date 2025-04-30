@@ -49,7 +49,7 @@ const mockInvestments = [
     name: "NOISAI Seed Round", 
     amount: 0, 
     target: 1000000,
-    raised: 680000,
+    raised: 0,
     date: "2025-05-15", 
     status: "Active", 
     roi: "0%",
@@ -94,7 +94,7 @@ const InvestmentsList = () => {
         timestamp: new Date().toISOString()
       });
       
-      // Simulate sending an email
+      // Simulate sending an email notification to info@noisai.tech
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       toast({
