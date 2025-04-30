@@ -1,13 +1,14 @@
 
 import { ChartPie, PiggyBank, History, FileText, Wallet, User } from "lucide-react";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 interface DashboardTabsProps {
   activeTab: string;
   onTabChange: (value: string) => void;
+  children: React.ReactNode;
 }
 
-const DashboardTabs = ({ activeTab, onTabChange }: DashboardTabsProps) => {
+const DashboardTabs = ({ activeTab, onTabChange, children }: DashboardTabsProps) => {
   return (
     <Tabs defaultValue={activeTab} value={activeTab} onValueChange={onTabChange} className="w-full">
       <TabsList className="grid grid-cols-6 lg:grid-cols-6 mb-8 bg-gray-900 border border-gray-800">
@@ -30,6 +31,7 @@ const DashboardTabs = ({ activeTab, onTabChange }: DashboardTabsProps) => {
           <User className="w-4 h-4 mr-2" /> Profile
         </TabsTrigger>
       </TabsList>
+      {children}
     </Tabs>
   );
 };

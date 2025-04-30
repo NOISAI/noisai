@@ -1,8 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import { useClerk } from "@clerk/clerk-react";
 import { TabsContent } from "@/components/ui/tabs";
 
 // Import refactored components
@@ -73,35 +71,35 @@ export default function InvestorDashboard() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-4xl font-bold mb-8">Investor Dashboard</h1>
         
-        <DashboardTabs activeTab={activeTab} onTabChange={setActiveTab} />
-        
-        <TabsContent value="portfolio">
-          <PortfolioOverview />
-        </TabsContent>
+        <DashboardTabs activeTab={activeTab} onTabChange={setActiveTab}>
+          <TabsContent value="portfolio">
+            <PortfolioOverview />
+          </TabsContent>
 
-        <TabsContent value="investments">
-          <InvestmentsList />
-        </TabsContent>
+          <TabsContent value="investments">
+            <InvestmentsList />
+          </TabsContent>
 
-        <TabsContent value="interactions">
-          <InteractionHistory />
-        </TabsContent>
+          <TabsContent value="interactions">
+            <InteractionHistory />
+          </TabsContent>
 
-        <TabsContent value="documents">
-          <DocumentManagement />
-        </TabsContent>
+          <TabsContent value="documents">
+            <DocumentManagement />
+          </TabsContent>
 
-        <TabsContent value="wallets">
-          <WalletManagement 
-            walletAddress={walletAddress} 
-            isConnecting={isConnecting} 
-            connectWallet={connectWallet} 
-          />
-        </TabsContent>
+          <TabsContent value="wallets">
+            <WalletManagement 
+              walletAddress={walletAddress} 
+              isConnecting={isConnecting} 
+              connectWallet={connectWallet} 
+            />
+          </TabsContent>
 
-        <TabsContent value="profile">
-          <ProfileManagement />
-        </TabsContent>
+          <TabsContent value="profile">
+            <ProfileManagement />
+          </TabsContent>
+        </DashboardTabs>
       </main>
     </div>
   );
