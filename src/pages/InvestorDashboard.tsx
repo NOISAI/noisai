@@ -1,11 +1,14 @@
 
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { useClerk } from "@clerk/clerk-react";
 
 export default function InvestorDashboard() {
   const { toast } = useToast();
+  const { signOut } = useClerk();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Welcome toast when dashboard loads
@@ -14,6 +17,11 @@ export default function InvestorDashboard() {
       description: "This is where you'll manage your NOISAI investments.",
     });
   }, [toast]);
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -27,11 +35,13 @@ export default function InvestorDashboard() {
             />
             <span className="text-[#22C55E] text-xl font-bold">NOISAI</span>
           </div>
-          <Link to="/">
-            <Button variant="ghost" className="text-gray-400 hover:text-white">
-              Sign Out
-            </Button>
-          </Link>
+          <Button 
+            variant="ghost" 
+            className="text-gray-400 hover:text-white"
+            onClick={handleSignOut}
+          >
+            Sign Out
+          </Button>
         </div>
       </header>
 
