@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -12,9 +11,9 @@ import {
   DollarSign, 
   Briefcase,
   User,
-  Sell,
+  BarChart,
   PiggyBank,
-  FileChart
+  LineChart
 } from "lucide-react";
 import { 
   Tabs, 
@@ -236,7 +235,7 @@ export default function InvestorDashboard() {
               <Card className="bg-gray-900 border border-gray-800">
                 <CardHeader>
                   <CardTitle className="flex items-center">
-                    <FileChart className="w-5 h-5 mr-2 text-[#22C55E]" />
+                    <LineChart className="w-5 h-5 mr-2 text-[#22C55E]" />
                     Current Value
                   </CardTitle>
                 </CardHeader>
@@ -334,7 +333,7 @@ export default function InvestorDashboard() {
                                 size="sm" 
                                 className="text-[#22C55E] border-gray-800 hover:bg-gray-800"
                               >
-                                <Sell className="w-4 h-4 mr-1" />
+                                <DollarSign className="w-4 h-4 mr-1" />
                                 Sell
                               </Button>
                             </DialogTrigger>
