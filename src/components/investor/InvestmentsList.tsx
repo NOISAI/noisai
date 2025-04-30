@@ -27,7 +27,7 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   Form,
   FormField,
@@ -41,6 +41,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import emailjs from 'emailjs-com';
 
 // Updated mock data for investments with seed sale
 const mockInvestments = [
@@ -68,11 +69,17 @@ const investmentFormSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
 });
 
+// EmailJS configuration
+const EMAILJS_SERVICE_ID = 'service_noisai';  // Replace with your EmailJS service ID
+const EMAILJS_TEMPLATE_ID = 'template_investment';  // Replace with your EmailJS template ID
+const EMAILJS_USER_ID = 'YOUR_USER_ID';  // Replace with your EmailJS user ID
+
 const InvestmentsList = () => {
   const { toast } = useToast();
   const [selectedInvestment, setSelectedInvestment] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
   
   const form = useForm({
     resolver: zodResolver(investmentFormSchema),
@@ -82,24 +89,51 @@ const InvestmentsList = () => {
     },
   });
 
+  // Initialize EmailJS
+  useEffect(() => {
+    emailjs.init(EMAILJS_USER_ID);
+  }, []);
+
   const handleInvest = async (data) => {
     setIsSubmitting(true);
     
     try {
-      // In a real application, this would be an API call to your backend
-      console.log("Sending email verification for investment:", {
+      // Prepare email data
+      const investmentData = {
         investment: selectedInvestment?.name,
         amount: data.amount,
         investorEmail: data.email,
         timestamp: new Date().toISOString()
-      });
+      };
       
-      // Simulate sending an email notification to info@noisai.tech
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      console.log("Sending email verification for investment:", investmentData);
+      
+      // Send email using EmailJS
+      const emailParams = {
+        to_email: 'info@noisai.tech',
+        from_name: 'NOISAI Investment Platform',
+        subject: 'New Investment Interest',
+        investor_name: data.email,
+        investment_name: selectedInvestment?.name,
+        investment_amount: `$${Number(data.amount).toLocaleString()}`,
+        message: `A new investment request has been submitted for ${selectedInvestment?.name}. 
+                 Amount: $${Number(data.amount).toLocaleString()}
+                 Investor Email: ${data.email}
+                 Date: ${new Date().toLocaleDateString()}
+                 Time: ${new Date().toLocaleTimeString()}`
+      };
+      
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        emailParams
+      );
+      
+      setEmailSent(true);
       
       toast({
         title: "Investment Request Submitted",
-        description: "A verification email has been sent to info@noisai.tech to confirm your investment request.",
+        description: "Your investment request has been sent to info@noisai.tech for review.",
       });
       
       setIsDialogOpen(false);
@@ -108,7 +142,7 @@ const InvestmentsList = () => {
       console.error("Error submitting investment:", error);
       toast({
         title: "Error",
-        description: "There was a problem processing your investment request. Please try again.",
+        description: "There was a problem sending your investment request. Please try again or contact support.",
         variant: "destructive",
       });
     } finally {
@@ -224,7 +258,7 @@ const InvestmentsList = () => {
                                   />
                                 </FormControl>
                                 <FormDescription className="text-gray-400">
-                                  We'll send a confirmation to this email
+                                  We'll use this email to contact you about your investment
                                 </FormDescription>
                                 <FormMessage className="text-red-500" />
                               </FormItem>
@@ -232,8 +266,8 @@ const InvestmentsList = () => {
                           />
                           
                           <div className="pt-4 text-sm text-gray-400">
-                            <p>By submitting this form, a verification email will be sent to info@noisai.tech for processing.</p>
-                            <p className="mt-2">Our team will contact you with next steps.</p>
+                            <p>By submitting this form, your investment request will be sent to info@noisai.tech for review.</p>
+                            <p className="mt-2">Our team will contact you with next steps for completing your investment.</p>
                           </div>
                           
                           <DialogFooter className="pt-4">
