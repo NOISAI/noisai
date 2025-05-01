@@ -6,7 +6,7 @@ import { TabsContent } from "@/components/ui/tabs";
 // Import refactored components
 import DashboardHeader from "@/components/investor/DashboardHeader";
 import DashboardTabs from "@/components/investor/DashboardTabs";
-import PortfolioOverview from "@/components/investor/PortfolioOverview";
+import PortfolioOverview from "@/components/investor/portfolio/PortfolioOverview";
 import InvestmentsList from "@/components/investor/InvestmentsList";
 import InteractionHistory from "@/components/investor/InteractionHistory";
 import DocumentManagement from "@/components/investor/DocumentManagement";
