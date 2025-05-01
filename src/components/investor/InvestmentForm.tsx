@@ -22,7 +22,7 @@ import {
   TransactionDetails 
 } from "@/types/investment";
 import { sendInvestmentInterestEmail } from "@/services/emailService";
-import { makeInvestment, ensureSepoliaNetwork } from "@/services/blockchainService";
+import { makeInvestment, ensureSepoliaNetwork } from "@/services/blockchain";
 import {
   Dialog,
   DialogContent,
@@ -57,7 +57,7 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
     defaultValues: {
       amount: "10000",
       email: "",
-      tokenType: "USDC"
+      tokenType: "ETH"
     },
   });
 
@@ -105,18 +105,15 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
   const confirmInvestment = async () => {
     try {
       const data = form.getValues();
-      const tokenType = data.tokenType as "USDT" | "USDC";
+      const etherAmount = Number(data.amount) / 2000; // Approximate ETH value (assuming ~$2000/ETH)
       
       // Initiate the blockchain transaction
-      const result = await makeInvestment(
-        Number(data.amount),
-        tokenType
-      );
+      const result = await makeInvestment(etherAmount);
       
       // Create transaction record
       const newTransaction: TransactionDetails = {
         hash: result.hash,
-        tokenType: tokenType,
+        tokenType: "ETH",
         amount: Number(data.amount),
         status: "pending",
         timestamp: new Date().toISOString(),
@@ -134,7 +131,7 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
       
       toast({
         title: "Investment Transaction Initiated",
-        description: `Your ${tokenType} transaction is being processed. You'll need to complete all required steps before approval.`,
+        description: `Your ETH transaction is being processed. You'll need to complete all required steps before approval.`,
       });
       
       form.reset();
@@ -167,13 +164,13 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
                   <Input 
                     {...field} 
                     type="number" 
-                    min="10000"
-                    placeholder="10000" 
+                    min="10"
+                    placeholder="10" 
                     className="bg-gray-800 border-gray-700 text-white"
                   />
                 </FormControl>
                 <FormDescription className="text-gray-400">
-                  Minimum investment is $10,000
+                  Minimum investment is $10
                 </FormDescription>
                 <FormMessage className="text-red-500" />
               </FormItem>
@@ -185,23 +182,22 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
             name="tokenType"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-white">Stablecoin Type</FormLabel>
+                <FormLabel className="text-white">Token Type</FormLabel>
                 <Select 
                   defaultValue={field.value} 
                   onValueChange={field.onChange}
                 >
                   <FormControl>
                     <SelectTrigger className="bg-gray-800 border-gray-700 text-white">
-                      <SelectValue placeholder="Select stablecoin" />
+                      <SelectValue placeholder="Select token" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent className="bg-gray-800 text-white border-gray-700">
-                    <SelectItem value="USDC">USDC</SelectItem>
-                    <SelectItem value="USDT">USDT</SelectItem>
+                    <SelectItem value="ETH">ETH (Sepolia)</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormDescription className="text-gray-400">
-                  Only USDC and USDT are accepted for investments
+                  Investments are accepted in ETH on the Sepolia test network
                 </FormDescription>
                 <FormMessage className="text-red-500" />
               </FormItem>
@@ -264,7 +260,7 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
           </div>
           
           <div className="pt-4 text-sm text-gray-400">
-            <p>By investing, your transaction will be processed on the Sepolia network using the selected stablecoin.</p>
+            <p>By investing, your transaction will be processed on the Sepolia network using ETH.</p>
             <p className="mt-2">After transaction, you'll need to complete all required steps before your investment can be approved.</p>
             <p className="mt-2 text-[#22C55E]">Once all requirements are met, an admin will review and approve your investment.</p>
           </div>
@@ -312,11 +308,15 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
             </div>
             <div className="flex justify-between">
               <span className="text-gray-400">Token:</span>
-              <span className="font-semibold text-white">{form.getValues("tokenType") || "USDC"}</span>
+              <span className="font-semibold text-white">ETH (Sepolia)</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-400">Network:</span>
               <span className="font-semibold text-green-500">Sepolia Testnet</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-400">ETH Amount:</span>
+              <span className="font-semibold text-white">≈ {(Number(form.getValues("amount")) / 2000).toFixed(6)} ETH</span>
             </div>
           </div>
           
