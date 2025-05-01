@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { TabsContent } from "@/components/ui/tabs";
+import { Link } from "react-router-dom";
+import { useRolePermissions } from "@/hooks/useRolePermissions";
 
 // Import refactored components
 import DashboardHeader from "@/components/investor/DashboardHeader";
@@ -14,6 +16,7 @@ import ProfileManagement from "@/components/investor/ProfileManagement";
 
 export default function InvestorDashboard() {
   const { toast } = useToast();
+  const { permissions } = useRolePermissions();
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
   const [activeTab, setActiveTab] = useState("portfolio");
@@ -68,7 +71,17 @@ export default function InvestorDashboard() {
       />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-4xl font-bold mb-8">Investor Dashboard</h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-bold">Investor Dashboard</h1>
+          {permissions.canAccessNoisaiView && (
+            <Link 
+              to="/node-dashboard"
+              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition-colors"
+            >
+              Go to Node Dashboard
+            </Link>
+          )}
+        </div>
         
         <DashboardTabs activeTab={activeTab} onTabChange={setActiveTab}>
           <TabsContent value="portfolio">
