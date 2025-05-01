@@ -18,6 +18,7 @@ import {
   ensureSepoliaNetwork,
   checkWalletBalance
 } from "@/services/blockchain";
+import { addInvestmentToPortfolio, updateInvestmentProgress } from "@/services/portfolioService";
 
 // Import the smaller components
 import InvestmentAmountField from "./InvestmentAmountField";
@@ -155,6 +156,15 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
         };
         
         setTransaction(newTransaction);
+        
+        // Add to portfolio and update investment progress
+        if (investment) {
+          // Add investment to user portfolio
+          addInvestmentToPortfolio(investment, newTransaction, dollarAmount);
+          
+          // Update the funding progress on the target investment
+          updateInvestmentProgress(investment.id, dollarAmount);
+        }
         
         // Send email notification
         await sendInvestmentInterestEmail({

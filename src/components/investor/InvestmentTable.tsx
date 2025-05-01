@@ -11,6 +11,7 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Investment } from "@/types/investment";
+import { useEffect, useState } from "react";
 
 interface InvestmentTableProps {
   investments: Investment[];
@@ -18,6 +19,28 @@ interface InvestmentTableProps {
 }
 
 const InvestmentTable = ({ investments, onInvestClick }: InvestmentTableProps) => {
+  // Get additional investments from localStorage if available
+  const [updatedInvestments, setUpdatedInvestments] = useState<Investment[]>(investments);
+  
+  useEffect(() => {
+    // Get any additional progress data from localStorage
+    const INVESTMENT_PROGRESS_KEY = "noisai_investment_progress";
+    const storedProgress = localStorage.getItem(INVESTMENT_PROGRESS_KEY);
+    const progressData = storedProgress ? JSON.parse(storedProgress) : {};
+    
+    // Update investments with stored progress
+    const investmentsWithProgress = investments.map(investment => {
+      const additionalRaised = progressData[investment.id] || 0;
+      
+      return {
+        ...investment,
+        raised: investment.raised + additionalRaised
+      };
+    });
+    
+    setUpdatedInvestments(investmentsWithProgress);
+  }, [investments]);
+
   return (
     <Table>
       <TableHeader>
@@ -30,7 +53,7 @@ const InvestmentTable = ({ investments, onInvestClick }: InvestmentTableProps) =
         </TableRow>
       </TableHeader>
       <TableBody>
-        {investments.map(investment => (
+        {updatedInvestments.map(investment => (
           <TableRow key={investment.id} className="border-gray-800">
             <TableCell className="font-medium">
               <div className="flex flex-col">
