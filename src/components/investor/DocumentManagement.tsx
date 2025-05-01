@@ -49,35 +49,35 @@ const DocumentManagement = () => {
     }
   };
 
-  const handleDownload = (document: typeof mockDocuments[0]) => {
+  const handleDownload = (documentItem: typeof mockDocuments[0]) => {
     // Create a download link for the document
-    const link = document.url;
+    const link = documentItem.url;
     
     // In a real application with actual files, we would use:
-    // const link = document.url;
+    // const link = documentItem.url;
     
     // For this demo, we'll create a text file with mock content
-    const content = `This is a mock ${document.type.toLowerCase()} document: ${document.name}
+    const content = `This is a mock ${documentItem.type.toLowerCase()} document: ${documentItem.name}
 Generated for demo purposes on: ${new Date().toLocaleString()}
-File size would be: ${document.size}`;
+File size would be: ${documentItem.size}`;
     
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     
     // Create temporary anchor element and trigger download
-    const a = document.createElement('a');
+    const a = window.document.createElement('a');
     a.href = url;
-    a.download = document.name;
-    document.body.appendChild(a);
+    a.download = documentItem.name;
+    window.document.body.appendChild(a);
     a.click();
     
     // Clean up
     URL.revokeObjectURL(url);
-    document.body.removeChild(a);
+    window.document.body.removeChild(a);
 
     toast({
       title: "Download Started",
-      description: `${document.name} is being downloaded.`,
+      description: `${documentItem.name} is being downloaded.`,
     });
   };
 
@@ -100,17 +100,17 @@ File size would be: ${document.size}`;
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mockDocuments.map(document => (
-                <TableRow key={document.id} className="border-gray-800">
-                  <TableCell className="font-medium">{document.name}</TableCell>
-                  <TableCell>{document.type}</TableCell>
-                  <TableCell>{document.date}</TableCell>
-                  <TableCell>{document.size}</TableCell>
+              {mockDocuments.map(doc => (
+                <TableRow key={doc.id} className="border-gray-800">
+                  <TableCell className="font-medium">{doc.name}</TableCell>
+                  <TableCell>{doc.type}</TableCell>
+                  <TableCell>{doc.date}</TableCell>
+                  <TableCell>{doc.size}</TableCell>
                   <TableCell>
                     <Button 
                       variant="outline" 
                       size="sm" 
-                      onClick={() => handleDownload(document)}
+                      onClick={() => handleDownload(doc)}
                       className="text-[#22C55E] border-gray-800 hover:bg-gray-800"
                     >
                       Download
