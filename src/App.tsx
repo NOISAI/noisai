@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
 import { SignedIn, SignedOut, ClerkLoaded, useUser } from "@clerk/clerk-react";
+import { useRolePermissions } from "@/hooks/useRolePermissions";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import SignIn from "./pages/Auth/SignIn";
@@ -47,17 +48,22 @@ const InvestorProtectedRoute = ({ children }: { children: React.ReactNode }) => 
   );
 };
 
-// Added component to redirect authenticated users to appropriate dashboard
+// Added component to redirect authenticated users to appropriate dashboard based on permissions
 const AuthRedirect = () => {
   const { user } = useUser();
-  const isAdmin = user?.primaryEmailAddress?.emailAddress === "info@noisai.tech";
+  const { permissions, isLoaded } = useRolePermissions();
+  const isAdmin = user?.primaryEmailAddress?.emailAddress?.toLowerCase() === "info@noisai.tech";
+  
+  if (!isLoaded) return <div>Loading...</div>;
   
   return (
     <ClerkLoaded>
       <SignedIn>
         {isAdmin ? 
           <Navigate to="/admin-dashboard" replace /> : 
-          <Navigate to="/investor-dashboard" replace />
+          permissions.canAccessNoisaiView || permissions.canAccessBusinessView ? 
+            <Navigate to="/node-dashboard" replace /> :
+            <Navigate to="/investor-dashboard" replace />
         }
       </SignedIn>
       <SignedOut>
