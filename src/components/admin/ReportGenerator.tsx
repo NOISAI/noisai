@@ -4,21 +4,36 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   DownloadCloud, FileText, Users, TrendingUp, Calendar,
-  CheckSquare 
+  CheckSquare, Loader2, FileDown
 } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { useReports } from "@/hooks/useReports";
+import { formatDate } from "@/utils/adminUtils";
 
 const ReportGenerator = () => {
-  const [generatingReport, setGeneratingReport] = useState(false);
+  const { reports, generating, generateReport } = useReports();
+  const [generatingType, setGeneratingType] = useState<string | null>(null);
   
-  const handleGenerateReport = (reportType: string) => {
-    setGeneratingReport(true);
-    
-    // Simulate report generation
-    setTimeout(() => {
-      setGeneratingReport(false);
-      console.log(`Generated ${reportType} report`);
-      // In a real app, this is where you'd trigger a download or redirect to the report
-    }, 1500);
+  const handleGenerateReport = async (reportType: string) => {
+    setGeneratingType(reportType);
+    try {
+      await generateReport(reportType);
+    } catch (error) {
+      console.error(`Error generating ${reportType} report:`, error);
+    } finally {
+      setGeneratingType(null);
+    }
+  };
+  
+  const downloadReport = (fileUrl: string) => {
+    window.open(fileUrl, '_blank');
   };
   
   return (
@@ -59,10 +74,19 @@ const ReportGenerator = () => {
               <Button 
                 className="w-full bg-[#22C55E] hover:bg-[#1ea853] text-black mt-4"
                 onClick={() => handleGenerateReport("Investor Activity")}
-                disabled={generatingReport}
+                disabled={generating || generatingType === "Investor Activity"}
               >
-                <DownloadCloud className="mr-2 h-4 w-4" />
-                {generatingReport ? "Generating..." : "Generate Report"}
+                {generatingType === "Investor Activity" ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <DownloadCloud className="mr-2 h-4 w-4" />
+                    Generate Report
+                  </>
+                )}
               </Button>
             </div>
           </CardContent>
@@ -99,10 +123,19 @@ const ReportGenerator = () => {
               <Button 
                 className="w-full bg-[#22C55E] hover:bg-[#1ea853] text-black mt-4"
                 onClick={() => handleGenerateReport("Investment Performance")}
-                disabled={generatingReport}
+                disabled={generating || generatingType === "Investment Performance"}
               >
-                <DownloadCloud className="mr-2 h-4 w-4" />
-                {generatingReport ? "Generating..." : "Generate Report"}
+                {generatingType === "Investment Performance" ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <DownloadCloud className="mr-2 h-4 w-4" />
+                    Generate Report
+                  </>
+                )}
               </Button>
             </div>
           </CardContent>
@@ -139,10 +172,19 @@ const ReportGenerator = () => {
               <Button 
                 className="w-full bg-[#22C55E] hover:bg-[#1ea853] text-black mt-4"
                 onClick={() => handleGenerateReport("Quarterly Summary")}
-                disabled={generatingReport}
+                disabled={generating || generatingType === "Quarterly Summary"}
               >
-                <DownloadCloud className="mr-2 h-4 w-4" />
-                {generatingReport ? "Generating..." : "Generate Report"}
+                {generatingType === "Quarterly Summary" ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <DownloadCloud className="mr-2 h-4 w-4" />
+                    Generate Report
+                  </>
+                )}
               </Button>
             </div>
           </CardContent>
@@ -179,15 +221,81 @@ const ReportGenerator = () => {
               <Button 
                 className="w-full bg-[#22C55E] hover:bg-[#1ea853] text-black mt-4"
                 onClick={() => handleGenerateReport("Custom")}
-                disabled={generatingReport}
+                disabled={generating || generatingType === "Custom"}
               >
-                <DownloadCloud className="mr-2 h-4 w-4" />
-                {generatingReport ? "Generating..." : "Build Custom Report"}
+                {generatingType === "Custom" ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <DownloadCloud className="mr-2 h-4 w-4" />
+                    Build Custom Report
+                  </>
+                )}
               </Button>
             </div>
           </CardContent>
         </Card>
       </div>
+
+      {/* Recent Reports Table */}
+      <Card className="bg-gray-900 border border-gray-800 mt-8">
+        <CardHeader>
+          <CardTitle>Recent Reports</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-gray-800 hover:bg-gray-800">
+                <TableHead className="text-gray-300">Report Name</TableHead>
+                <TableHead className="text-gray-300">Type</TableHead>
+                <TableHead className="text-gray-300">Generated On</TableHead>
+                <TableHead className="text-gray-300 text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {reports.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={4} className="text-center py-6">
+                    No reports generated yet.
+                  </TableCell>
+                </TableRow>
+              ) : (
+                reports.map((report) => (
+                  <TableRow key={report.id} className="bg-gray-900 hover:bg-gray-800">
+                    <TableCell>{report.name}</TableCell>
+                    <TableCell>{report.type}</TableCell>
+                    <TableCell>{formatDate(report.created_at)}</TableCell>
+                    <TableCell className="text-right">
+                      {report.file_url ? (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="border-[#22C55E] text-[#22C55E] hover:bg-[#22C55E]/10"
+                          onClick={() => downloadReport(report.file_url!)}
+                        >
+                          <FileDown className="h-4 w-4 mr-1" /> Download
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="border-gray-700 text-gray-400"
+                          disabled
+                        >
+                          <Loader2 className="h-4 w-4 mr-1 animate-spin" /> Processing
+                        </Button>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </div>
   );
 };
