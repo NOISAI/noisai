@@ -5,7 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
-import { SignedIn, SignedOut, ClerkLoaded } from "@clerk/clerk-react";
+import { SignedIn, SignedOut, ClerkLoaded, useUser } from "@clerk/clerk-react";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import SignIn from "./pages/Auth/SignIn";
@@ -29,6 +29,23 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+// New component to prevent admins from accessing investor dashboard
+const InvestorProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user } = useUser();
+  const isAdmin = user?.primaryEmailAddress?.emailAddress === "info@noisai.tech";
+  
+  return (
+    <ClerkLoaded>
+      <SignedIn>
+        {isAdmin ? <Navigate to="/admin-dashboard" replace /> : children}
+      </SignedIn>
+      <SignedOut>
+        <Navigate to="/sign-in" replace />
+      </SignedOut>
+    </ClerkLoaded>
+  );
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -42,9 +59,9 @@ const App = () => (
           <Route 
             path="/investor-dashboard" 
             element={
-              <ProtectedRoute>
+              <InvestorProtectedRoute>
                 <InvestorDashboard />
-              </ProtectedRoute>
+              </InvestorProtectedRoute>
             } 
           />
           <Route 

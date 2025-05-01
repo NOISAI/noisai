@@ -18,7 +18,7 @@ const AdminProtectedRoute = ({ children }: AdminProtectedRouteProps) => {
   }
   
   if (!isAdmin) {
-    return <Navigate to="/investor-dashboard" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;

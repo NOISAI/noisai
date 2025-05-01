@@ -1,6 +1,5 @@
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
 // Import custom hooks
@@ -18,7 +17,6 @@ import DashboardTabs from "@/components/admin/DashboardTabs";
 
 export default function AdminDashboard() {
   const { toast } = useToast();
-  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("investors");
   const [searchQuery, setSearchQuery] = useState("");
   
@@ -72,15 +70,10 @@ export default function AdminDashboard() {
     // The InvestorManagement component handles the actual form dialog
     document.querySelector<HTMLButtonElement>('[data-add-investor-button="true"]')?.click();
   };
-
-  // Redirect to home page when exiting admin mode
-  const handleExitAdmin = () => {
-    navigate("/");
-  };
   
   return (
     <div className="min-h-screen bg-black text-white">
-      <AdminHeader onExitAdmin={handleExitAdmin} />
+      <AdminHeader />
 
       <main className="max-w-7xl mx-auto px-4 py-8">
         <AdminSearchBar 

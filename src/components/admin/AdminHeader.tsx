@@ -1,16 +1,35 @@
 
 import { useState } from "react";
-import { useUser } from "@clerk/clerk-react";
+import { useUser, useClerk } from "@clerk/clerk-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
-interface AdminHeaderProps {
-  onExitAdmin: () => void;
-}
-
-export default function AdminHeader({ onExitAdmin }: AdminHeaderProps) {
+export default function AdminHeader() {
   const { user } = useUser();
+  const { signOut } = useClerk();
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast({
+        title: "Signed out successfully",
+        description: "You have been signed out of the admin portal."
+      });
+      navigate("/");
+    } catch (error) {
+      console.error("Error signing out:", error);
+      toast({
+        title: "Sign out failed",
+        description: "There was an issue signing you out. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
   
   return (
     <header className="border-b border-gray-800">
@@ -36,9 +55,9 @@ export default function AdminHeader({ onExitAdmin }: AdminHeaderProps) {
           <Button 
             variant="ghost" 
             className="text-gray-400 hover:text-white"
-            onClick={onExitAdmin}
+            onClick={handleSignOut}
           >
-            Exit Admin Mode
+            Sign Out
           </Button>
         </div>
 
@@ -68,9 +87,9 @@ export default function AdminHeader({ onExitAdmin }: AdminHeaderProps) {
             <Button 
               variant="ghost" 
               className="text-gray-400 hover:text-white justify-start w-full"
-              onClick={onExitAdmin}
+              onClick={handleSignOut}
             >
-              Exit Admin Mode
+              Sign Out
             </Button>
           </div>
         </div>
