@@ -1,11 +1,24 @@
 
-import { ArrowRight } from "lucide-react";
+import { useState } from "react";
+import { ArrowRight, X } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 
 export default function WelcomeAlert() {
+  const [isVisible, setIsVisible] = useState(true);
+
+  if (!isVisible) return null;
+
   return (
-    <Alert className="bg-blue-900/20 border border-blue-800 mb-6">
+    <Alert className="bg-blue-900/20 border border-blue-800 mb-6 relative">
+      <Button 
+        variant="ghost" 
+        size="icon" 
+        className="absolute top-2 right-2 h-7 w-7 text-blue-300 hover:text-blue-100 hover:bg-blue-800/50"
+        onClick={() => setIsVisible(false)}
+      >
+        <X className="h-4 w-4" />
+      </Button>
       <AlertTitle className="text-blue-300">Getting Started with the Admin Dashboard</AlertTitle>
       <AlertDescription className="text-blue-200">
         <p className="mb-2">Welcome to the NOISAI admin dashboard. Here you can manage investors, track interactions, monitor investments, and generate reports.</p>

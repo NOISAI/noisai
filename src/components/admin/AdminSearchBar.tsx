@@ -19,15 +19,15 @@ export default function AdminSearchBar({
   return (
     <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
       <div>
-        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+        <h1 className="text-2xl md:text-3xl font-bold">Admin Dashboard</h1>
         <p className="text-gray-400">Manage investors, track interactions, and generate reports</p>
       </div>
-      <div className="mt-4 md:mt-0 flex gap-2">
+      <div className="mt-4 md:mt-0 flex flex-col sm:flex-row gap-3">
         <div className="relative flex items-center">
           <Input 
             type="search" 
             placeholder="Search..." 
-            className="bg-gray-900 border-gray-800 pl-8 w-48 md:w-64"
+            className="bg-gray-900 border-gray-800 pl-8 w-full sm:w-48 md:w-64"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && onSearch()}
