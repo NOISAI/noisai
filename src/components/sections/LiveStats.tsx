@@ -1,7 +1,9 @@
 
-import { Zap, Activity, Battery, Coins, Users, ArrowLeftRight } from "lucide-react";
+import { Zap, Activity, Battery, Coins, Users, ArrowLeftRight, Network } from "lucide-react";
 import { StatCard } from "@/components/stats/StatCard";
 import { getRandomChange, calculateTokenChange, calculateUserNodeChange, calculateSupplyPercentage, formatTokenValue } from "@/utils/statsCalculations";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 interface LiveStatsProps {
   liveStats: {
@@ -62,6 +64,30 @@ export const LiveStats = ({ liveStats }: LiveStatsProps) => {
           description="Energy credit transfers per day"
           change={`${getRandomChange() > 0 ? '+' : ''}${(getRandomChange() * 20).toFixed(1)}% ↗`}
         />
+      </div>
+      
+      {/* Become a Node Section */}
+      <div className="mt-16 py-8 bg-black/30 rounded-xl border border-gray-800">
+        <div className="flex flex-col md:flex-row justify-between items-center px-6">
+          <div className="mb-6 md:mb-0">
+            <h3 className="text-2xl font-bold text-white mb-2">Join Our Network Nodes</h3>
+            <p className="text-gray-300 max-w-lg">Power our decentralized energy ecosystem by becoming a node in the NOISAI network and earn rewards.</p>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center px-4 py-3 bg-gray-800 rounded-lg">
+              <Network className="text-green-500 mr-2 w-5 h-5" />
+              <div>
+                <div className="text-sm text-gray-400">Active Nodes</div>
+                <div className="font-bold text-green-500">{liveStats.activeNodes}+</div>
+              </div>
+            </div>
+            <Link to="/sign-up">
+              <Button variant="default" className="bg-green-600 hover:bg-green-700 text-white font-medium">
+                Become a Node
+              </Button>
+            </Link>
+          </div>
+        </div>
       </div>
     </section>
   );
