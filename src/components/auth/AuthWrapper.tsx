@@ -1,4 +1,3 @@
-
 import { 
   SignIn as ClerkSignIn, 
   SignUp as ClerkSignUp, 
@@ -22,12 +21,9 @@ export function AuthWrapper({ mode }: AuthWrapperProps) {
       // Check if user is admin
       const isAdmin = user.primaryEmailAddress?.emailAddress === "info@noisai.tech";
       
-      // Redirect admin directly to admin dashboard, others to investor dashboard
-      if (isAdmin) {
-        navigate("/admin-dashboard");
-      } else {
-        navigate("/investor-dashboard");
-      }
+      // For regular sign-in, always redirect to investor dashboard 
+      // (admin redirect is handled by the protected route)
+      navigate("/investor-dashboard");
     }
   }, [isSignedIn, navigate, user]);
 

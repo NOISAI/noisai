@@ -29,7 +29,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-// New component to prevent admins from accessing investor dashboard
+// Route component to prevent admins from accessing investor dashboard
 const InvestorProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user } = useUser();
   const isAdmin = user?.primaryEmailAddress?.emailAddress === "info@noisai.tech";
@@ -46,6 +46,26 @@ const InvestorProtectedRoute = ({ children }: { children: React.ReactNode }) => 
   );
 };
 
+// Added component to redirect authenticated users to appropriate dashboard
+const AuthRedirect = () => {
+  const { user } = useUser();
+  const isAdmin = user?.primaryEmailAddress?.emailAddress === "info@noisai.tech";
+  
+  return (
+    <ClerkLoaded>
+      <SignedIn>
+        {isAdmin ? 
+          <Navigate to="/admin-dashboard" replace /> : 
+          <Navigate to="/investor-dashboard" replace />
+        }
+      </SignedIn>
+      <SignedOut>
+        <Index />
+      </SignedOut>
+    </ClerkLoaded>
+  );
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -53,7 +73,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<AuthRedirect />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route 
