@@ -1,5 +1,5 @@
 
-import { ChartPie, LineChart, Briefcase } from "lucide-react";
+import { ChartPie, LineChart, Briefcase, PiggyBank } from "lucide-react";
 import {
   Card,
   CardContent,
