@@ -28,23 +28,22 @@ const TokenTypeField = ({ form }: TokenTypeFieldProps) => {
       name="tokenType"
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-white">Stablecoin Type</FormLabel>
+          <FormLabel className="text-white">Token Type</FormLabel>
           <Select 
             defaultValue={field.value} 
             onValueChange={field.onChange}
           >
             <FormControl>
               <SelectTrigger className="bg-gray-800 border-gray-700 text-white">
-                <SelectValue placeholder="Select stablecoin" />
+                <SelectValue placeholder="Select token" />
               </SelectTrigger>
             </FormControl>
             <SelectContent className="bg-gray-800 text-white border-gray-700">
-              <SelectItem value="USDC">USDC</SelectItem>
-              <SelectItem value="USDT">USDT</SelectItem>
+              <SelectItem value="ETH">ETH (Sepolia)</SelectItem>
             </SelectContent>
           </Select>
           <FormDescription className="text-gray-400">
-            Only USDC and USDT are accepted for investments
+            Investments are accepted in ETH on the Sepolia test network
           </FormDescription>
           <FormMessage className="text-red-500" />
         </FormItem>

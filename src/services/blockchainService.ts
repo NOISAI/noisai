@@ -1,57 +1,12 @@
 import { ethers } from "ethers";
-import { SEPOLIA_NETWORK_CONFIG, TOKEN_CONTRACTS } from "@/types/investment";
+import { SEPOLIA_NETWORK_CONFIG, NOISAI_WALLET } from "@/types/investment";
 
-// ABI for ERC20 token interactions (expanded to include balance checking)
-const ERC20_ABI = [
-  // Balance checking function
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_owner",
-        "type": "address"
-      }
-    ],
-    "name": "balanceOf",
-    "outputs": [
-      {
-        "name": "balance",
-        "type": "uint256"
-      }
-    ],
-    "type": "function"
-  },
-  // Transfer function
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_to",
-        "type": "address"
-      },
-      {
-        "name": "_value",
-        "type": "uint256"
-      }
-    ],
-    "name": "transfer",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "type": "function"
-  }
-];
-
-// NOISAI receiving wallet address
-const NOISAI_WALLET = "0x9455579f25bcF26882Be32f22C8538e521D453d1"; // Example address
-
-// Check if the wallet has sufficient balance
-export const checkWalletBalance = async (
-  tokenType: "USDT" | "USDC",
-): Promise<{balance: number, hasEnoughFunds: boolean, requiredAmount: number}> => {
+// Check if the wallet has sufficient ETH balance
+export const checkWalletBalance = async (): Promise<{
+  balance: number,
+  hasEnoughFunds: boolean,
+  requiredAmount: number
+}> => {
   if (!window.ethereum) {
     throw new Error("MetaMask is not installed");
   }
@@ -63,19 +18,15 @@ export const checkWalletBalance = async (
     // Create a Web3 provider
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     
-    // Get the token contract
-    const tokenAddress = TOKEN_CONTRACTS[tokenType];
-    const tokenContract = new ethers.Contract(tokenAddress, ERC20_ABI, provider);
+    // Check ETH balance
+    const rawBalance = await provider.getBalance(fromAddress);
     
-    // Check balance
-    const rawBalance = await tokenContract.balanceOf(fromAddress);
-    
-    // Convert from wei to token units (assuming 6 decimals for USDC/USDT)
-    const decimals = 6;
-    const balance = Number(rawBalance) / (10 ** decimals);
+    // Convert from wei to ETH (decimals = 18)
+    const decimals = 18;
+    const balance = Number(ethers.utils.formatEther(rawBalance));
     
     // Default required amount (for UI display purposes)
-    const requiredAmount = 10; // Minimum investment amount
+    const requiredAmount = 10 / 2000; // $10 worth of ETH assuming ~$2000/ETH
     
     return {
       balance,
@@ -87,7 +38,7 @@ export const checkWalletBalance = async (
     return {
       balance: 0,
       hasEnoughFunds: false,
-      requiredAmount: 10
+      requiredAmount: 10 / 2000
     };
   }
 };
@@ -160,13 +111,10 @@ export const getCurrentWalletAddress = async (): Promise<string> => {
   }
 };
 
-// Make an investment transaction using stable coins
-export const makeInvestment = async (
-  amount: number,
-  tokenType: "USDT" | "USDC"
-): Promise<{ hash: string }> => {
+// Make an investment transaction using ETH
+export const makeInvestment = async (amount: number): Promise<{ hash: string }> => {
   try {
-    console.log(`Starting investment: ${amount} ${tokenType}`);
+    console.log(`Starting investment: ${amount} ETH`);
     
     // 1. Ensure we're on Sepolia network
     await ensureSepoliaNetwork();
@@ -175,34 +123,22 @@ export const makeInvestment = async (
     const fromAddress = await getCurrentWalletAddress();
     
     // 3. Check if wallet has sufficient balance
-    const { balance, hasEnoughFunds } = await checkWalletBalance(tokenType);
+    const { balance, hasEnoughFunds, requiredAmount } = await checkWalletBalance();
     
     if (!hasEnoughFunds) {
-      throw new Error(`Insufficient ${tokenType} balance. You have ${balance} ${tokenType} but need at least ${amount} ${tokenType}.`);
+      throw new Error(`Insufficient ETH balance. You have ${balance} ETH but need at least ${requiredAmount} ETH (approx. $10).`);
     }
     
-    // 4. Create a contract instance using minimal ABI (just for transfer)
-    const tokenAddress = TOKEN_CONTRACTS[tokenType];
-    console.log(`Using token address: ${tokenAddress}`);
-    
-    // 5. Convert amount to token units (assuming 6 decimals for USDC/USDT)
-    const decimals = 6;
-    const amountInWei = BigInt(Math.floor(amount * 10 ** decimals));
-    console.log(`Amount in wei: ${amountInWei}`);
-    
-    // 6. Create transaction parameters
-    const transferData = getTransferData(NOISAI_WALLET, amountInWei.toString());
-    console.log(`Transfer data: ${transferData}`);
-    
+    // 4. Create transaction parameters for sending ETH directly
     const transactionParameters = {
-      to: tokenAddress,
+      to: NOISAI_WALLET,
       from: fromAddress,
-      data: transferData,
+      value: ethers.utils.parseEther(amount.toString()).toHexString(),
     };
     
     console.log("Transaction parameters:", transactionParameters);
 
-    // 7. Send the transaction
+    // 5. Send the transaction
     console.log("Sending transaction...");
     const txHash = await window.ethereum.request({
       method: 'eth_sendTransaction',
@@ -217,23 +153,3 @@ export const makeInvestment = async (
     throw error;
   }
 };
-
-// Generate transfer function data
-function getTransferData(to: string, value: string): string {
-  console.log(`Generating transfer data for recipient: ${to}, value: ${value}`);
-  
-  // Encode the function signature: transfer(address,uint256)
-  const functionSignature = '0xa9059cbb';
-  
-  // Encode the address (remove '0x' and pad to 32 bytes)
-  const paddedAddress = to.slice(2).padStart(64, '0');
-  
-  // Encode the value (convert to hex and pad to 32 bytes)
-  const valueStr = BigInt(value).toString(16).padStart(64, '0');
-  
-  // Combine all parts
-  const data = `${functionSignature}${paddedAddress}${valueStr}`;
-  console.log(`Generated data: ${data}`);
-  
-  return data;
-}

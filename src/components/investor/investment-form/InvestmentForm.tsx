@@ -36,39 +36,34 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
   const [networkError, setNetworkError] = useState<string | null>(null);
   const [balanceError, setBalanceError] = useState<string | null>(null);
   const [transaction, setTransaction] = useState<TransactionDetails | null>(null);
-  const [tokenBalances, setTokenBalances] = useState<{
-    USDC: number;
-    USDT: number;
-  }>({ USDC: 0, USDT: 0 });
+  const [ethBalance, setEthBalance] = useState<number>(0);
+  const [requiredEth, setRequiredEth] = useState<number>(0.005); // Default ~$10 worth of ETH
   
   const form = useForm<InvestmentFormData>({
     resolver: zodResolver(investmentFormSchema),
     defaultValues: {
       amount: "10",
       email: "",
-      tokenType: "USDC"
+      tokenType: "ETH"
     },
   });
 
   // Check wallet balances when the form loads
   useEffect(() => {
-    const checkBalances = async () => {
+    const checkBalance = async () => {
       try {
         if (!window.ethereum) return;
         
-        const usdcBalance = await checkWalletBalance("USDC");
-        const usdtBalance = await checkWalletBalance("USDT");
+        const ethBalanceInfo = await checkWalletBalance();
         
-        setTokenBalances({
-          USDC: usdcBalance.balance,
-          USDT: usdtBalance.balance
-        });
+        setEthBalance(ethBalanceInfo.balance);
+        setRequiredEth(ethBalanceInfo.requiredAmount);
       } catch (error) {
-        console.error("Error checking balances:", error);
+        console.error("Error checking balance:", error);
       }
     };
     
-    checkBalances();
+    checkBalance();
   }, []);
 
   const handleInvest = async (data: InvestmentFormData) => {
@@ -99,22 +94,19 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
       }
 
       // Check wallet balance
-      const tokenType = data.tokenType as "USDT" | "USDC";
-      const amount = Number(data.amount);
-      const balanceInfo = await checkWalletBalance(tokenType);
+      const amount = Number(data.amount) / 2000; // Convert $ to ETH at ~$2000/ETH rate
+      const balanceInfo = await checkWalletBalance();
       
-      // Update balances
-      setTokenBalances(prev => ({
-        ...prev,
-        [tokenType]: balanceInfo.balance
-      }));
+      // Update balance
+      setEthBalance(balanceInfo.balance);
+      setRequiredEth(balanceInfo.requiredAmount);
       
       // Check if balance is sufficient
-      if (balanceInfo.balance < amount) {
-        setBalanceError(`Insufficient ${tokenType} balance. You have ${balanceInfo.balance} ${tokenType} but need ${amount} ${tokenType}.`);
+      if (balanceInfo.balance < balanceInfo.requiredAmount) {
+        setBalanceError(`Insufficient ETH balance. You have ${balanceInfo.balance.toFixed(6)} ETH but need ${balanceInfo.requiredAmount.toFixed(6)} ETH (approx. $10).`);
         toast({
           title: "Insufficient Balance",
-          description: `Your ${tokenType} balance is too low for this investment. Please add funds to your wallet.`,
+          description: `Your ETH balance is too low for this investment. Please add funds to your wallet.`,
           variant: "destructive",
         });
         return;
@@ -137,25 +129,22 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
       setIsSubmitting(true); // Set submitting state on confirmation
       
       const data = form.getValues();
-      const tokenType = data.tokenType as "USDT" | "USDC";
-      const amount = Number(data.amount);
+      const dollarAmount = Number(data.amount);
+      const ethAmount = dollarAmount / 2000; // Convert $ to ETH at ~$2000/ETH rate
       
       console.log("Initiating blockchain transaction...");
       
       // Initiate the blockchain transaction
       try {
-        const result = await makeInvestment(
-          amount,
-          tokenType
-        );
+        const result = await makeInvestment(ethAmount);
         
         console.log("Transaction initiated:", result);
         
         // Create transaction record
         const newTransaction: TransactionDetails = {
           hash: result.hash,
-          tokenType: tokenType,
-          amount: amount,
+          tokenType: "ETH",
+          amount: dollarAmount, // Store dollar amount for reference
           status: "pending",
           timestamp: new Date().toISOString(),
           network: "sepolia"
@@ -172,7 +161,7 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
         
         toast({
           title: "Investment Transaction Initiated",
-          description: `Your ${tokenType} transaction is being processed. You'll need to complete all required steps before approval.`,
+          description: `Your ETH transaction is being processed. You'll need to complete all required steps before approval.`,
         });
         
         form.reset();
@@ -210,10 +199,7 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
     }
   };
 
-  const currentTokenType = form.watch("tokenType") as "USDT" | "USDC"; 
-  const currentAmount = Number(form.watch("amount"));
-  const currentBalance = tokenBalances[currentTokenType] || 0;
-  const hasInsufficientBalance = currentBalance < currentAmount;
+  const hasInsufficientBalance = ethBalance < requiredEth;
 
   return (
     <>
@@ -224,9 +210,9 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
           {/* Show balance information */}
           {window.ethereum && (
             <div className="text-sm flex justify-between items-center">
-              <span className="text-gray-400">Your {currentTokenType} balance:</span>
+              <span className="text-gray-400">Your ETH balance:</span>
               <span className={hasInsufficientBalance ? "text-red-500" : "text-[#22C55E]"}>
-                {currentBalance.toFixed(2)} {currentTokenType}
+                {ethBalance.toFixed(6)} ETH
               </span>
             </div>
           )}
@@ -265,7 +251,7 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
             >
               <Wallet className="w-4 h-4" />
               {isSubmitting ? "Preparing..." : hasInsufficientBalance ? 
-                "Insufficient Balance" : "Invest Now"}
+                "Insufficient ETH Balance" : "Invest Now"}
             </Button>
           </div>
         </form>
@@ -278,7 +264,7 @@ const InvestmentForm = ({ investment, onSuccess, onCancel }: InvestmentFormProps
         onConfirm={confirmInvestment}
         formValues={{
           amount: form.getValues("amount"),
-          tokenType: form.getValues("tokenType") || "USDC"
+          tokenType: "ETH"
         }}
       />
     </>

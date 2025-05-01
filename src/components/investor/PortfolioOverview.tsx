@@ -1,4 +1,3 @@
-
 import { ChartPie, LineChart, Briefcase, PiggyBank, Wallet as WalletIcon } from "lucide-react";
 import {
   Card,
@@ -17,7 +16,8 @@ import { useToast } from "@/hooks/use-toast";
 const PortfolioOverview = () => {
   const [investmentOpportunities, setInvestmentOpportunities] = useState<Investment[]>([]);
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
-  const [walletBalance, setWalletBalance] = useState<{USDC: number, USDT: number}>({ USDC: 0, USDT: 0 });
+  const [ethBalance, setEthBalance] = useState<number>(0);
+  const [requiredEth, setRequiredEth] = useState<number>(0.005); // Default ~$10 worth of ETH
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   
@@ -40,19 +40,16 @@ const PortfolioOverview = () => {
         
         // If we have an address, get balances
         if (address) {
-          const usdcBalanceInfo = await checkWalletBalance("USDC");
-          const usdtBalanceInfo = await checkWalletBalance("USDT");
+          const balanceInfo = await checkWalletBalance();
           
-          setWalletBalance({
-            USDC: usdcBalanceInfo.balance,
-            USDT: usdtBalanceInfo.balance
-          });
+          setEthBalance(balanceInfo.balance);
+          setRequiredEth(balanceInfo.requiredAmount);
           
           // Show warning if balance is too low
-          if (!usdcBalanceInfo.hasEnoughFunds && !usdtBalanceInfo.hasEnoughFunds) {
+          if (!balanceInfo.hasEnoughFunds) {
             toast({
               title: "Low Balance Warning",
-              description: `Your wallet doesn't have enough USDC or USDT for minimum investment. Please add funds to your wallet.`,
+              description: `Your wallet doesn't have enough ETH for minimum investment. Please add funds to your wallet.`,
               variant: "destructive",
             });
           }
@@ -131,33 +128,24 @@ const PortfolioOverview = () => {
                 <p className="text-sm font-mono truncate">{walletAddress}</p>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-gray-800 p-4 rounded-md">
-                  <p className="text-sm text-gray-400">USDC Balance:</p>
-                  <p className="text-xl font-bold">{walletBalance.USDC.toFixed(2)} USDC</p>
-                  {walletBalance.USDC < 10 && (
-                    <p className="text-xs text-red-400 mt-1">
-                      Balance too low for minimum investment ($10)
-                    </p>
-                  )}
-                </div>
-                
-                <div className="bg-gray-800 p-4 rounded-md">
-                  <p className="text-sm text-gray-400">USDT Balance:</p>
-                  <p className="text-xl font-bold">{walletBalance.USDT.toFixed(2)} USDT</p>
-                  {walletBalance.USDT < 10 && (
-                    <p className="text-xs text-red-400 mt-1">
-                      Balance too low for minimum investment ($10)
-                    </p>
-                  )}
-                </div>
+              <div className="bg-gray-800 p-4 rounded-md">
+                <p className="text-sm text-gray-400">ETH Balance:</p>
+                <p className="text-xl font-bold">{ethBalance.toFixed(6)} ETH</p>
+                {ethBalance < requiredEth && (
+                  <p className="text-xs text-red-400 mt-1">
+                    Balance too low for minimum investment (need {requiredEth.toFixed(6)} ETH ≈ $10)
+                  </p>
+                )}
+                <p className="text-xs text-gray-400 mt-1">
+                  Assuming ETH price of ~$2000, minimum investment is {requiredEth.toFixed(6)} ETH
+                </p>
               </div>
               
               <div className="bg-gray-800 p-4 rounded-md">
                 <p className="text-sm text-gray-400">Network:</p>
                 <p className="text-green-500 font-medium">Sepolia Test Network</p>
                 <p className="text-xs text-gray-400 mt-1">
-                  Note: This is a test network. You can get test tokens from Sepolia faucets.
+                  Note: This is a test network. You can get test ETH from Sepolia faucets.
                 </p>
               </div>
             </div>
