@@ -12,6 +12,7 @@ const ProfileLoader = () => {
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
   const form = useForm<ProfileFormValues>();
+  const [pendingRequest, setPendingRequest] = useState(false);
 
   // Check if a profile exists for the user and create one if it doesn't
   const ensureProfileExists = async (userId: string) => {
@@ -55,6 +56,28 @@ const ProfileLoader = () => {
     }
   };
 
+  // Check for pending profile update requests
+  const checkForPendingRequests = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from("profile_update_requests")
+        .select("*")
+        .eq("user_id", userId)
+        .eq("status", "pending")
+        .maybeSingle();
+        
+      if (error) {
+        console.error("Error checking pending requests:", error);
+        return false;
+      }
+      
+      return !!data;
+    } catch (error) {
+      console.error("Unexpected error checking requests:", error);
+      return false;
+    }
+  };
+
   // Fetch user profile data
   useEffect(() => {
     const fetchProfile = async () => {
@@ -76,6 +99,11 @@ const ProfileLoader = () => {
           return;
         }
         
+        // Check for pending requests
+        const hasPendingRequest = await checkForPendingRequests(user.id);
+        setPendingRequest(hasPendingRequest);
+        
+        // Fetch profile data
         const { data, error } = await supabase
           .from("user_profiles")
           .select("*")
@@ -114,6 +142,20 @@ const ProfileLoader = () => {
     return (
       <div className="flex justify-center py-8">
         <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#22C55E]"></div>
+      </div>
+    );
+  }
+
+  if (pendingRequest) {
+    return (
+      <div className="bg-amber-900/30 border border-amber-700/50 rounded-md p-6 text-center">
+        <h3 className="text-xl font-medium text-amber-400 mb-2">Profile Update Pending</h3>
+        <p className="text-gray-300 mb-4">
+          Your profile update request is currently under review. You'll be notified when it's approved.
+        </p>
+        <p className="text-sm text-gray-400">
+          You cannot submit new profile updates until your current request is processed.
+        </p>
       </div>
     );
   }
