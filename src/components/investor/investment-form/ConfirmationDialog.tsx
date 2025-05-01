@@ -38,11 +38,15 @@ const ConfirmationDialog = ({
           </div>
           <div className="flex justify-between">
             <span className="text-gray-400">Token:</span>
-            <span className="font-semibold text-white">{formValues.tokenType || "USDC"}</span>
+            <span className="font-semibold text-white">ETH (Sepolia)</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-400">Network:</span>
             <span className="font-semibold text-green-500">Sepolia Testnet</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-400">ETH Amount:</span>
+            <span className="font-semibold text-white">≈ {(Number(formValues.amount) / 2000).toFixed(6)} ETH</span>
           </div>
         </div>
         
