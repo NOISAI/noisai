@@ -7,8 +7,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useEffect, useState } from "react";
+import { mockInvestments } from "@/data/mockInvestments";
+import { convertInvestmentsForInvestor } from "@/utils/typeAdapters";
+import { Investment } from "@/types/investment";
 
 const PortfolioOverview = () => {
+  const [investmentOpportunities, setInvestmentOpportunities] = useState<Investment[]>([]);
+  
+  useEffect(() => {
+    // Use the same data source and conversion as InvestmentsList
+    const investmentsForInvestors = convertInvestmentsForInvestor(mockInvestments);
+    setInvestmentOpportunities(investmentsForInvestors);
+  }, []);
+
   return (
     <div className="space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -46,8 +58,12 @@ const PortfolioOverview = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">1</p>
-            <p className="text-sm text-yellow-500">Seed Sale Running</p>
+            <p className="text-3xl font-bold">{investmentOpportunities.length}</p>
+            <p className="text-sm text-yellow-500">
+              {investmentOpportunities.length === 1 
+                ? "Seed Sale Running" 
+                : `${investmentOpportunities.length} Investments Running`}
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -61,7 +77,11 @@ const PortfolioOverview = () => {
           <div className="h-[300px] flex items-center justify-center border border-gray-800 rounded-md bg-gray-950 mb-4">
             <div className="text-center">
               <p className="text-gray-400 mb-2">No active investments</p>
-              <p className="text-[#22C55E]">NOISAI Seed Sale is now open</p>
+              <p className="text-[#22C55E]">
+                {investmentOpportunities.length === 1 
+                  ? "NOISAI Seed Sale is now open" 
+                  : `${investmentOpportunities.length} NOISAI investment opportunities available`}
+              </p>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
