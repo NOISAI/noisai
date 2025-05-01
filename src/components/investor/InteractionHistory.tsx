@@ -41,11 +41,14 @@ const InteractionHistory = () => {
 
   // Filter interactions for the current user
   useEffect(() => {
-    if (userId) {
+    if (userId && allInteractions.length > 0) {
       const filtered = allInteractions.filter(
         interaction => interaction.investor_id === userId
       );
       setUserInteractions(filtered);
+    } else if (allInteractions.length > 0) {
+      // If we don't have a userId yet, show all interactions (demo mode)
+      setUserInteractions(allInteractions);
     }
   }, [allInteractions, userId]);
 
