@@ -1,5 +1,5 @@
 
-import { Link2, Eye } from "lucide-react";
+import { Link2, Eye, Activity } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export const Footer = () => {
@@ -28,6 +28,28 @@ export const Footer = () => {
           </div>
         </div>
 
+        {/* New Nodes Section */}
+        <div className="mb-16 py-6 border-t border-gray-800">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="mb-6 md:mb-0">
+              <h3 className="text-xl font-bold text-white mb-2">Network Nodes</h3>
+              <p className="text-gray-300">Powering our decentralized energy ecosystem</p>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center px-4 py-2 bg-gray-800 rounded-lg">
+                <Activity className="text-green-500 mr-2 w-5 h-5" />
+                <div>
+                  <div className="text-sm text-gray-400">Active Nodes</div>
+                  <div className="font-bold text-green-500">1,254+</div>
+                </div>
+              </div>
+              <Link to="/sign-up" className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors">
+                Become a Node
+              </Link>
+            </div>
+          </div>
+        </div>
+
         <div className="border-t border-gray-800 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center text-green-500 font-bold text-xl">
@@ -42,6 +64,7 @@ export const Footer = () => {
               <a href="#" className="hover:text-white transition-colors">Technology</a>
               <a href="#tokenomics" className="hover:text-white transition-colors">Tokenomics</a>
               <a href="#features" className="hover:text-white transition-colors">Governance</a>
+              <a href="#nodes" className="hover:text-white transition-colors">Nodes</a>
               <Link to="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link>
               <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
               <a href="mailto:info@noisai.tech" className="hover:text-white transition-colors">Contact</a>
