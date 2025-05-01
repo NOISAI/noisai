@@ -23,9 +23,9 @@ import { useToast } from "@/hooks/use-toast";
 
 // Mock data for documents
 const mockDocuments = [
-  { id: 1, name: "Investment Contract.pdf", type: "Contract", date: "2025-01-15", size: "2.4 MB" },
-  { id: 2, name: "Q1 Financial Report.pdf", type: "Report", date: "2025-04-05", size: "3.7 MB" },
-  { id: 3, name: "Term Sheet.pdf", type: "Agreement", date: "2025-01-10", size: "1.2 MB" },
+  { id: 1, name: "Investment Contract.pdf", type: "Contract", date: "2025-01-15", size: "2.4 MB", url: "/documents/investment-contract.pdf" },
+  { id: 2, name: "Q1 Financial Report.pdf", type: "Report", date: "2025-04-05", size: "3.7 MB", url: "/documents/q1-financial-report.pdf" },
+  { id: 3, name: "Term Sheet.pdf", type: "Agreement", date: "2025-01-10", size: "1.2 MB", url: "/documents/term-sheet.pdf" },
 ];
 
 const DocumentManagement = () => {
@@ -47,6 +47,38 @@ const DocumentManagement = () => {
       });
       setSelectedFile(null);
     }
+  };
+
+  const handleDownload = (document: typeof mockDocuments[0]) => {
+    // Create a download link for the document
+    const link = document.url;
+    
+    // In a real application with actual files, we would use:
+    // const link = document.url;
+    
+    // For this demo, we'll create a text file with mock content
+    const content = `This is a mock ${document.type.toLowerCase()} document: ${document.name}
+Generated for demo purposes on: ${new Date().toLocaleString()}
+File size would be: ${document.size}`;
+    
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    
+    // Create temporary anchor element and trigger download
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = document.name;
+    document.body.appendChild(a);
+    a.click();
+    
+    // Clean up
+    URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+
+    toast({
+      title: "Download Started",
+      description: `${document.name} is being downloaded.`,
+    });
   };
 
   return (
@@ -78,6 +110,7 @@ const DocumentManagement = () => {
                     <Button 
                       variant="outline" 
                       size="sm" 
+                      onClick={() => handleDownload(document)}
                       className="text-[#22C55E] border-gray-800 hover:bg-gray-800"
                     >
                       Download
