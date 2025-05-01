@@ -34,12 +34,20 @@ export default function InvestorManagement() {
   const handleAddInvestor = async (data: InvestorFormValues) => {
     setIsSubmitting(true);
     try {
-      await add(data);
-      setIsAddDialogOpen(false);
-      toast({
-        title: "Investor Added",
-        description: `${data.name} has been added successfully.`,
-      });
+      const newInvestor = await add(data);
+      if (newInvestor) {
+        setIsAddDialogOpen(false);
+        toast({
+          title: "Investor Added",
+          description: `${data.name} has been added successfully.`,
+        });
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to add investor. Please try again.",
+        });
+      }
     } catch (error) {
       console.error("Error adding investor:", error);
       toast({
@@ -64,8 +72,27 @@ export default function InvestorManagement() {
     
     setIsSubmitting(true);
     try {
-      await update(selectedInvestor.id, data);
-      setIsEditDialogOpen(false);
+      const success = await update(selectedInvestor.id, data);
+      if (success) {
+        setIsEditDialogOpen(false);
+        toast({
+          title: "Investor Updated",
+          description: `${data.name} has been updated successfully.`,
+        });
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to update investor. Please try again.",
+        });
+      }
+    } catch (error) {
+      console.error("Error updating investor:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to update investor. Please try again.",
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -83,8 +110,27 @@ export default function InvestorManagement() {
     
     setIsSubmitting(true);
     try {
-      await deleteInvestor(selectedInvestor.id);
-      setIsDeleteDialogOpen(false);
+      const success = await deleteInvestor(selectedInvestor.id);
+      if (success) {
+        setIsDeleteDialogOpen(false);
+        toast({
+          title: "Investor Deleted",
+          description: `${selectedInvestor.name} has been deleted.`,
+        });
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to delete investor. Please try again.",
+        });
+      }
+    } catch (error) {
+      console.error("Error deleting investor:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to delete investor. Please try again.",
+      });
     } finally {
       setIsSubmitting(false);
     }

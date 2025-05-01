@@ -35,45 +35,62 @@ export const useInvestors = (): {
 
   // Add a new investor
   const add = async (investor: Partial<Investor>) => {
-    const newInvestor = await addInvestorToSupabase(investor);
-    if (newInvestor) {
-      setInvestors(prev => [...prev, newInvestor]);
-      return newInvestor;
+    try {
+      const newInvestor = await addInvestorToSupabase(investor);
+      
+      if (newInvestor) {
+        // Add to local state
+        setInvestors(prev => [...prev, newInvestor]);
+        return newInvestor;
+      }
+      return undefined;
+    } catch (error) {
+      console.error('Error adding investor:', error);
+      return undefined;
     }
-    return undefined;
   };
 
   // Update an existing investor
   const update = async (id: string, updates: Partial<Investor>) => {
-    const success = await updateInvestorInSupabase(id, updates);
-    
-    if (success) {
-      // Update local state
-      setInvestors(prev => prev.map(investor => 
-        investor.id === id ? { ...investor, ...updates } : investor
-      ));
+    try {
+      const success = await updateInvestorInSupabase(id, updates);
+      
+      if (success) {
+        // Update local state
+        setInvestors(prev => prev.map(investor => 
+          investor.id === id ? { ...investor, ...updates } : investor
+        ));
+      }
+      
+      return success;
+    } catch (error) {
+      console.error('Error updating investor:', error);
+      return false;
     }
-    
-    return success;
   };
 
   // Delete an investor
   const deleteInvestor = async (id: string) => {
-    const success = await deleteInvestorFromSupabase(id);
-    
-    if (success) {
-      // Update local state
-      setInvestors(prev => prev.filter(investor => investor.id !== id));
+    try {
+      const success = await deleteInvestorFromSupabase(id);
+      
+      if (success) {
+        // Update local state
+        setInvestors(prev => prev.filter(investor => investor.id !== id));
+      }
+      
+      return success;
+    } catch (error) {
+      console.error('Error deleting investor:', error);
+      return false;
     }
-    
-    return success;
   };
 
   // Toggle investor status
   const toggleStatus = async (id: string, currentStatus: 'Active' | 'Inactive') => {
     const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active';
     try {
-      // Update local state only as Supabase doesn't have a status field
+      // Update local state
       setInvestors(prev => prev.map(investor => 
         investor.id === id ? { ...investor, status: newStatus as 'Active' | 'Inactive' } : investor
       ));
