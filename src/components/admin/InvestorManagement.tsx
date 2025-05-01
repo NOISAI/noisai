@@ -22,6 +22,7 @@ export default function InvestorManagement() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Filter investors based on search query
   const filteredInvestors = investors.filter(investor => 
@@ -31,8 +32,13 @@ export default function InvestorManagement() {
   
   // Handle add investor
   const handleAddInvestor = async (data: InvestorFormValues) => {
-    await add(data);
-    setIsAddDialogOpen(false);
+    setIsSubmitting(true);
+    try {
+      await add(data);
+      setIsAddDialogOpen(false);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   
   // Handle edit investor
@@ -45,8 +51,13 @@ export default function InvestorManagement() {
   const handleUpdateInvestor = async (data: InvestorFormValues) => {
     if (!selectedInvestor) return;
     
-    await update(selectedInvestor.id, data);
-    setIsEditDialogOpen(false);
+    setIsSubmitting(true);
+    try {
+      await update(selectedInvestor.id, data);
+      setIsEditDialogOpen(false);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   
   // Handle delete investor
@@ -59,8 +70,13 @@ export default function InvestorManagement() {
   const handleConfirmDelete = async () => {
     if (!selectedInvestor) return;
     
-    await deleteInvestor(selectedInvestor.id);
-    setIsDeleteDialogOpen(false);
+    setIsSubmitting(true);
+    try {
+      await deleteInvestor(selectedInvestor.id);
+      setIsDeleteDialogOpen(false);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   
   // Handle toggle investor status
@@ -86,9 +102,8 @@ export default function InvestorManagement() {
       <div className="flex items-center justify-between">
         <SearchBar 
           placeholder="Search investors..." 
-          value={searchQuery} 
-          onChange={(e) => setSearchQuery(e.target.value)} 
-          onClear={() => setSearchQuery("")} 
+          searchQuery={searchQuery} 
+          onSearchChange={setSearchQuery} 
         />
         <Button 
           onClick={() => setIsAddDialogOpen(true)} 
@@ -112,37 +127,48 @@ export default function InvestorManagement() {
       {/* Add Investor Dialog */}
       <CrudDialog 
         title="Add New Investor"
-        open={isAddDialogOpen}
+        description="Enter the details for the new investor."
+        isOpen={isAddDialogOpen}
         onOpenChange={setIsAddDialogOpen}
-        onSubmit={handleAddInvestor}
-        formComponent={(props) => <InvestorForm {...props} />}
-      />
+        onSubmit={() => {}}
+        onCancel={() => setIsAddDialogOpen(false)}
+        isSubmitting={isSubmitting}
+        submitLabel="Add Investor"
+      >
+        <InvestorForm onSubmit={handleAddInvestor} />
+      </CrudDialog>
       
       {/* Edit Investor Dialog */}
       <CrudDialog 
         title="Edit Investor"
-        open={isEditDialogOpen}
+        description="Update the investor details."
+        isOpen={isEditDialogOpen}
         onOpenChange={setIsEditDialogOpen}
-        onSubmit={handleUpdateInvestor}
-        formComponent={(props) => (
-          <InvestorForm 
-            {...props} 
-            defaultValues={selectedInvestor ? {
-              name: selectedInvestor.name,
-              email: selectedInvestor.email,
-              status: selectedInvestor.status
-            } : undefined}
-          />
-        )}
-      />
+        onSubmit={() => {}}
+        onCancel={() => setIsEditDialogOpen(false)}
+        isSubmitting={isSubmitting}
+        submitLabel="Update Investor"
+      >
+        <InvestorForm 
+          onSubmit={handleUpdateInvestor} 
+          defaultValues={selectedInvestor ? {
+            name: selectedInvestor.name,
+            email: selectedInvestor.email,
+            status: selectedInvestor.status
+          } : undefined}
+        />
+      </CrudDialog>
       
       {/* Delete Confirmation Dialog */}
       <ConfirmationDialog 
         title="Delete Investor"
         description="Are you sure you want to delete this investor? This action cannot be undone."
-        open={isDeleteDialogOpen}
+        isOpen={isDeleteDialogOpen}
         onOpenChange={setIsDeleteDialogOpen}
         onConfirm={handleConfirmDelete}
+        onCancel={() => setIsDeleteDialogOpen(false)}
+        isSubmitting={isSubmitting}
+        confirmLabel="Delete"
       />
     </div>
   );
