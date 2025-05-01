@@ -12,6 +12,7 @@ import SignIn from "./pages/Auth/SignIn";
 import SignUp from "./pages/Auth/SignUp";
 import InvestorDashboard from "./pages/InvestorDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import NodeDashboard from "./pages/NodeDashboard";
 import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import AdminProtectedRoute from "./components/auth/AdminProtectedRoute";
@@ -90,6 +91,14 @@ const App = () => (
               <AdminProtectedRoute>
                 <AdminDashboard />
               </AdminProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/node-dashboard/*" 
+            element={
+              <ProtectedRoute>
+                <NodeDashboard />
+              </ProtectedRoute>
             } 
           />
           <Route path="/terms-of-service" element={<TermsOfService />} />
