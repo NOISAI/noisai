@@ -22,7 +22,7 @@ export function AuthWrapper({ mode }: AuthWrapperProps) {
       // Check if user is admin
       const isAdmin = user.primaryEmailAddress?.emailAddress === "info@noisai.tech";
       
-      // Redirect to appropriate dashboard
+      // Redirect admin directly to admin dashboard, others to investor dashboard
       if (isAdmin) {
         navigate("/admin-dashboard");
       } else {
@@ -70,7 +70,6 @@ export function AuthWrapper({ mode }: AuthWrapperProps) {
             }
           }}
           signUpUrl="/sign-up"
-          fallbackRedirectUrl="/investor-dashboard"
         />
       ) : (
         <ClerkSignUp 
@@ -94,7 +93,6 @@ export function AuthWrapper({ mode }: AuthWrapperProps) {
             }
           }}
           signInUrl="/sign-in"
-          fallbackRedirectUrl="/investor-dashboard"
         />
       )}
     </div>

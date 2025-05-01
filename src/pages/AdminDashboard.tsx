@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 // Import admin components
 import InvestorManagement from "@/components/admin/InvestorManagement";
@@ -24,6 +25,7 @@ import { useReports } from "@/hooks/useReports";
 export default function AdminDashboard() {
   const { user } = useUser();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("investors");
   const [searchQuery, setSearchQuery] = useState("");
   
@@ -77,6 +79,11 @@ export default function AdminDashboard() {
     // The InvestorManagement component handles the actual form dialog
     document.querySelector<HTMLButtonElement>('[data-add-investor-button="true"]')?.click();
   };
+
+  // Update to redirect to home page when exiting admin mode
+  const handleExitAdmin = () => {
+    navigate("/");
+  };
   
   return (
     <div className="min-h-screen bg-black text-white">
@@ -101,7 +108,7 @@ export default function AdminDashboard() {
             <Button 
               variant="ghost" 
               className="text-gray-400 hover:text-white"
-              onClick={() => window.location.href = "/investor-dashboard"}
+              onClick={handleExitAdmin}
             >
               Exit Admin Mode
             </Button>
