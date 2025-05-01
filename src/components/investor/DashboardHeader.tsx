@@ -1,8 +1,9 @@
 
-import { Wallet } from "lucide-react";
+import { Wallet, UserCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useClerk } from "@clerk/clerk-react";
+import { useClerk, useUser } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 interface DashboardHeaderProps {
   walletAddress: string | null;
@@ -12,6 +13,7 @@ interface DashboardHeaderProps {
 
 const DashboardHeader = ({ walletAddress, isConnecting, connectWallet }: DashboardHeaderProps) => {
   const { signOut } = useClerk();
+  const { user } = useUser();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -47,6 +49,20 @@ const DashboardHeader = ({ walletAddress, isConnecting, connectWallet }: Dashboa
               {isConnecting ? "Connecting..." : "Connect Wallet"}
             </Button>
           )}
+          
+          <div className="flex items-center gap-3">
+            <Avatar className="h-8 w-8 border border-gray-700">
+              <AvatarImage src={user?.imageUrl} alt={user?.fullName || "User"} />
+              <AvatarFallback className="bg-gray-800 text-gray-400">
+                <UserCircle className="h-5 w-5" />
+              </AvatarFallback>
+            </Avatar>
+            <div className="hidden sm:flex flex-col">
+              <span className="font-medium text-white text-sm">{user?.fullName || user?.username}</span>
+              <span className="text-xs text-gray-400">{user?.primaryEmailAddress?.emailAddress}</span>
+            </div>
+          </div>
+          
           <Button 
             variant="ghost" 
             className="text-gray-400 hover:text-white"
