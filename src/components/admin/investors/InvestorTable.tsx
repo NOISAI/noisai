@@ -54,6 +54,7 @@ export default function InvestorTable({
             <TableHead className="text-gray-300">Name</TableHead>
             <TableHead className="text-gray-300">Email</TableHead>
             <TableHead className="text-gray-300">Status</TableHead>
+            <TableHead className="text-gray-300">Investor Type</TableHead>
             <TableHead className="text-gray-300">Total Invested</TableHead>
             <TableHead className="text-gray-300">Last Interaction</TableHead>
             <TableHead className="text-gray-300 text-right">Actions</TableHead>
@@ -73,6 +74,7 @@ export default function InvestorTable({
                   {investor.status}
                 </span>
               </TableCell>
+              <TableCell>{investor.investor_type || "Individual"}</TableCell>
               <TableCell>{formatCurrency(investor.total_invested)}</TableCell>
               <TableCell>{formatDate(investor.last_interaction)}</TableCell>
               <TableCell className="text-right">

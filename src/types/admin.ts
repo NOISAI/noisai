@@ -7,6 +7,7 @@ export interface Investor {
   total_invested: number;
   last_interaction: string;
   created_at: string;
+  investor_type?: string;
 }
 
 export interface Interaction {
