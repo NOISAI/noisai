@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useUser } from "@clerk/clerk-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -53,6 +52,48 @@ const ProfileManagement = () => {
     },
   });
 
+  // Check if a profile exists for the user and create one if it doesn't
+  const ensureProfileExists = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from("user_profiles")
+        .select("*")
+        .eq("id", userId)
+        .maybeSingle();
+      
+      if (error) {
+        console.error("Error checking profile:", error);
+        return false;
+      }
+      
+      // If profile doesn't exist, create one
+      if (!data) {
+        const { error: insertError } = await supabase
+          .from("user_profiles")
+          .insert({
+            id: userId,
+            full_name: user?.fullName || "",
+            email: user?.primaryEmailAddress?.emailAddress || "",
+            investor_type: "individual",
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          });
+          
+        if (insertError) {
+          console.error("Error creating profile:", insertError);
+          return false;
+        }
+        
+        return true;
+      }
+      
+      return true;
+    } catch (error) {
+      console.error("Unexpected error:", error);
+      return false;
+    }
+  };
+
   // Fetch user profile data
   useEffect(() => {
     const fetchProfile = async () => {
@@ -60,6 +101,20 @@ const ProfileManagement = () => {
       
       try {
         setLoading(true);
+        
+        // Ensure profile exists before fetching
+        const profileExists = await ensureProfileExists(user.id);
+        
+        if (!profileExists) {
+          toast({
+            variant: "destructive",
+            title: "Profile Error",
+            description: "Could not load or create your profile.",
+          });
+          setLoading(false);
+          return;
+        }
+        
         const { data, error } = await supabase
           .from("user_profiles")
           .select("*")

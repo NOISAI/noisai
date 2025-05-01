@@ -24,21 +24,27 @@ export const useReports = () => {
       setLoading(true);
       setError(null);
       
+      // Since there's no "reports" table yet in our Supabase schema,
+      // we'll use the mock data directly for now
+      setReports(mockReports);
+      
+      // In the future, when you create a reports table in Supabase:
+      /* 
       const { data, error } = await supabase
         .from('reports')
         .select('*')
         .order('created_at', { ascending: false });
       
-      if (error) {
-        console.error("Error fetching reports:", error);
-        toast({
-          title: 'Using Demo Mode',
-          description: 'Connected to sample report data.',
-        });
-        setReports(mockReports);
-      } else {
-        setReports(data as Report[]);
-      }
+      if (error) throw error;
+      setReports(data as Report[]);
+      */
+      
+      // Show toast for clarity
+      toast({
+        title: 'Using Demo Mode',
+        description: 'Connected to sample report data.',
+      });
+      
     } catch (err: any) {
       console.error("Failed to fetch reports:", err);
       setError(err.message);
@@ -57,60 +63,20 @@ export const useReports = () => {
     try {
       setGenerating(true);
 
-      // This would connect to a server function in a real app
-      // For now, we'll simulate report generation
-      let newReport: Report;
+      // Generate a mock report since we don't have a reports table yet
+      const mockReportId = `report-${Date.now()}`;
+      const newReport: Report = {
+        id: mockReportId,
+        name: `${type} Report - ${new Date().toLocaleDateString()}`,
+        type,
+        created_at: new Date().toISOString(),
+        file_url: `https://example.com/reports/${type.toLowerCase()}-${Date.now()}.pdf`
+      };
       
-      try {
-        const { data, error } = await supabase
-          .from('reports')
-          .insert([{
-            name: `${type} Report - ${new Date().toLocaleDateString()}`,
-            type,
-            created_at: new Date().toISOString(),
-            file_url: null // In a real app, this would be updated with the actual file URL
-          }])
-          .select();
-        
-        if (error) throw error;
-        
-        // Simulate processing time
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        // Update with fake file URL
-        const { data: updatedData, error: updateError } = await supabase
-          .from('reports')
-          .update({
-            file_url: `https://example.com/reports/${type.toLowerCase()}-${Date.now()}.pdf`
-          })
-          .eq('id', data[0].id)
-          .select();
-        
-        if (updateError) throw updateError;
-        
-        newReport = updatedData![0] as Report;
-      } catch (err) {
-        // If database operations fail, create a mock report
-        console.error("Database error during report generation:", err);
-        
-        const mockReportId = `report-${Date.now()}`;
-        newReport = {
-          id: mockReportId,
-          name: `${type} Report - ${new Date().toLocaleDateString()}`,
-          type,
-          created_at: new Date().toISOString(),
-          file_url: `https://example.com/reports/${type.toLowerCase()}-${Date.now()}.pdf`
-        };
-        
-        // Simulate processing time for consistency
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        toast({
-          title: 'Demo Mode',
-          description: 'Generated a mock report since database is not available.',
-        });
-      }
+      // Simulate processing time
+      await new Promise(resolve => setTimeout(resolve, 1500));
       
+      // Update local state
       setReports(prev => [newReport, ...prev]);
       
       toast({

@@ -10,7 +10,15 @@ export const fetchInvestments = async (): Promise<{
   usedMockData: boolean;
 }> => {
   try {
-    // Attempt to fetch from Supabase - this will fail if table doesn't exist yet
+    // Since there's no "investments" table yet in our Supabase schema,
+    // we'll use the mock data directly
+    return {
+      data: mockInvestments,
+      error: "Investments table does not exist yet. Using mock data.",
+      usedMockData: true
+    };
+    
+    /* For future use when the investments table exists:
     const { data, error } = await supabase
       .from('investments')
       .select('*, investor:investor_id(name)')
@@ -43,6 +51,7 @@ export const fetchInvestments = async (): Promise<{
       error: null,
       usedMockData: false
     };
+    */
   } catch (err: any) {
     console.error("Failed to fetch investments:", err);
     // Fall back to mock data
@@ -60,42 +69,32 @@ export const addInvestment = async (investment: Omit<Investment, 'id' | 'created
   error: string | null;
 }> => {
   try {
-    const { data, error } = await supabase
-      .from('investments')
-      .insert([{
-        ...investment,
-        created_at: new Date().toISOString(),
-      }])
-      .select('*, investor:investor_id(name)')
-      .single();
-    
-    if (error) throw error;
-    
-    // Type assertion to handle the returned data format
-    const formattedData = {
-      id: data.id,
-      investor_id: data.investor_id || '',
-      investor_name: data.investor?.name || 'Unknown',
-      amount: data.amount || 0,
-      date: data.date || new Date().toISOString().split('T')[0],
-      type: data.type || '',
-      status: data.status || 'Processing',
-      created_at: data.created_at
-    } as Investment;
-    
-    return {
-      data: formattedData,
-      error: null
-    };
-  } catch (err: any) {
-    console.error("Failed to add investment:", err);
-    
     // Simulate a successful response with mock data in development
     const mockId = `mock-${Date.now()}`;
     const newInvestment: Investment = {
       id: mockId,
       investor_id: investment.investor_id,
       investor_name: 'Unknown', // In a mock environment, we don't have the investor name
+      amount: investment.amount,
+      date: investment.date,
+      type: investment.type,
+      status: investment.status,
+      created_at: new Date().toISOString()
+    };
+    
+    return {
+      data: newInvestment,
+      error: "Using mock data - no investments table exists yet."
+    };
+  } catch (err: any) {
+    console.error("Failed to add investment:", err);
+    
+    // Still return a mock investment for the demo
+    const mockId = `mock-${Date.now()}`;
+    const newInvestment: Investment = {
+      id: mockId,
+      investor_id: investment.investor_id,
+      investor_name: 'Unknown',
       amount: investment.amount,
       date: investment.date,
       type: investment.type,
@@ -116,34 +115,6 @@ export const updateInvestment = async (id: string, updates: Partial<Investment>)
   error: string | null;
 }> => {
   try {
-    const { data, error } = await supabase
-      .from('investments')
-      .update(updates)
-      .eq('id', id)
-      .select('*, investor:investor_id(name)')
-      .single();
-    
-    if (error) throw error;
-    
-    // Type assertion to handle the returned data
-    const formattedData = {
-      id: data.id,
-      investor_id: data.investor_id || '',
-      investor_name: data.investor?.name || 'Unknown',
-      amount: data.amount || 0,
-      date: data.date || '',
-      type: data.type || '',
-      status: data.status || 'Processing',
-      created_at: data.created_at
-    } as Investment;
-    
-    return {
-      data: formattedData,
-      error: null
-    };
-  } catch (err: any) {
-    console.error("Failed to update investment:", err);
-    
     // For development purposes, return a simulated successful update
     const updatedInvestment = mockInvestments.find(i => i.id === id);
     
@@ -155,9 +126,16 @@ export const updateInvestment = async (id: string, updates: Partial<Investment>)
       
       return {
         data: updatedData as Investment,
-        error: err.message
+        error: "Using mock data - no investments table exists yet."
       };
     }
+    
+    return {
+      data: null,
+      error: "Investment not found"
+    };
+  } catch (err: any) {
+    console.error("Failed to update investment:", err);
     
     return {
       data: null,
@@ -171,20 +149,13 @@ export const deleteInvestment = async (id: string): Promise<{
   error: string | null;
 }> => {
   try {
-    const { error } = await supabase
-      .from('investments')
-      .delete()
-      .eq('id', id);
-    
-    if (error) throw error;
-    
+    // For development purposes, pretend the delete succeeded
     return {
-      error: null
+      error: "Using mock data - no investments table exists yet."
     };
   } catch (err: any) {
     console.error("Failed to delete investment:", err);
     
-    // For development purposes, pretend the delete succeeded
     return {
       error: err.message
     };
