@@ -1,4 +1,4 @@
-
+import { ethers } from "ethers";
 import { SEPOLIA_NETWORK_CONFIG, TOKEN_CONTRACTS } from "@/types/investment";
 
 // ABI for ERC20 token interactions (expanded to include balance checking)
