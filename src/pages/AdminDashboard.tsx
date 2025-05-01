@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -13,8 +14,6 @@ import AdminSearchBar from "@/components/admin/AdminSearchBar";
 import DashboardStats from "@/components/admin/DashboardStats";
 import WelcomeAlert from "@/components/admin/WelcomeAlert";
 import DashboardTabs from "@/components/admin/DashboardTabs";
-import ProfileRequests from "@/components/admin/ProfileRequests";
-import { TabsContent } from "@/components/ui/tabs";
 
 export default function AdminDashboard() {
   const { toast } = useToast();
@@ -103,13 +102,7 @@ export default function AdminDashboard() {
             { id: "reports", label: "Reports" },
             { id: "profile-requests", label: "Profile Requests" }
           ]}
-        >
-          {/* Existing tab content will be kept */}
-          
-          <TabsContent value="profile-requests">
-            <ProfileRequests />
-          </TabsContent>
-        </DashboardTabs>
+        />
       </main>
     </div>
   );

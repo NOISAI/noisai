@@ -29,11 +29,17 @@ type ProfileUpdateRequest = {
   full_name: string;
   email: string;
   investor_type: string;
-  tax_id: string;
+  tax_id: string | null;
   status: 'pending' | 'approved' | 'rejected';
   requested_at: string;
   updated_at?: string;
 };
+
+type EmptyStateProps = {
+  title?: string; 
+  description?: string;
+  icon?: React.ReactNode;
+}
 
 const ProfileRequests = () => {
   const { toast } = useToast();
@@ -176,9 +182,9 @@ const ProfileRequests = () => {
   if (requests.length === 0) {
     return (
       <EmptyState 
+        icon={<Info className="h-12 w-12 text-gray-400" />} 
         title="No Profile Update Requests" 
         description="There are currently no pending profile update requests."
-        icon={<Info className="h-12 w-12 text-gray-400" />}
       />
     );
   }
