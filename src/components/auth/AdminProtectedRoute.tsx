@@ -11,7 +11,7 @@ const AdminProtectedRoute = ({ children }: AdminProtectedRouteProps) => {
   const { user } = useUser();
   
   // Check if user is signed in and has admin email
-  const isAdmin = isSignedIn && user?.primaryEmailAddress?.emailAddress === "mraptis77@gmail.com";
+  const isAdmin = isSignedIn && user?.primaryEmailAddress?.emailAddress === "info@noisai.tech";
 
   if (!isSignedIn) {
     return <Navigate to="/sign-in" replace />;

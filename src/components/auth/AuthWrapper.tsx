@@ -20,7 +20,7 @@ export function AuthWrapper({ mode }: AuthWrapperProps) {
   useEffect(() => {
     if (isSignedIn && user) {
       // Check if user is admin
-      const isAdmin = user.primaryEmailAddress?.emailAddress === "mraptis77@gmail.com";
+      const isAdmin = user.primaryEmailAddress?.emailAddress === "info@noisai.tech";
       
       // Redirect to appropriate dashboard
       if (isAdmin) {
