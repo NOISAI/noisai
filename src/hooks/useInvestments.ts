@@ -1,8 +1,13 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
 import { Investment } from '@/types/admin';
 import { useToast } from '@/hooks/use-toast';
+import { 
+  fetchInvestments as fetchInvestmentsService,
+  addInvestment as addInvestmentService,
+  updateInvestment as updateInvestmentService,
+  deleteInvestment as deleteInvestmentService
+} from '@/services/investmentService';
 
 export const useInvestments = () => {
   const [investments, setInvestments] = useState<Investment[]>([]);
@@ -15,26 +20,23 @@ export const useInvestments = () => {
       setLoading(true);
       setError(null);
       
-      const { data, error } = await supabase
-        .from('investments')
-        .select('*, investors(name)')
-        .order('date', { ascending: false });
+      const { data, error: fetchError, usedMockData } = await fetchInvestmentsService();
       
-      if (error) throw error;
+      if (fetchError) {
+        setError(fetchError);
+        toast({
+          title: 'Error',
+          description: 'Failed to load investments. Using demo data instead.',
+          variant: 'destructive',
+        });
+      } else if (usedMockData) {
+        toast({
+          title: 'Using Demo Mode',
+          description: 'Connected to sample investment data',
+        });
+      }
       
-      const formattedData = data?.map(item => ({
-        ...item,
-        investor_name: item.investors.name
-      })) || [];
-      
-      setInvestments(formattedData);
-    } catch (err: any) {
-      setError(err.message);
-      toast({
-        title: 'Error',
-        description: `Failed to load investments: ${err.message}`,
-        variant: 'destructive',
-      });
+      setInvestments(data);
     } finally {
       setLoading(false);
     }
@@ -42,38 +44,24 @@ export const useInvestments = () => {
 
   const addInvestment = async (investment: Omit<Investment, 'id' | 'created_at' | 'investor_name'>) => {
     try {
-      // Get investor name
-      const { data: investorData, error: investorError } = await supabase
-        .from('investors')
-        .select('name')
-        .eq('id', investment.investor_id)
-        .single();
+      const { data, error: addError } = await addInvestmentService(investment);
       
-      if (investorError) throw investorError;
+      if (addError) {
+        toast({
+          title: 'Warning',
+          description: 'Connected to demo mode. Changes won\'t be saved.',
+          variant: 'destructive',
+        });
+      }
       
-      const { data, error } = await supabase
-        .from('investments')
-        .insert([{
-          ...investment,
-          created_at: new Date().toISOString(),
-        }])
-        .select();
-      
-      if (error) throw error;
-      
-      const newInvestment = {
-        ...data![0],
-        investor_name: investorData.name
-      };
-      
-      setInvestments(prev => [newInvestment, ...prev]);
+      setInvestments(prev => [data, ...prev]);
       
       toast({
         title: 'Success',
         description: 'Investment added successfully',
       });
       
-      return newInvestment;
+      return data;
     } catch (err: any) {
       toast({
         title: 'Error',
@@ -86,26 +74,30 @@ export const useInvestments = () => {
 
   const updateInvestment = async (id: string, updates: Partial<Investment>) => {
     try {
-      const { data, error } = await supabase
-        .from('investments')
-        .update(updates)
-        .eq('id', id)
-        .select();
+      const { data, error: updateError } = await updateInvestmentService(id, updates);
       
-      if (error) throw error;
+      if (updateError) {
+        toast({
+          title: 'Warning',
+          description: 'Connected to demo mode. Changes won\'t be saved.',
+          variant: 'destructive',
+        });
+      }
       
-      setInvestments(prev => 
-        prev.map(investment => 
-          investment.id === id ? { ...investment, ...updates } : investment
-        )
-      );
+      if (data) {
+        setInvestments(prev => 
+          prev.map(investment => 
+            investment.id === id ? { ...investment, ...updates } : investment
+          )
+        );
+      }
       
       toast({
         title: 'Success',
         description: 'Investment updated successfully',
       });
       
-      return data?.[0];
+      return data;
     } catch (err: any) {
       toast({
         title: 'Error',
@@ -118,12 +110,15 @@ export const useInvestments = () => {
 
   const deleteInvestment = async (id: string) => {
     try {
-      const { error } = await supabase
-        .from('investments')
-        .delete()
-        .eq('id', id);
+      const { error: deleteError } = await deleteInvestmentService(id);
       
-      if (error) throw error;
+      if (deleteError) {
+        toast({
+          title: 'Warning',
+          description: 'Connected to demo mode. Changes won\'t be saved.',
+          variant: 'destructive',
+        });
+      }
       
       setInvestments(prev => prev.filter(investment => investment.id !== id));
       
