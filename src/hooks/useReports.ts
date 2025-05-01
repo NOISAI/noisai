@@ -6,6 +6,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useInvestors } from './useInvestors';
 import { useInteractions } from './useInteractions';
 import { useInvestments } from './useInvestments';
+import { mockReports } from '@/data/mockReports';
 
 export const useReports = () => {
   const [reports, setReports] = useState<Report[]>([]);
@@ -28,16 +29,25 @@ export const useReports = () => {
         .select('*')
         .order('created_at', { ascending: false });
       
-      if (error) throw error;
-      
-      setReports(data || []);
+      if (error) {
+        console.error("Error fetching reports:", error);
+        toast({
+          title: 'Using Demo Mode',
+          description: 'Connected to sample report data.',
+        });
+        setReports(mockReports);
+      } else {
+        setReports(data as Report[]);
+      }
     } catch (err: any) {
+      console.error("Failed to fetch reports:", err);
       setError(err.message);
       toast({
         title: 'Error',
-        description: `Failed to load reports: ${err.message}`,
+        description: `Failed to load reports. Using demo data instead.`,
         variant: 'destructive',
       });
+      setReports(mockReports);
     } finally {
       setLoading(false);
     }
@@ -49,42 +59,66 @@ export const useReports = () => {
 
       // This would connect to a server function in a real app
       // For now, we'll simulate report generation
+      let newReport: Report;
       
-      // Create report entry
-      const { data, error } = await supabase
-        .from('reports')
-        .insert([{
+      try {
+        const { data, error } = await supabase
+          .from('reports')
+          .insert([{
+            name: `${type} Report - ${new Date().toLocaleDateString()}`,
+            type,
+            created_at: new Date().toISOString(),
+            file_url: null // In a real app, this would be updated with the actual file URL
+          }])
+          .select();
+        
+        if (error) throw error;
+        
+        // Simulate processing time
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        // Update with fake file URL
+        const { data: updatedData, error: updateError } = await supabase
+          .from('reports')
+          .update({
+            file_url: `https://example.com/reports/${type.toLowerCase()}-${Date.now()}.pdf`
+          })
+          .eq('id', data[0].id)
+          .select();
+        
+        if (updateError) throw updateError;
+        
+        newReport = updatedData![0] as Report;
+      } catch (err) {
+        // If database operations fail, create a mock report
+        console.error("Database error during report generation:", err);
+        
+        const mockReportId = `report-${Date.now()}`;
+        newReport = {
+          id: mockReportId,
           name: `${type} Report - ${new Date().toLocaleDateString()}`,
           type,
           created_at: new Date().toISOString(),
-          file_url: null // In a real app, this would be updated with the actual file URL
-        }])
-        .select();
-      
-      if (error) throw error;
-      
-      // Simulate processing time
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Update with fake file URL
-      const { data: updatedData, error: updateError } = await supabase
-        .from('reports')
-        .update({
           file_url: `https://example.com/reports/${type.toLowerCase()}-${Date.now()}.pdf`
-        })
-        .eq('id', data[0].id)
-        .select();
+        };
+        
+        // Simulate processing time for consistency
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        toast({
+          title: 'Demo Mode',
+          description: 'Generated a mock report since database is not available.',
+        });
+      }
       
-      if (updateError) throw updateError;
-      
-      setReports(prev => [updatedData![0], ...prev]);
+      setReports(prev => [newReport, ...prev]);
       
       toast({
         title: 'Success',
         description: `${type} report generated successfully`,
       });
       
-      return updatedData?.[0];
+      return newReport;
     } catch (err: any) {
       toast({
         title: 'Error',

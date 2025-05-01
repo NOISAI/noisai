@@ -19,6 +19,7 @@ import { initEmailJS } from "@/services/emailService";
 import InvestmentTable from "@/components/investor/InvestmentTable";
 import InvestmentForm from "@/components/investor/investment-form/InvestmentForm";
 import { Investment } from "@/types/investment";
+import { convertInvestmentsForInvestor } from "@/utils/typeAdapters";
 
 const InvestmentsList = () => {
   const [selectedInvestment, setSelectedInvestment] = useState<Investment | null>(null);
@@ -28,6 +29,9 @@ const InvestmentsList = () => {
   useEffect(() => {
     initEmailJS();
   }, []);
+
+  // Convert admin investments to investor investments format
+  const investmentsForInvestors = convertInvestmentsForInvestor(mockInvestments);
 
   const handleInvestClick = (investment: Investment) => {
     setSelectedInvestment(investment);
@@ -50,7 +54,7 @@ const InvestmentsList = () => {
       </CardHeader>
       <CardContent>
         <InvestmentTable 
-          investments={mockInvestments}
+          investments={investmentsForInvestors}
           onInvestClick={handleInvestClick}
         />
         

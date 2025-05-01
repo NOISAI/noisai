@@ -10,10 +10,7 @@ export const fetchInvestments = async (): Promise<{
   usedMockData: boolean;
 }> => {
   try {
-    // Since we know the investments table doesn't exist yet, we'll use mock data
-    // In a real implementation, this would query a real investments table
-    
-    // This is just to show intent - we know it will fail in the current database state
+    // Attempt to fetch from Supabase - this will fail if table doesn't exist yet
     const { data, error } = await supabase
       .from('investments')
       .select('*, investor:investor_id(name)')
@@ -29,17 +26,17 @@ export const fetchInvestments = async (): Promise<{
       };
     }
     
-    // Format the data
+    // Format the data with proper type assertion
     const formattedData = data.map(item => ({
       id: item.id,
-      investor_id: item.investor_id,
+      investor_id: item.investor_id || '',
       investor_name: item.investor?.name || 'Unknown',
-      amount: item.amount,
-      date: item.date,
-      type: item.type,
-      status: item.status,
+      amount: item.amount || 0,
+      date: item.date || new Date().toISOString().split('T')[0],
+      type: item.type || '',
+      status: item.status || 'Processing',
       created_at: item.created_at
-    }));
+    })) as Investment[];
     
     return {
       data: formattedData,
@@ -63,7 +60,6 @@ export const addInvestment = async (investment: Omit<Investment, 'id' | 'created
   error: string | null;
 }> => {
   try {
-    // In a real implementation, this would insert into the investments table
     const { data, error } = await supabase
       .from('investments')
       .insert([{
@@ -75,17 +71,17 @@ export const addInvestment = async (investment: Omit<Investment, 'id' | 'created
     
     if (error) throw error;
     
-    // Format the returned data
+    // Type assertion to handle the returned data format
     const formattedData = {
       id: data.id,
-      investor_id: data.investor_id,
+      investor_id: data.investor_id || '',
       investor_name: data.investor?.name || 'Unknown',
-      amount: data.amount,
-      date: data.date,
-      type: data.type,
-      status: data.status,
+      amount: data.amount || 0,
+      date: data.date || new Date().toISOString().split('T')[0],
+      type: data.type || '',
+      status: data.status || 'Processing',
       created_at: data.created_at
-    };
+    } as Investment;
     
     return {
       data: formattedData,
@@ -120,7 +116,6 @@ export const updateInvestment = async (id: string, updates: Partial<Investment>)
   error: string | null;
 }> => {
   try {
-    // In a real implementation, this would update the investments table
     const { data, error } = await supabase
       .from('investments')
       .update(updates)
@@ -130,17 +125,17 @@ export const updateInvestment = async (id: string, updates: Partial<Investment>)
     
     if (error) throw error;
     
-    // Format the returned data
+    // Type assertion to handle the returned data
     const formattedData = {
       id: data.id,
-      investor_id: data.investor_id,
+      investor_id: data.investor_id || '',
       investor_name: data.investor?.name || 'Unknown',
-      amount: data.amount,
-      date: data.date,
-      type: data.type,
-      status: data.status,
+      amount: data.amount || 0,
+      date: data.date || '',
+      type: data.type || '',
+      status: data.status || 'Processing',
       created_at: data.created_at
-    };
+    } as Investment;
     
     return {
       data: formattedData,
@@ -150,7 +145,6 @@ export const updateInvestment = async (id: string, updates: Partial<Investment>)
     console.error("Failed to update investment:", err);
     
     // For development purposes, return a simulated successful update
-    // In production, this would properly handle the error
     const updatedInvestment = mockInvestments.find(i => i.id === id);
     
     if (updatedInvestment) {
@@ -177,7 +171,6 @@ export const deleteInvestment = async (id: string): Promise<{
   error: string | null;
 }> => {
   try {
-    // In a real implementation, this would delete from the investments table
     const { error } = await supabase
       .from('investments')
       .delete()
