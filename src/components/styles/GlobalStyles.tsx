@@ -30,6 +30,15 @@ export const GlobalStyles = () => {
           border-color: #22C55E;
           transform: scale(1.05) translateZ(20px);
         }
+        
+        /* Error message styling */
+        .error-message {
+          @apply bg-red-950/30 border border-red-900 text-red-300 p-3 rounded-md;
+        }
+        
+        .error-title {
+          @apply text-red-400 font-semibold mb-1;
+        }
 
         @keyframes gradient {
           0% { background-position: 0% 50%; }
