@@ -13,7 +13,7 @@ export const useRolePermissions = () => {
     if (isLoaded && user) {
       // In a real application, this would come from your database
       // For now, we're using email to determine roles
-      const email = user.primaryEmailAddress?.emailAddress;
+      const email = user.primaryEmailAddress?.emailAddress?.toLowerCase();
       
       if (email === "info@noisai.tech") {
         setUserRole("admin");
@@ -24,6 +24,9 @@ export const useRolePermissions = () => {
       } else if (email?.includes("business@")) {
         setUserRole("business");
         setPermissions(rolePermissions.business);
+      } else if (email === "mraptis77@gmail.com") {
+        setUserRole("user");
+        setPermissions(rolePermissions.user);
       } else {
         setUserRole("user");
         setPermissions(rolePermissions.user);
