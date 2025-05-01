@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Investor } from '@/types/admin';
+import { InvestorCrudOperations } from '@/types/investor';
 import { 
   fetchInvestors, 
   addInvestorToSupabase, 
@@ -8,7 +9,10 @@ import {
   deleteInvestorFromSupabase
 } from '@/services/investorService';
 
-export const useInvestors = () => {
+export const useInvestors = (): {
+  investors: Investor[];
+  loading: boolean;
+} & InvestorCrudOperations => {
   const [investors, setInvestors] = useState<Investor[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -30,7 +34,7 @@ export const useInvestors = () => {
   }, []);
 
   // Add a new investor
-  const addInvestor = async (investor: Partial<Investor>) => {
+  const add = async (investor: Partial<Investor>) => {
     const newInvestor = await addInvestorToSupabase(investor);
     if (newInvestor) {
       setInvestors(prev => [...prev, newInvestor]);
@@ -40,7 +44,7 @@ export const useInvestors = () => {
   };
 
   // Update an existing investor
-  const updateInvestor = async (id: string, updates: Partial<Investor>) => {
+  const update = async (id: string, updates: Partial<Investor>) => {
     const success = await updateInvestorInSupabase(id, updates);
     
     if (success) {
@@ -49,6 +53,8 @@ export const useInvestors = () => {
         investor.id === id ? { ...investor, ...updates } : investor
       ));
     }
+    
+    return success;
   };
 
   // Delete an investor
@@ -59,10 +65,12 @@ export const useInvestors = () => {
       // Update local state
       setInvestors(prev => prev.filter(investor => investor.id !== id));
     }
+    
+    return success;
   };
 
   // Toggle investor status
-  const toggleInvestorStatus = async (id: string, currentStatus: 'Active' | 'Inactive') => {
+  const toggleStatus = async (id: string, currentStatus: 'Active' | 'Inactive') => {
     const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active';
     try {
       // Update local state only as Supabase doesn't have a status field
@@ -77,5 +85,12 @@ export const useInvestors = () => {
     }
   };
 
-  return { investors, loading, addInvestor, updateInvestor, deleteInvestor, toggleInvestorStatus };
+  return { 
+    investors, 
+    loading, 
+    add, 
+    update, 
+    delete: deleteInvestor, 
+    toggleStatus 
+  };
 };

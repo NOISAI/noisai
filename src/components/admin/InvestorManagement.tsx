@@ -1,197 +1,149 @@
 
-import { useState, useRef } from "react";
-import { Button } from "@/components/ui/button";
-import { UserPlus } from "lucide-react";
+import { useState } from "react";
 import { useInvestors } from "@/hooks/useInvestors";
-import { searchInvestors } from "@/utils/adminUtils";
 import { Investor } from "@/types/admin";
+import { Button } from "@/components/ui/button";
+import { PlusCircle } from "lucide-react";
+import SearchBar from "@/components/admin/shared/SearchBar";
+import InvestorTable from "@/components/admin/investors/InvestorTable";
+import CrudDialog from "@/components/admin/shared/CrudDialog";
+import InvestorForm, { InvestorFormValues } from "@/components/admin/investors/InvestorForm";
+import ConfirmationDialog from "@/components/admin/shared/ConfirmationDialog";
+import { useToast } from "@/hooks/use-toast";
 
-// Import shared components
-import SearchBar from "./shared/SearchBar";
-import CrudDialog from "./shared/CrudDialog";
-import ConfirmationDialog from "./shared/ConfirmationDialog";
-
-// Import investor-specific components
-import InvestorForm, { InvestorFormValues } from "./investors/InvestorForm";
-import InvestorTable from "./investors/InvestorTable";
-
-const InvestorManagement = () => {
-  const { investors, loading, addInvestor, updateInvestor, deleteInvestor, toggleInvestorStatus } = useInvestors();
+export default function InvestorManagement() {
+  // Get investors data and CRUD operations from custom hook
+  const { investors, loading, add, update, delete: deleteInvestor, toggleStatus } = useInvestors();
+  const { toast } = useToast();
+  
+  // Local component state
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedInvestor, setSelectedInvestor] = useState<Investor | null>(null);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [currentInvestor, setCurrentInvestor] = useState<Investor | null>(null);
-  const [submitting, setSubmitting] = useState(false);
   
-  const addFormRef = useRef<HTMLFormElement>(null);
-  const editFormRef = useRef<HTMLFormElement>(null);
+  // Filter investors based on search query
+  const filteredInvestors = investors.filter(investor => 
+    investor.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    investor.email.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   
-  const filteredInvestors = searchInvestors(investors, searchQuery);
-  
+  // Handle add investor
   const handleAddInvestor = async (data: InvestorFormValues) => {
-    setSubmitting(true);
-    try {
-      await addInvestor({
-        name: data.name,
-        email: data.email,
-        status: data.status,
-        total_invested: 0,
-        last_interaction: new Date().toISOString()
-      });
-      setIsAddDialogOpen(false);
-    } catch (error) {
-      console.error("Error adding investor:", error);
-    } finally {
-      setSubmitting(false);
-    }
+    await add(data);
+    setIsAddDialogOpen(false);
   };
   
-  const handleEditInvestor = async (data: InvestorFormValues) => {
-    if (!currentInvestor) return;
-    
-    setSubmitting(true);
-    try {
-      await updateInvestor(currentInvestor.id, {
-        name: data.name,
-        email: data.email,
-        status: data.status
-      });
-      setIsEditDialogOpen(false);
-    } catch (error) {
-      console.error("Error updating investor:", error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-  
-  const handleDeleteInvestor = async () => {
-    if (!currentInvestor) return;
-    
-    setSubmitting(true);
-    try {
-      await deleteInvestor(currentInvestor.id);
-      setIsDeleteDialogOpen(false);
-    } catch (error) {
-      console.error("Error deleting investor:", error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-  
-  const handleToggleStatus = async (investor: Investor) => {
-    try {
-      await toggleInvestorStatus(investor.id, investor.status);
-    } catch (error) {
-      console.error("Error toggling investor status:", error);
-    }
-  };
-  
-  const openEditDialog = (investor: Investor) => {
-    setCurrentInvestor(investor);
+  // Handle edit investor
+  const handleEditInvestor = (investor: Investor) => {
+    setSelectedInvestor(investor);
     setIsEditDialogOpen(true);
   };
   
-  const openDeleteDialog = (investor: Investor) => {
-    setCurrentInvestor(investor);
+  // Handle update investor
+  const handleUpdateInvestor = async (data: InvestorFormValues) => {
+    if (!selectedInvestor) return;
+    
+    await update(selectedInvestor.id, data);
+    setIsEditDialogOpen(false);
+  };
+  
+  // Handle delete investor
+  const handleDeleteClick = (investor: Investor) => {
+    setSelectedInvestor(investor);
     setIsDeleteDialogOpen(true);
   };
-
-  const triggerAddFormSubmit = () => {
-    addFormRef.current?.requestSubmit();
+  
+  // Confirm investor deletion
+  const handleConfirmDelete = async () => {
+    if (!selectedInvestor) return;
+    
+    await deleteInvestor(selectedInvestor.id);
+    setIsDeleteDialogOpen(false);
   };
-
-  const triggerEditFormSubmit = () => {
-    editFormRef.current?.requestSubmit();
+  
+  // Handle toggle investor status
+  const handleToggleStatus = async (investor: Investor) => {
+    const success = await toggleStatus(investor.id, investor.status);
+    
+    if (success) {
+      toast({
+        title: `Investor ${investor.status === 'Active' ? 'Deactivated' : 'Activated'}`,
+        description: `${investor.name} has been ${investor.status === 'Active' ? 'deactivated' : 'activated'}.`,
+      });
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Action Failed",
+        description: "Could not update investor status. Please try again.",
+      });
+    }
   };
   
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Investor Management</h2>
-        <div className="flex gap-4">
-          <SearchBar 
-            searchQuery={searchQuery} 
-            onSearchChange={setSearchQuery}
-            placeholder="Search investors..."
-          />
-          <Button 
-            className="bg-[#22C55E] hover:bg-[#1ea853] text-black"
-            onClick={() => setIsAddDialogOpen(true)}
-            data-add-investor-button="true"
-          >
-            <UserPlus size={16} className="mr-1" /> Add New Investor
-          </Button>
-        </div>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <SearchBar 
+          placeholder="Search investors..." 
+          value={searchQuery} 
+          onChange={(e) => setSearchQuery(e.target.value)} 
+          onClear={() => setSearchQuery("")} 
+        />
+        <Button 
+          onClick={() => setIsAddDialogOpen(true)} 
+          className="bg-purple-600 hover:bg-purple-700 text-white"
+          data-add-investor-button="true"
+        >
+          <PlusCircle className="h-4 w-4 mr-2" />
+          Add Investor
+        </Button>
       </div>
-
-      <InvestorTable
-        investors={filteredInvestors}
+      
+      <InvestorTable 
+        investors={filteredInvestors} 
         loading={loading}
-        searchQuery={searchQuery}
-        onEdit={openEditDialog}
-        onDelete={openDeleteDialog}
+        searchQuery={searchQuery} 
+        onEdit={handleEditInvestor}
+        onDelete={handleDeleteClick}
         onToggleStatus={handleToggleStatus}
       />
-
+      
       {/* Add Investor Dialog */}
-      <CrudDialog
+      <CrudDialog 
         title="Add New Investor"
-        description="Enter the details of the new investor below."
-        isOpen={isAddDialogOpen}
+        open={isAddDialogOpen}
         onOpenChange={setIsAddDialogOpen}
-        onCancel={() => setIsAddDialogOpen(false)}
-        onSubmit={triggerAddFormSubmit}
-        isSubmitting={submitting}
-        submitLabel="Add Investor"
-        submitLoadingLabel="Saving..."
-      >
-        <InvestorForm 
-          onSubmit={handleAddInvestor}
-          formRef={addFormRef}
-        />
-      </CrudDialog>
-
+        onSubmit={handleAddInvestor}
+        formComponent={(props) => <InvestorForm {...props} />}
+      />
+      
       {/* Edit Investor Dialog */}
-      <CrudDialog
+      <CrudDialog 
         title="Edit Investor"
-        description="Update the investor's information."
-        isOpen={isEditDialogOpen}
+        open={isEditDialogOpen}
         onOpenChange={setIsEditDialogOpen}
-        onCancel={() => setIsEditDialogOpen(false)}
-        onSubmit={triggerEditFormSubmit}
-        isSubmitting={submitting}
-        submitLabel="Save Changes"
-        submitLoadingLabel="Updating..."
-      >
-        {currentInvestor && (
+        onSubmit={handleUpdateInvestor}
+        formComponent={(props) => (
           <InvestorForm 
-            defaultValues={{
-              name: currentInvestor.name,
-              email: currentInvestor.email,
-              status: currentInvestor.status
-            }}
-            onSubmit={handleEditInvestor}
-            formRef={editFormRef}
+            {...props} 
+            defaultValues={selectedInvestor ? {
+              name: selectedInvestor.name,
+              email: selectedInvestor.email,
+              status: selectedInvestor.status
+            } : undefined}
           />
         )}
-      </CrudDialog>
-
+      />
+      
       {/* Delete Confirmation Dialog */}
-      <ConfirmationDialog
-        title="Confirm Deletion"
+      <ConfirmationDialog 
+        title="Delete Investor"
         description="Are you sure you want to delete this investor? This action cannot be undone."
-        isOpen={isDeleteDialogOpen}
+        open={isDeleteDialogOpen}
         onOpenChange={setIsDeleteDialogOpen}
-        onConfirm={handleDeleteInvestor}
-        onCancel={() => setIsDeleteDialogOpen(false)}
-        isSubmitting={submitting}
-        confirmLabel="Delete"
-        confirmLoadingLabel="Deleting..."
-        variant="danger"
+        onConfirm={handleConfirmDelete}
       />
     </div>
   );
-};
-
-export default InvestorManagement;
+}
