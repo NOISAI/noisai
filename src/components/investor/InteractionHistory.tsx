@@ -1,4 +1,5 @@
 
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -14,15 +15,56 @@ import {
   TableHeader,
   TableRow
 } from "@/components/ui/table";
-
-// Mock data for interactions
-const mockInteractions = [
-  { id: 1, date: "2025-04-20", type: "Meeting", description: "Q1 Investor Update Meeting", status: "Completed" },
-  { id: 2, date: "2025-03-10", type: "Email", description: "Investment Opportunity Details", status: "Completed" },
-  { id: 3, date: "2025-02-15", type: "Document", description: "Signed Investment Agreement", status: "Completed" },
-];
+import { formatDate } from "@/utils/adminUtils";
+import { useInteractions } from "@/hooks/useInteractions";
+import { Interaction } from "@/types/admin";
+import { supabase } from "@/lib/supabase";
+import { useToast } from "@/hooks/use-toast";
 
 const InteractionHistory = () => {
+  const { interactions: allInteractions, loading } = useInteractions();
+  const [userInteractions, setUserInteractions] = useState<Interaction[]>([]);
+  const { toast } = useToast();
+  const [userId, setUserId] = useState<string | null>(null);
+
+  // Get current user's ID
+  useEffect(() => {
+    const getCurrentUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      if (data?.user) {
+        setUserId(data.user.id);
+      }
+    };
+
+    getCurrentUser();
+  }, []);
+
+  // Filter interactions for the current user
+  useEffect(() => {
+    if (userId) {
+      const filtered = allInteractions.filter(
+        interaction => interaction.investor_id === userId
+      );
+      setUserInteractions(filtered);
+    }
+  }, [allInteractions, userId]);
+
+  if (loading) {
+    return (
+      <Card className="bg-gray-900 border border-gray-800">
+        <CardHeader>
+          <CardTitle>Interaction History</CardTitle>
+          <CardDescription>Loading your interactions...</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="py-6 text-center bg-gray-800/50 rounded-md border border-gray-700">
+            <p className="text-gray-400">Loading...</p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card className="bg-gray-900 border border-gray-800">
       <CardHeader>
@@ -30,26 +72,30 @@ const InteractionHistory = () => {
         <CardDescription>Record of past interactions with NOISAI</CardDescription>
       </CardHeader>
       <CardContent>
-        {mockInteractions.length > 0 ? (
+        {userInteractions.length > 0 ? (
           <Table>
             <TableHeader>
               <TableRow className="border-gray-800">
                 <TableHead className="text-gray-400">Date</TableHead>
                 <TableHead className="text-gray-400">Type</TableHead>
-                <TableHead className="text-gray-400">Description</TableHead>
-                <TableHead className="text-gray-400">Status</TableHead>
+                <TableHead className="text-gray-400">Notes</TableHead>
+                <TableHead className="text-gray-400">Follow-up</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mockInteractions.map(interaction => (
+              {userInteractions.map(interaction => (
                 <TableRow key={interaction.id} className="border-gray-800">
-                  <TableCell>{interaction.date}</TableCell>
+                  <TableCell>{formatDate(interaction.date)}</TableCell>
                   <TableCell>{interaction.type}</TableCell>
-                  <TableCell>{interaction.description}</TableCell>
+                  <TableCell className="max-w-[200px] truncate">{interaction.notes}</TableCell>
                   <TableCell>
-                    <span className="text-green-500">
-                      {interaction.status}
-                    </span>
+                    {interaction.follow_up ? (
+                      <span className="text-yellow-500">
+                        {formatDate(interaction.follow_up)}
+                      </span>
+                    ) : (
+                      <span className="text-gray-500">None</span>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}
