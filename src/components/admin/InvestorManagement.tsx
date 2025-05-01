@@ -36,6 +36,17 @@ export default function InvestorManagement() {
     try {
       await add(data);
       setIsAddDialogOpen(false);
+      toast({
+        title: "Investor Added",
+        description: `${data.name} has been added successfully.`,
+      });
+    } catch (error) {
+      console.error("Error adding investor:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to add investor. Please try again.",
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -107,7 +118,7 @@ export default function InvestorManagement() {
         />
         <Button 
           onClick={() => setIsAddDialogOpen(true)} 
-          className="bg-purple-600 hover:bg-purple-700 text-white"
+          className="bg-[#22C55E] hover:bg-[#1ea853] text-black"
           data-add-investor-button="true"
         >
           <PlusCircle className="h-4 w-4 mr-2" />
@@ -130,7 +141,10 @@ export default function InvestorManagement() {
         description="Enter the details for the new investor."
         isOpen={isAddDialogOpen}
         onOpenChange={setIsAddDialogOpen}
-        onSubmit={() => {}}
+        onSubmit={() => {
+          const form = document.querySelector('form');
+          if (form) form.dispatchEvent(new Event('submit', { cancelable: true, bubbling: true }));
+        }}
         onCancel={() => setIsAddDialogOpen(false)}
         isSubmitting={isSubmitting}
         submitLabel="Add Investor"
@@ -144,7 +158,10 @@ export default function InvestorManagement() {
         description="Update the investor details."
         isOpen={isEditDialogOpen}
         onOpenChange={setIsEditDialogOpen}
-        onSubmit={() => {}}
+        onSubmit={() => {
+          const form = document.querySelector('form');
+          if (form) form.dispatchEvent(new Event('submit', { cancelable: true, bubbling: true }));
+        }}
         onCancel={() => setIsEditDialogOpen(false)}
         isSubmitting={isSubmitting}
         submitLabel="Update Investor"

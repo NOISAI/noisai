@@ -70,6 +70,7 @@ export default function CrudDialog({
             onClick={onSubmit}
             className="bg-[#22C55E] hover:bg-[#1ea853] text-black"
             disabled={isSubmitting}
+            type="button"
           >
             {isSubmitting ? (
               <>

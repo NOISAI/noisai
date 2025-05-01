@@ -38,7 +38,11 @@ export default function InvestorForm({ defaultValues, onSubmit, formRef }: Inves
 
   return (
     <Form {...form}>
-      <form ref={formRef} onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form 
+        ref={formRef} 
+        onSubmit={form.handleSubmit(onSubmit)} 
+        className="space-y-4"
+      >
         <FormField
           control={form.control}
           name="name"
@@ -65,6 +69,7 @@ export default function InvestorForm({ defaultValues, onSubmit, formRef }: Inves
             </FormItem>
           )}
         />
+        <button type="submit" className="hidden" aria-hidden="true" />
       </form>
     </Form>
   );
