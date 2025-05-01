@@ -143,7 +143,7 @@ export default function InvestorManagement() {
         onOpenChange={setIsAddDialogOpen}
         onSubmit={() => {
           const form = document.querySelector('form');
-          if (form) form.dispatchEvent(new Event('submit', { cancelable: true, bubbling: true }));
+          if (form) form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
         }}
         onCancel={() => setIsAddDialogOpen(false)}
         isSubmitting={isSubmitting}
@@ -160,7 +160,7 @@ export default function InvestorManagement() {
         onOpenChange={setIsEditDialogOpen}
         onSubmit={() => {
           const form = document.querySelector('form');
-          if (form) form.dispatchEvent(new Event('submit', { cancelable: true, bubbling: true }));
+          if (form) form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
         }}
         onCancel={() => setIsEditDialogOpen(false)}
         isSubmitting={isSubmitting}
