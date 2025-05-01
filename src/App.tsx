@@ -61,9 +61,7 @@ const AuthRedirect = () => {
       <SignedIn>
         {isAdmin ? 
           <Navigate to="/admin-dashboard" replace /> : 
-          permissions.canAccessNoisaiView || permissions.canAccessBusinessView ? 
-            <Navigate to="/node-dashboard" replace /> :
-            <Navigate to="/investor-dashboard" replace />
+          <Navigate to="/investor-dashboard" replace />
         }
       </SignedIn>
       <SignedOut>

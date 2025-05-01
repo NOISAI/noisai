@@ -26,7 +26,7 @@ export const useRolePermissions = () => {
         setPermissions(rolePermissions.business);
       } else if (email === "mraptis77@gmail.com") {
         setUserRole("user");
-        // Override default permissions to allow node dashboard access
+        // Override default permissions to allow both node dashboard access and investor dashboard access
         setPermissions({
           ...rolePermissions.user,
           canAccessNoisaiView: true, // Grant access to NOISAI view
