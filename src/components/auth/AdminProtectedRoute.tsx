@@ -1,5 +1,5 @@
 
-import { useAuth } from "@clerk/clerk-react";
+import { useUser, useAuth } from "@clerk/clerk-react";
 import { Navigate } from "react-router-dom";
 
 type AdminProtectedRouteProps = {
@@ -7,7 +7,8 @@ type AdminProtectedRouteProps = {
 };
 
 const AdminProtectedRoute = ({ children }: AdminProtectedRouteProps) => {
-  const { isSignedIn, userId, user } = useAuth();
+  const { isSignedIn } = useAuth();
+  const { user } = useUser();
   
   // Check if user is signed in and has admin email
   const isAdmin = isSignedIn && user?.primaryEmailAddress?.emailAddress === "mraptis77@gmail.com";

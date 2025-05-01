@@ -2,7 +2,8 @@
 import { 
   SignIn as ClerkSignIn, 
   SignUp as ClerkSignUp, 
-  useAuth 
+  useAuth,
+  useUser
 } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
@@ -13,12 +14,13 @@ interface AuthWrapperProps {
 
 export function AuthWrapper({ mode }: AuthWrapperProps) {
   const navigate = useNavigate();
-  const { isSignedIn, userId, user } = useAuth();
+  const { isSignedIn } = useAuth();
+  const { user } = useUser();
   
   useEffect(() => {
-    if (isSignedIn) {
+    if (isSignedIn && user) {
       // Check if user is admin
-      const isAdmin = user?.primaryEmailAddress?.emailAddress === "mraptis77@gmail.com";
+      const isAdmin = user.primaryEmailAddress?.emailAddress === "mraptis77@gmail.com";
       
       // Redirect to appropriate dashboard
       if (isAdmin) {
