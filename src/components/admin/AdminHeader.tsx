@@ -3,8 +3,9 @@ import { useState } from "react";
 import { useUser, useClerk } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, UserCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 export default function AdminHeader() {
   const { user } = useUser();
@@ -48,9 +49,17 @@ export default function AdminHeader() {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-4">
-          <div className="flex items-center gap-2 text-sm text-gray-400">
-            <span>Logged in as:</span>
-            <span className="font-medium text-white">{user?.primaryEmailAddress?.emailAddress}</span>
+          <div className="flex items-center gap-3 text-sm">
+            <Avatar className="h-8 w-8 border border-gray-700">
+              <AvatarImage src={user?.imageUrl} alt={user?.fullName || "User"} />
+              <AvatarFallback className="bg-gray-800 text-gray-400">
+                <UserCircle className="h-5 w-5" />
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col">
+              <span className="font-medium text-white">{user?.fullName || user?.username}</span>
+              <span className="text-xs text-gray-400">{user?.primaryEmailAddress?.emailAddress}</span>
+            </div>
           </div>
           <Button 
             variant="ghost" 
@@ -80,9 +89,17 @@ export default function AdminHeader() {
       {isMobileMenuOpen && (
         <div className="md:hidden border-t border-gray-800 py-3 px-4">
           <div className="flex flex-col gap-3">
-            <div className="text-sm text-gray-400">
-              <span>Logged in as:</span>
-              <span className="font-medium text-white block mt-1">{user?.primaryEmailAddress?.emailAddress}</span>
+            <div className="flex items-center gap-3 mb-2">
+              <Avatar className="h-8 w-8 border border-gray-700">
+                <AvatarImage src={user?.imageUrl} alt={user?.fullName || "User"} />
+                <AvatarFallback className="bg-gray-800 text-gray-400">
+                  <UserCircle className="h-5 w-5" />
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col">
+                <span className="font-medium text-white">{user?.fullName || user?.username}</span>
+                <span className="text-xs text-gray-400">{user?.primaryEmailAddress?.emailAddress}</span>
+              </div>
             </div>
             <Button 
               variant="ghost" 
