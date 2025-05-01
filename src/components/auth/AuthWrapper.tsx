@@ -13,13 +13,21 @@ interface AuthWrapperProps {
 
 export function AuthWrapper({ mode }: AuthWrapperProps) {
   const navigate = useNavigate();
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, userId, user } = useAuth();
   
   useEffect(() => {
     if (isSignedIn) {
-      navigate("/investor-dashboard");
+      // Check if user is admin
+      const isAdmin = user?.primaryEmailAddress?.emailAddress === "mraptis77@gmail.com";
+      
+      // Redirect to appropriate dashboard
+      if (isAdmin) {
+        navigate("/admin-dashboard");
+      } else {
+        navigate("/investor-dashboard");
+      }
     }
-  }, [isSignedIn, navigate]);
+  }, [isSignedIn, navigate, user]);
 
   // Add a listener for Clerk's Web3 authentication events
   useEffect(() => {

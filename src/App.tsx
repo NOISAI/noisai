@@ -14,6 +14,7 @@ import InvestorDashboard from "./pages/InvestorDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import AdminProtectedRoute from "./components/auth/AdminProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -49,9 +50,9 @@ const App = () => (
           <Route 
             path="/admin-dashboard" 
             element={
-              <ProtectedRoute>
+              <AdminProtectedRoute>
                 <AdminDashboard />
-              </ProtectedRoute>
+              </AdminProtectedRoute>
             } 
           />
           <Route path="/terms-of-service" element={<TermsOfService />} />
