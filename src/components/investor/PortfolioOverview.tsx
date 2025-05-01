@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { mockInvestments } from "@/data/mockInvestments";
 import { convertInvestmentsForInvestor } from "@/utils/typeAdapters";
 import { Investment } from "@/types/investment";
-import { checkWalletBalance, getCurrentWalletAddress } from "@/services/blockchainService";
+import { checkWalletBalance, getCurrentWalletAddress } from "@/services/blockchain";
 import { useToast } from "@/hooks/use-toast";
 
 const PortfolioOverview = () => {

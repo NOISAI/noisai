@@ -13,7 +13,11 @@ import {
   TransactionDetails 
 } from "@/types/investment";
 import { sendInvestmentInterestEmail } from "@/services/emailService";
-import { makeInvestment, ensureSepoliaNetwork, checkWalletBalance } from "@/services/blockchainService";
+import {
+  makeInvestment,
+  ensureSepoliaNetwork,
+  checkWalletBalance
+} from "@/services/blockchain";
 
 // Import the smaller components
 import InvestmentAmountField from "./InvestmentAmountField";
