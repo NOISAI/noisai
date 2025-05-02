@@ -59,16 +59,16 @@ export const useSupabaseAuth = () => {
       
       // Try to call has_role function if it exists, otherwise use a fallback
       try {
-        // Use an explicit type for the parameters to avoid TypeScript errors
+        // Use explicit types for both the return type and parameters
         interface HasRoleParams {
           requested_user_id: string;
           requested_role: string;
         }
         
-        const { data, error } = await supabase.rpc<boolean>('has_role', {
+        const { data, error } = await supabase.rpc<boolean, HasRoleParams>('has_role', {
           requested_user_id: userId,
           requested_role: 'admin'
-        } as HasRoleParams);
+        });
         
         if (error) {
           console.error("Error fetching user role:", error);
