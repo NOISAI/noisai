@@ -83,15 +83,7 @@ export default function NodeDashboard() {
   return (
     <NodeDashboardLayout userRole="user">
       <div className="flex justify-end mb-4">
-        <Button 
-          variant="outline" 
-          size="sm" 
-          onClick={handleSignOut}
-          className="border-gray-200 text-gray-700 hover:text-gray-900 hover:bg-gray-100"
-        >
-          <LogOut className="h-4 w-4 mr-2" />
-          Sign Out
-        </Button>
+    
       </div>
       {renderDashboardView()}
     </NodeDashboardLayout>
