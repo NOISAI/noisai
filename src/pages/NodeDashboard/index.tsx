@@ -62,7 +62,7 @@ export default function NodeDashboard() {
         </NodeDashboardLayout>
       </SignedIn>
       <SignedOut>
-        <Navigate to="/node-signin" replace />
+        <Navigate to="/sign-in" replace />
       </SignedOut>
     </>
   );

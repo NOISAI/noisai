@@ -20,5 +20,5 @@ export const EMAIL_CONFIG = {
 // Clerk Configuration
 export const CLERK_CONFIG = {
   PUBLISHABLE_KEY: import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || "pk_test_Z3JlYXQtbWFybW9zZXQtMTYuY2xlcmsuYWNjb3VudHMuZGV2JA",
-  NODE_PUBLISHABLE_KEY: import.meta.env.VITE_NODE_CLERK_PUBLISHABLE_KEY || "pk_test_ZXBpYy1zd2luZS02LmNsZXJrLmFjY291bnRzLmRldiQ",
+  NODE_PUBLISHABLE_KEY: import.meta.env.VITE_NODE_CLERK_PUBLISHABLE_KEY || import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || "pk_test_Z3JlYXQtbWFybW9zZXQtMTYuY2xlcmsuYWNjb3VudHMuZGV2JA",
 };

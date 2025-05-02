@@ -11,8 +11,6 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import SignIn from "./pages/Auth/SignIn";
 import SignUp from "./pages/Auth/SignUp";
-import NodeSignIn from "./pages/NodeDashboard/Auth/NodeSignIn";
-import NodeSignUp from "./pages/NodeDashboard/Auth/NodeSignUp";
 import InvestorDashboard from "./pages/InvestorDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import NodeDashboard from "./pages/NodeDashboard";
@@ -28,18 +26,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
       <SignedIn>{children}</SignedIn>
       <SignedOut>
         <Navigate to="/sign-in" replace />
-      </SignedOut>
-    </ClerkLoaded>
-  );
-};
-
-// Route component for node dashboard protected routes
-const NodeProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <ClerkLoaded>
-      <SignedIn>{children}</SignedIn>
-      <SignedOut>
-        <Navigate to="/node-signin" replace />
       </SignedOut>
     </ClerkLoaded>
   );
@@ -95,8 +81,6 @@ const App = () => (
           <Route path="/" element={<AuthRedirect />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/node-signin" element={<NodeSignIn />} />
-          <Route path="/node-signup" element={<NodeSignUp />} />
           <Route 
             path="/investor-dashboard" 
             element={
@@ -116,9 +100,9 @@ const App = () => (
           <Route 
             path="/node-dashboard/*" 
             element={
-              <NodeProtectedRoute>
+              <ProtectedRoute>
                 <NodeDashboard />
-              </NodeProtectedRoute>
+              </ProtectedRoute>
             } 
           />
           <Route path="/terms-of-service" element={<TermsOfService />} />
