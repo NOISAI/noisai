@@ -205,8 +205,8 @@ export default function UserManagement() {
                       </TableCell>
                       <TableCell>
                         <Badge 
-                          className="cursor-pointer" 
-                          variant={user.status === "active" ? "success" : "destructive"}
+                          className={`cursor-pointer ${user.status === "active" ? "bg-green-100 text-green-800 hover:bg-green-200" : "bg-red-100 text-red-800 hover:bg-red-200"}`}
+                          variant={user.status === "active" ? "default" : "destructive"}
                           onClick={() => handleToggleStatus(user.id, user.status)}
                         >
                           {user.status === "active" ? "Active" : "Inactive"}
