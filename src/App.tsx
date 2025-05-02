@@ -11,12 +11,17 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import SignIn from "./pages/Auth/SignIn";
 import SignUp from "./pages/Auth/SignUp";
+import SupabaseSignIn from "./pages/Auth/SupabaseSignIn";
+import SupabaseSignUp from "./pages/Auth/SupabaseSignUp";
 import InvestorDashboard from "./pages/InvestorDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import NodeDashboard from "./pages/NodeDashboard";
+import NodeAdmin from "./pages/NodeAdmin";
 import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import AdminProtectedRoute from "./components/auth/AdminProtectedRoute";
+import SupabaseProtectedRoute from "./components/auth/SupabaseProtectedRoute";
+import NodeAdminProtectedRoute from "./components/auth/NodeAdminProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -83,6 +88,8 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<AuthRedirect />} />
+          
+          {/* Clerk authentication for investor dashboard */}
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route 
@@ -101,14 +108,27 @@ const App = () => (
               </AdminProtectedRoute>
             } 
           />
+          
+          {/* Supabase authentication for node dashboards */}
+          <Route path="/node-sign-in" element={<SupabaseSignIn />} />
+          <Route path="/node-sign-up" element={<SupabaseSignUp />} />
           <Route 
-            path="/node-dashboard/*" 
+            path="/node-dashboard" 
             element={
-              <ProtectedRoute>
+              <SupabaseProtectedRoute>
                 <NodeDashboard />
-              </ProtectedRoute>
+              </SupabaseProtectedRoute>
             } 
           />
+          <Route 
+            path="/node-admin" 
+            element={
+              <NodeAdminProtectedRoute>
+                <NodeAdmin />
+              </NodeAdminProtectedRoute>
+            } 
+          />
+          
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
