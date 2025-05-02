@@ -49,7 +49,7 @@ export default function UserTable({
         <TableHeader>
           <TableRow>
             <TableHead className="w-12">
-              <Checkbox />
+              {/* Removed the checkbox from header */}
             </TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Role</TableHead>
