@@ -18,9 +18,8 @@ const NodeAdminProtectedRoute = ({ children }: NodeAdminProtectedRouteProps) => 
       if (user) {
         try {
           // In a real app, you would check admin status from the database
-          // For now, we'll accept any valid user as an admin to fix the access issue
-          // In a production app, you would implement proper role-based checks
-          if (user.email) {
+          // For now, we'll accept any valid user with a specific email pattern as admin
+          if (user.email && (user.email.includes('admin') || user.email.includes('noisai'))) {
             setIsAdmin(true);
           } else {
             setIsAdmin(false);
@@ -42,7 +41,7 @@ const NodeAdminProtectedRoute = ({ children }: NodeAdminProtectedRouteProps) => 
 
   if (isLoading || checkingAdmin) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
       </div>
     );
@@ -52,8 +51,10 @@ const NodeAdminProtectedRoute = ({ children }: NodeAdminProtectedRouteProps) => 
     return <Navigate to="/node-sign-in" replace state={{ from: location.pathname }} />;
   }
   
-  // For now, we'll allow any authenticated user to access admin features
-  // to resolve the immediate access issue
+  if (!isAdmin) {
+    return <Navigate to="/node-dashboard" replace />;
+  }
+  
   return <>{children}</>;
 };
 
