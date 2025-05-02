@@ -178,6 +178,7 @@ export default function EditUserDialog({
                 type="button" 
                 variant="outline" 
                 onClick={() => onOpenChange(false)}
+                className="border-gray-700 text-white hover:text-white hover:bg-gray-700"
               >
                 Cancel
               </Button>
