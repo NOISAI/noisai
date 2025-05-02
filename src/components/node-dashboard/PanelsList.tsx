@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { PanelCard } from "./PanelCard";
 
@@ -20,11 +21,17 @@ interface PanelsListProps {
 }
 
 export function PanelsList({ panels, activePanels }: PanelsListProps) {
+  // Using local state to track panels with token claims
+  const [panelData, setPanelData] = useState<Panel[]>(panels);
+
+  // We'll update this when necessary to handle claimed tokens
+  // For now, the individual PanelCard components will handle their own state
+
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-xl font-medium text-gray-800">Your Panels</h3>
-        <span className="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">
+        <h3 className="text-xl font-medium text-gray-800 dark:text-gray-200">Your Panels</h3>
+        <span className="bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">
           {activePanels} Active
         </span>
       </div>
