@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { PanelCard } from "./PanelCard";
+import { PanelCard } from "./panel/PanelCard";
 
 interface Panel {
   id: number;
