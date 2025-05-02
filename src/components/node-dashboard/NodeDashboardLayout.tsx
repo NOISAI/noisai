@@ -27,7 +27,7 @@ export default function NodeDashboardLayout({
         title: "Signed out successfully",
         description: "You have been signed out",
       });
-      navigate("/node-sign-in");
+      navigate("/"); // Redirect to home page instead of node-sign-in
     } catch (error) {
       toast({
         title: "Error signing out",

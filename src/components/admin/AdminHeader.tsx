@@ -21,7 +21,7 @@ export default function AdminHeader() {
         title: "Signed out successfully",
         description: "You have been signed out of the admin portal."
       });
-      navigate("/");
+      navigate("/");  // Redirect to home page
     } catch (error) {
       console.error("Error signing out:", error);
       toast({

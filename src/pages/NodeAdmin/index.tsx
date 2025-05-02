@@ -18,7 +18,7 @@ export default function NodeAdmin() {
         title: "Signed out successfully",
         description: "You have been signed out of the Node Admin Dashboard",
       });
-      navigate("/node-sign-in");
+      navigate("/"); // Redirect to home page instead of node-sign-in
     } catch (error) {
       toast({
         title: "Error signing out",

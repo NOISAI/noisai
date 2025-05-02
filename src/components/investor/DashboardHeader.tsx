@@ -18,7 +18,7 @@ const DashboardHeader = ({ walletAddress, isConnecting, connectWallet }: Dashboa
 
   const handleSignOut = async () => {
     await signOut();
-    navigate("/");
+    navigate("/"); // Redirect to home page
   };
 
   return (
