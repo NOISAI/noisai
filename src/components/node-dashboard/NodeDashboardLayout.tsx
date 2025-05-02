@@ -47,9 +47,7 @@ export default function NodeDashboardLayout({
                 <h1 className="text-2xl font-bold text-primary-dark dark:text-primary-light">NOISAI Node</h1>
               </div>
               
-              <div className="flex items-center space-x-4">
-                <ThemeToggle />
-                
+              <div className="flex items-center space-x-4">                
                 <Link
                   to="/investor-dashboard"
                   className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 px-4 py-2 rounded-md text-sm font-medium text-gray-800 dark:text-gray-200 transition-colors"
@@ -85,6 +83,10 @@ export default function NodeDashboardLayout({
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {children}
+        </div>
+        
+        <div className="fixed bottom-6 right-6">
+          <ThemeToggle />
         </div>
       </div>
     </ThemeProvider>
