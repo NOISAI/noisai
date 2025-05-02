@@ -7,7 +7,6 @@ import {
 } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { CLERK_CONFIG } from "@/config/apiKeys";
 
 interface NodeAuthWrapperProps {
   mode: "signIn" | "signUp";
