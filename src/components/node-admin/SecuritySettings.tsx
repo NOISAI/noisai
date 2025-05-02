@@ -169,7 +169,7 @@ export default function SecuritySettings() {
                 readOnly
                 className="font-mono"
               />
-              <Button onClick={handleResetAPIKey} variant="outline">
+              <Button onClick={handleResetAPIKey} variant="outline" className="border-gray-300 hover:border-green-500 hover:text-green-500">
                 <RefreshCw className="h-4 w-4 mr-2" />
                 Reset
               </Button>
