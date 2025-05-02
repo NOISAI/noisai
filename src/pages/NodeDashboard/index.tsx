@@ -7,8 +7,6 @@ import BusinessView from "./BusinessView";
 import NodeDashboardLayout from "@/components/node-dashboard/NodeDashboardLayout";
 import DashboardLoader from "@/components/node-dashboard/DashboardLoader";
 import { useToast } from "@/hooks/use-toast";
-import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
 
 export default function NodeDashboard() {
   const { user, isLoading, userRole, signOut } = useSupabaseAuth();
@@ -50,23 +48,6 @@ export default function NodeDashboard() {
     });
   }, [isLoading, user, userRole, location]);
 
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-      toast({
-        title: "Signed out successfully",
-        description: "You have been signed out",
-      });
-      navigate("/node-sign-in");
-    } catch (error) {
-      toast({
-        title: "Error signing out",
-        description: "An error occurred while signing out",
-        variant: "destructive",
-      });
-    }
-  };
-
   if (isLoading) {
     return <DashboardLoader />;
   }
@@ -98,17 +79,6 @@ export default function NodeDashboard() {
 
   return (
     <NodeDashboardLayout userRole="user">
-      <div className="flex justify-end mb-4">
-        <Button 
-          variant="outline" 
-          size="sm" 
-          onClick={handleSignOut}
-          className="border-gray-200 text-gray-700 hover:text-gray-900 hover:bg-gray-100"
-        >
-          <LogOut className="h-4 w-4 mr-2" />
-          Sign Out
-        </Button>
-      </div>
       {renderDashboardView()}
     </NodeDashboardLayout>
   );
