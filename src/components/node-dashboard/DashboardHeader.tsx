@@ -3,10 +3,17 @@ import { WalletConnectButton } from "./WalletConnectButton";
 
 interface DashboardHeaderProps {
   walletAddress: string | null;
-  setWalletAddress: (address: string) => void;
+  setWalletAddress: (address: string) => void; // Kept for backward compatibility
+  isConnecting?: boolean;
+  connectWallet?: () => Promise<void>;
 }
 
-export function DashboardHeader({ walletAddress, setWalletAddress }: DashboardHeaderProps) {
+export function DashboardHeader({ 
+  walletAddress, 
+  setWalletAddress,
+  isConnecting = false,
+  connectWallet = async () => {}
+}: DashboardHeaderProps) {
   return (
     <div className="flex items-center justify-between">
       <div>
@@ -17,7 +24,8 @@ export function DashboardHeader({ walletAddress, setWalletAddress }: DashboardHe
       <div>
         <WalletConnectButton 
           walletAddress={walletAddress} 
-          setWalletAddress={setWalletAddress} 
+          isConnecting={isConnecting}
+          connectWallet={connectWallet} 
         />
       </div>
     </div>

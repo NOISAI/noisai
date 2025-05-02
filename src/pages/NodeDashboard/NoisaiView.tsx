@@ -1,14 +1,13 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Volume } from "lucide-react";
-import { checkWalletBalance } from "@/services/blockchain/walletService";
 import { DashboardHeader } from "@/components/node-dashboard/DashboardHeader";
 import { StatsOverview } from "@/components/node-dashboard/StatsOverview";
-import { StatsCard } from "@/components/node-dashboard/StatsCard";
 import { PerformanceChart } from "@/components/node-dashboard/PerformanceChart";
 import { NoiseAnalysisCard } from "@/components/node-dashboard/NoiseAnalysisCard";
 import { PanelsList } from "@/components/node-dashboard/PanelsList";
+import { useWalletConnection } from "@/hooks/useWalletConnection";
 
 // Mock data for the weekly performance chart
 const weeklyData = [
@@ -59,7 +58,8 @@ const mockPanels = [
 ];
 
 export default function NoisaiView() {
-  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  // Use our custom wallet connection hook
+  const { walletAddress, isConnecting, connectWallet } = useWalletConnection();
   
   // Dashboard stats
   const [stats, setStats] = useState({
@@ -74,30 +74,14 @@ export default function NoisaiView() {
     noiseLevel: 77.7,
     noisePeak: 91,
   });
-  
-  // Only check if wallet is connected, but don't connect automatically
-  useEffect(() => {
-    const checkWalletConnection = async () => {
-      if (window.ethereum) {
-        try {
-          const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-          if (accounts.length > 0) {
-            setWalletAddress(accounts[0]);
-          }
-        } catch (error) {
-          console.error("Error checking wallet connection:", error);
-        }
-      }
-    };
-    
-    checkWalletConnection();
-  }, []);
 
   return (
     <div className="space-y-8">
       <DashboardHeader 
         walletAddress={walletAddress} 
-        setWalletAddress={setWalletAddress} 
+        setWalletAddress={() => {}} // This prop is no longer needed but kept for compatibility
+        isConnecting={isConnecting}
+        connectWallet={connectWallet}
       />
       
       {/* Stats Overview Grid */}

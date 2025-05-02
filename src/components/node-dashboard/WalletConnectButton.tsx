@@ -1,51 +1,14 @@
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Wallet } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import { getCurrentWalletAddress } from "@/services/blockchain/walletService";
 
 interface WalletConnectButtonProps {
   walletAddress: string | null;
-  setWalletAddress: (address: string) => void;
+  isConnecting: boolean;
+  connectWallet: () => Promise<void>;
 }
 
-export function WalletConnectButton({ walletAddress, setWalletAddress }: WalletConnectButtonProps) {
-  const [isConnecting, setIsConnecting] = useState(false);
-  const { toast } = useToast();
-  
-  const connectWallet = async () => {
-    if (!window.ethereum) {
-      toast({
-        title: "MetaMask Not Found",
-        description: "Please install MetaMask to connect your wallet.",
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    setIsConnecting(true);
-    
-    try {
-      const address = await getCurrentWalletAddress();
-      setWalletAddress(address);
-      
-      toast({
-        title: "Wallet Connected",
-        description: "Your wallet has been successfully connected.",
-      });
-    } catch (error) {
-      console.error("Error connecting wallet:", error);
-      toast({
-        title: "Connection Failed",
-        description: "Failed to connect wallet. Please try again.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsConnecting(false);
-    }
-  };
-
+export function WalletConnectButton({ walletAddress, isConnecting, connectWallet }: WalletConnectButtonProps) {
   return (
     <>
       {walletAddress ? (
