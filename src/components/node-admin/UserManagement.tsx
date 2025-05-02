@@ -17,6 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, Search, UserPlus, Trash, Pencil, Lock, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
+import AddUserDialog from "./AddUserDialog";
 
 type NodeUser = {
   id: string;
@@ -31,6 +32,7 @@ export default function UserManagement() {
   const [filteredUsers, setFilteredUsers] = useState<NodeUser[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [isAddUserDialogOpen, setIsAddUserDialogOpen] = useState(false);
   const { toast } = useToast();
   
   // Fetch users on component mount
@@ -131,6 +133,44 @@ export default function UserManagement() {
       description: "User has been removed from the system",
     });
   };
+
+  const handleAddUser = (userData: {
+    email: string;
+    role: string;
+    status: "active" | "inactive";
+  }) => {
+    // Generate a unique ID for the new user
+    const newUserId = (users.length + 1).toString();
+    
+    // Create a new user object
+    const newUser: NodeUser = {
+      id: newUserId,
+      email: userData.email,
+      role: userData.role,
+      status: userData.status,
+      lastLogin: "Never"
+    };
+    
+    // Add the new user to the list
+    const updatedUsers = [...users, newUser];
+    setUsers(updatedUsers);
+    
+    // Update filtered users if there's a search query active
+    if (searchQuery.trim() === "") {
+      setFilteredUsers(updatedUsers);
+    } else {
+      setFilteredUsers(updatedUsers.filter(
+        (user) => 
+          user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          user.role.toLowerCase().includes(searchQuery.toLowerCase())
+      ));
+    }
+    
+    toast({
+      title: "User added",
+      description: `${userData.email} has been added as a ${userData.role.replace('_', ' ')}`,
+    });
+  };
   
   return (
     <div className="space-y-6">
@@ -157,7 +197,10 @@ export default function UserManagement() {
           />
         </div>
         
-        <Button className="bg-green-600 hover:bg-green-700">
+        <Button 
+          className="bg-green-600 hover:bg-green-700"
+          onClick={() => setIsAddUserDialogOpen(true)}
+        >
           <UserPlus className="h-4 w-4 mr-2" />
           Add User
         </Button>
@@ -213,7 +256,7 @@ export default function UserManagement() {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        {new Date(user.lastLogin).toLocaleDateString()}
+                        {user.lastLogin === "Never" ? "Never" : new Date(user.lastLogin).toLocaleDateString()}
                       </TableCell>
                       <TableCell className="text-right space-x-2">
                         <Button variant="ghost" size="icon">
@@ -236,6 +279,12 @@ export default function UserManagement() {
           )}
         </CardContent>
       </Card>
+
+      <AddUserDialog
+        isOpen={isAddUserDialogOpen}
+        onOpenChange={setIsAddUserDialogOpen}
+        onAddUser={handleAddUser}
+      />
     </div>
   );
 }
