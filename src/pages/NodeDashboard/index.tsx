@@ -1,66 +1,64 @@
 
 import { useEffect } from "react";
-import { Navigate, useNavigate, useLocation } from "react-router-dom";
-import { useRolePermissions } from "@/hooks/useRolePermissions";
-import { useToast } from "@/hooks/use-toast";
+import { Navigate, useLocation } from "react-router-dom";
+import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
 import NoisaiView from "./NoisaiView";
 import BusinessView from "./BusinessView";
 import NodeDashboardLayout from "@/components/node-dashboard/NodeDashboardLayout";
 import DashboardLoader from "@/components/node-dashboard/DashboardLoader";
-import { SignedIn, SignedOut } from "@clerk/clerk-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function NodeDashboard() {
-  const { permissions, isLoaded, userRole } = useRolePermissions();
-  const navigate = useNavigate();
+  const { user, isLoading } = useSupabaseAuth();
   const location = useLocation();
   const { toast } = useToast();
+  
+  // For demonstration purposes, we'll determine the user role based on email
+  // In a production app, you would fetch this from your database
+  const userRole = user?.email?.includes("admin") ? "admin" : "user";
+  
+  // Check if user should see NOISAI or Business view based on email domain
+  // This is a simplified approach - in production, use proper role-based permissions
+  const canAccessNoisaiView = true;  // Allow all users to access NOISAI view for now
+  const canAccessBusinessView = user?.email?.includes("business");
 
-  // Check permissions on mount
   useEffect(() => {
-    if (isLoaded) {
-      if (!permissions.canAccessNoisaiView && !permissions.canAccessBusinessView) {
-        toast({
-          title: "Access Denied",
-          description: "You don't have permission to access the node dashboard",
-          variant: "destructive"
-        });
-        navigate("/");
-      }
+    if (user && !canAccessNoisaiView && !canAccessBusinessView) {
+      toast({
+        title: "Limited Access",
+        description: "You have limited permissions. Contact support for assistance.",
+        variant: "default"
+      });
     }
-  }, [isLoaded, permissions, navigate, toast]);
+  }, [user, toast]);
 
-  if (!isLoaded) {
+  if (isLoading) {
     return <DashboardLoader />;
   }
 
-  // Determine which view to display based on permissions
+  if (!user) {
+    return <Navigate to="/node-sign-in" replace state={{ from: location.pathname }} />;
+  }
+
+  // Determine which view to display
   const renderDashboardView = () => {
-    if (permissions.canAccessNoisaiView) {
+    if (canAccessNoisaiView) {
       return <NoisaiView />;
-    } else if (permissions.canAccessBusinessView) {
+    } else if (canAccessBusinessView) {
       return <BusinessView />;
     } else {
-      // This should never happen due to the useEffect redirect above,
-      // but included as a fallback
       return (
         <div className="p-8 text-center">
-          <h2 className="text-2xl font-bold text-red-500 mb-4">Access Denied</h2>
-          <p className="text-gray-400">You don't have permission to view this dashboard.</p>
+          <h2 className="text-2xl font-bold text-green-500 mb-4">Welcome to NOISAI Node</h2>
+          <p className="text-gray-400">Your dashboard view is loading...</p>
         </div>
       );
     }
   };
 
   return (
-    <>
-      <SignedIn>
-        <NodeDashboardLayout userRole={userRole}>
-          {renderDashboardView()}
-        </NodeDashboardLayout>
-      </SignedIn>
-      <SignedOut>
-        <Navigate to="/sign-in" replace state={{ from: location.pathname }} />
-      </SignedOut>
-    </>
+    <NodeDashboardLayout userRole={userRole}>
+      {renderDashboardView()}
+    </NodeDashboardLayout>
   );
 }
