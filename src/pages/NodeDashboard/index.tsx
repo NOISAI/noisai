@@ -1,6 +1,6 @@
 
 import { useEffect } from "react";
-import { Navigate, Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { Navigate, useNavigate, useLocation } from "react-router-dom";
 import { useRolePermissions } from "@/hooks/useRolePermissions";
 import { useToast } from "@/hooks/use-toast";
 import NoisaiView from "./NoisaiView";
@@ -15,7 +15,7 @@ export default function NodeDashboard() {
   const location = useLocation();
   const { toast } = useToast();
 
-  // Check permissions on mount and redirect to appropriate view
+  // Check permissions on mount
   useEffect(() => {
     if (isLoaded) {
       if (!permissions.canAccessNoisaiView && !permissions.canAccessBusinessView) {
@@ -25,18 +25,6 @@ export default function NodeDashboard() {
           variant: "destructive"
         });
         navigate("/");
-        return;
-      }
-
-      // Set default landing view based on permissions
-      const currentPath = window.location.pathname;
-      if (currentPath === "/node-dashboard") {
-        // Only redirect if we're at the root node dashboard path
-        if (permissions.canAccessNoisaiView) {
-          navigate("/node-dashboard/noisai", { replace: true });
-        } else if (permissions.canAccessBusinessView) {
-          navigate("/node-dashboard/business", { replace: true });
-        }
       }
     }
   }, [isLoaded, permissions, navigate, toast]);
@@ -45,24 +33,29 @@ export default function NodeDashboard() {
     return <DashboardLoader />;
   }
 
+  // Determine which view to display based on permissions
+  const renderDashboardView = () => {
+    if (permissions.canAccessNoisaiView) {
+      return <NoisaiView />;
+    } else if (permissions.canAccessBusinessView) {
+      return <BusinessView />;
+    } else {
+      // This should never happen due to the useEffect redirect above,
+      // but included as a fallback
+      return (
+        <div className="p-8 text-center">
+          <h2 className="text-2xl font-bold text-red-500 mb-4">Access Denied</h2>
+          <p className="text-gray-400">You don't have permission to view this dashboard.</p>
+        </div>
+      );
+    }
+  };
+
   return (
     <>
       <SignedIn>
         <NodeDashboardLayout userRole={userRole}>
-          <Routes>
-            {permissions.canAccessNoisaiView && (
-              <Route path="/noisai" element={<NoisaiView />} />
-            )}
-            {permissions.canAccessBusinessView && (
-              <Route path="/business" element={<BusinessView />} />
-            )}
-            <Route path="*" element={
-              <Navigate 
-                to={permissions.canAccessNoisaiView ? "/node-dashboard/noisai" : "/node-dashboard/business"} 
-                replace 
-              />
-            } />
-          </Routes>
+          {renderDashboardView()}
         </NodeDashboardLayout>
       </SignedIn>
       <SignedOut>
