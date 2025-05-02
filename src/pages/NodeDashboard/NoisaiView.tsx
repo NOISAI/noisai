@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -74,7 +73,7 @@ export default function NoisaiView() {
     noisePeak: 91,
   });
   
-  // Check if wallet is connected on component mount
+  // Only check if wallet is connected, but don't connect automatically
   useEffect(() => {
     const checkWalletConnection = async () => {
       if (window.ethereum) {
