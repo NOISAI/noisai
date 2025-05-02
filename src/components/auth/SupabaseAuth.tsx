@@ -68,7 +68,7 @@ export function SupabaseAuth({ mode }: SupabaseAuthProps) {
   return (
     <form onSubmit={handleAuth} className="space-y-6 w-full">
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email" className="text-white">Email</Label>
         <div className="relative">
           <Input
             id="email"
@@ -77,14 +77,14 @@ export function SupabaseAuth({ mode }: SupabaseAuthProps) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="pl-10"
+            className="pl-10 text-white bg-gray-800 border-gray-700"
           />
           <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
+        <Label htmlFor="password" className="text-white">Password</Label>
         <div className="relative">
           <Input
             id="password"
@@ -92,7 +92,7 @@ export function SupabaseAuth({ mode }: SupabaseAuthProps) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="pl-10 pr-10"
+            className="pl-10 pr-10 text-white bg-gray-800 border-gray-700"
           />
           <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
           <button
