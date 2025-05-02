@@ -9,6 +9,7 @@ interface UserActionsProps {
   user: NodeUser;
   onToggleStatus: (userId: string, currentStatus: "active" | "inactive") => void;
   onDeleteUser: (userId: string) => void;
+  onEditUser: (userId: string) => void;
 }
 
 export function UserStatusBadge({ user, onToggleStatus }: { 
@@ -28,13 +29,19 @@ export function UserStatusBadge({ user, onToggleStatus }: {
   );
 }
 
-export function UserActionButtons({ user, onDeleteUser }: { 
+export function UserActionButtons({ user, onDeleteUser, onEditUser }: { 
   user: NodeUser; 
   onDeleteUser: (userId: string) => void;
+  onEditUser: (userId: string) => void;
 }) {
   return (
     <div className="text-right space-x-2">
-      <Button variant="ghost" size="icon" className="hover:text-[#22C55E]">
+      <Button 
+        variant="ghost" 
+        size="icon" 
+        className="hover:text-[#22C55E]"
+        onClick={() => onEditUser(user.id)}
+      >
         <Edit className="h-4 w-4" />
       </Button>
       <Button 

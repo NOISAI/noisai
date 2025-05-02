@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -6,6 +7,7 @@ import { ArrowLeft, UserPlus } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import AddUserDialog from "./AddUserDialog";
+import EditUserDialog from "./EditUserDialog";
 import UserSearch from "./UserSearch";
 import UserTable from "./UserTable";
 import { NodeUser, UserFormData } from "./types";
@@ -16,6 +18,8 @@ export default function UserManagement() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isAddUserDialogOpen, setIsAddUserDialogOpen] = useState(false);
+  const [isEditUserDialogOpen, setIsEditUserDialogOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState<NodeUser | null>(null);
   const { toast } = useToast();
   
   // Fetch users on component mount
@@ -150,6 +154,39 @@ export default function UserManagement() {
       description: `${userData.email} has been added as a ${userData.role.replace('_', ' ')}`,
     });
   };
+
+  const handleEditClick = (userId: string) => {
+    const userToEdit = users.find(user => user.id === userId);
+    if (userToEdit) {
+      setCurrentUser(userToEdit);
+      setIsEditUserDialogOpen(true);
+    }
+  };
+  
+  const handleEditUser = (userId: string, userData: UserFormData) => {
+    // Update the user in the list
+    const updatedUsers = users.map(user => 
+      user.id === userId ? { ...user, ...userData } : user
+    );
+    
+    setUsers(updatedUsers);
+    
+    // Update filtered users if there's a search query active
+    if (searchQuery.trim() === "") {
+      setFilteredUsers(updatedUsers);
+    } else {
+      setFilteredUsers(updatedUsers.filter(
+        (user) => 
+          user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          user.role.toLowerCase().includes(searchQuery.toLowerCase())
+      ));
+    }
+    
+    toast({
+      title: "User updated",
+      description: `${userData.email} has been updated`,
+    });
+  };
   
   return (
     <div className="space-y-6">
@@ -187,6 +224,7 @@ export default function UserManagement() {
             isLoading={isLoading}
             onToggleStatus={handleToggleStatus}
             onDeleteUser={handleDeleteUser}
+            onEditUser={handleEditClick}
           />
         </CardContent>
       </Card>
@@ -195,6 +233,13 @@ export default function UserManagement() {
         isOpen={isAddUserDialogOpen}
         onOpenChange={setIsAddUserDialogOpen}
         onAddUser={handleAddUser}
+      />
+
+      <EditUserDialog
+        user={currentUser}
+        isOpen={isEditUserDialogOpen}
+        onOpenChange={setIsEditUserDialogOpen}
+        onEditUser={handleEditUser}
       />
     </div>
   );

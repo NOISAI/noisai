@@ -17,13 +17,15 @@ interface UserTableProps {
   isLoading: boolean;
   onToggleStatus: (userId: string, currentStatus: "active" | "inactive") => void;
   onDeleteUser: (userId: string) => void;
+  onEditUser: (userId: string) => void;
 }
 
 export default function UserTable({ 
   users, 
   isLoading, 
   onToggleStatus, 
-  onDeleteUser 
+  onDeleteUser,
+  onEditUser
 }: UserTableProps) {
   if (isLoading) {
     return (
@@ -76,7 +78,11 @@ export default function UserTable({
                 {user.lastLogin === "Never" ? "Never" : new Date(user.lastLogin).toLocaleDateString()}
               </TableCell>
               <TableCell>
-                <UserActionButtons user={user} onDeleteUser={onDeleteUser} />
+                <UserActionButtons 
+                  user={user} 
+                  onDeleteUser={onDeleteUser} 
+                  onEditUser={onEditUser} 
+                />
               </TableCell>
             </TableRow>
           ))}
