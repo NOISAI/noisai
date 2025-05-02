@@ -61,7 +61,7 @@ export default function CrudDialog({
           <Button
             variant="outline"
             onClick={onCancel}
-            className="border-gray-700"
+            className="border-gray-700 text-gray-300 hover:text-gray-100"
             type="button"
           >
             Cancel
