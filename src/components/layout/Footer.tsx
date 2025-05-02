@@ -42,7 +42,7 @@ export const Footer = () => {
               <a href="#" className="hover:text-white transition-colors">Technology</a>
               <a href="#tokenomics" className="hover:text-white transition-colors">Tokenomics</a>
               <a href="#features" className="hover:text-white transition-colors">Governance</a>
-              <a href="#nodes" className="hover:text-white transition-colors">Nodes</a>
+              <Link to="/node-dashboard" className="hover:text-white transition-colors">Nodes</Link>
               <Link to="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link>
               <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
               <a href="mailto:info@noisai.tech" className="hover:text-white transition-colors">Contact</a>
