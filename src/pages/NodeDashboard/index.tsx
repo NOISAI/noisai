@@ -1,6 +1,6 @@
 
 import { useEffect } from "react";
-import { Navigate, Routes, Route, useNavigate } from "react-router-dom";
+import { Navigate, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { useRolePermissions } from "@/hooks/useRolePermissions";
 import { useToast } from "@/hooks/use-toast";
 import NoisaiView from "./NoisaiView";
@@ -12,6 +12,7 @@ import { SignedIn, SignedOut } from "@clerk/clerk-react";
 export default function NodeDashboard() {
   const { permissions, isLoaded, userRole } = useRolePermissions();
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
 
   // Check permissions on mount and redirect to appropriate view
@@ -65,7 +66,7 @@ export default function NodeDashboard() {
         </NodeDashboardLayout>
       </SignedIn>
       <SignedOut>
-        <Navigate to="/sign-in" replace />
+        <Navigate to="/sign-in" replace state={{ from: location.pathname }} />
       </SignedOut>
     </>
   );

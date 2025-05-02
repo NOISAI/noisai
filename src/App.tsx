@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
 import { SignedIn, SignedOut, ClerkLoaded, useUser } from "@clerk/clerk-react";
 import { useRolePermissions } from "@/hooks/useRolePermissions";
@@ -20,12 +20,15 @@ import AdminProtectedRoute from "./components/auth/AdminProtectedRoute";
 
 const queryClient = new QueryClient();
 
+// Route component with location state for proper redirects
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const location = useLocation();
+  
   return (
     <ClerkLoaded>
       <SignedIn>{children}</SignedIn>
       <SignedOut>
-        <Navigate to="/sign-in" replace />
+        <Navigate to="/sign-in" replace state={{ from: location.pathname }} />
       </SignedOut>
     </ClerkLoaded>
   );
@@ -34,6 +37,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 // Route component to prevent admins from accessing investor dashboard
 const InvestorProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user } = useUser();
+  const location = useLocation();
   const isAdmin = user?.primaryEmailAddress?.emailAddress === "info@noisai.tech";
   
   return (
@@ -42,7 +46,7 @@ const InvestorProtectedRoute = ({ children }: { children: React.ReactNode }) => 
         {isAdmin ? <Navigate to="/admin-dashboard" replace /> : children}
       </SignedIn>
       <SignedOut>
-        <Navigate to="/sign-in" replace />
+        <Navigate to="/sign-in" replace state={{ from: location.pathname }} />
       </SignedOut>
     </ClerkLoaded>
   );

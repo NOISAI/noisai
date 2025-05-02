@@ -1,10 +1,11 @@
+
 import { 
   SignIn as ClerkSignIn, 
   SignUp as ClerkSignUp, 
   useAuth,
   useUser
 } from "@clerk/clerk-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
 interface AuthWrapperProps {
@@ -13,19 +14,19 @@ interface AuthWrapperProps {
 
 export function AuthWrapper({ mode }: AuthWrapperProps) {
   const navigate = useNavigate();
+  const location = useLocation();
   const { isSignedIn } = useAuth();
   const { user } = useUser();
   
   useEffect(() => {
     if (isSignedIn && user) {
-      // Check if user is admin
-      const isAdmin = user.primaryEmailAddress?.emailAddress === "info@noisai.tech";
+      // Get the redirect URL from the location state or default to investor dashboard
+      const redirectTo = location.state?.from || "/investor-dashboard";
       
-      // For regular sign-in, always redirect to investor dashboard 
-      // (admin redirect is handled by the protected route)
-      navigate("/investor-dashboard");
+      // For regular sign-in, redirect to the specified page or investor dashboard
+      navigate(redirectTo);
     }
-  }, [isSignedIn, navigate, user]);
+  }, [isSignedIn, navigate, user, location.state]);
 
   // Add a listener for Clerk's Web3 authentication events
   useEffect(() => {
