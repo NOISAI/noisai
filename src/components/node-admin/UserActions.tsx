@@ -34,7 +34,7 @@ export function UserActionButtons({ user, onDeleteUser }: {
 }) {
   return (
     <div className="text-right space-x-2">
-      <Button variant="ghost" size="icon">
+      <Button variant="ghost" size="icon" className="hover:text-[#22C55E]">
         <Pencil className="h-4 w-4" />
       </Button>
       <Button 

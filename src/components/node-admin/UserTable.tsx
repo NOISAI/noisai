@@ -64,7 +64,8 @@ export default function UserTable({
               </TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>
-                <Badge variant={user.role === "node_operator" ? "default" : "outline"}>
+                <Badge variant={user.role === "node_operator" ? "default" : "outline"} 
+                       className={user.role === "node_operator" ? "bg-[#22C55E] hover:bg-[#1ea853]" : ""}>
                   {user.role === "node_operator" ? "Operator" : "Viewer"}
                 </Badge>
               </TableCell>

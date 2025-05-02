@@ -36,7 +36,7 @@ export default function NodeAdmin() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-green-500">NOISAI Node Admin Dashboard</h1>
+              <h1 className="text-2xl font-bold text-[#22C55E]">NOISAI Node Admin Dashboard</h1>
             </div>
             
             <div className="flex items-center space-x-4">
@@ -76,7 +76,7 @@ export default function NodeAdmin() {
             <CardContent>
               <p className="text-gray-400 mb-4">Manage node users, permissions and access control</p>
               <Link to="/node-admin/users">
-                <Button className="bg-green-600 hover:bg-green-700">
+                <Button className="bg-[#22C55E] hover:bg-[#1ea853]">
                   Manage Users
                 </Button>
               </Link>
@@ -93,7 +93,7 @@ export default function NodeAdmin() {
             <CardContent>
               <p className="text-gray-400 mb-4">Configure security settings, authentication options</p>
               <Link to="/node-admin/security">
-                <Button className="bg-green-600 hover:bg-green-700">
+                <Button className="bg-[#22C55E] hover:bg-[#1ea853]">
                   Security Settings
                 </Button>
               </Link>
@@ -109,7 +109,7 @@ export default function NodeAdmin() {
             </CardHeader>
             <CardContent>
               <p className="text-gray-400 mb-4">View node performance data and statistics</p>
-              <Button className="bg-green-600 hover:bg-green-700">
+              <Button className="bg-[#22C55E] hover:bg-[#1ea853]">
                 View Metrics
               </Button>
             </CardContent>
@@ -124,7 +124,7 @@ export default function NodeAdmin() {
             </CardHeader>
             <CardContent>
               <p className="text-gray-400 mb-4">Configure node settings and parameters</p>
-              <Button className="bg-green-600 hover:bg-green-700">
+              <Button className="bg-[#22C55E] hover:bg-[#1ea853]">
                 Configure Node
               </Button>
             </CardContent>
@@ -139,7 +139,7 @@ export default function NodeAdmin() {
             </CardHeader>
             <CardContent>
               <p className="text-gray-400 mb-4">View system activity and event logs</p>
-              <Button className="bg-green-600 hover:bg-green-700">
+              <Button className="bg-[#22C55E] hover:bg-[#1ea853]">
                 View Logs
               </Button>
             </CardContent>

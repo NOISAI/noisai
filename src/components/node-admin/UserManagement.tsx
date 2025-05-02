@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -163,14 +162,14 @@ export default function UserManagement() {
           Back to Admin Dashboard
         </Link>
         
-        <h1 className="text-2xl font-bold text-green-500">Node User Management</h1>
+        <h1 className="text-2xl font-bold text-[#22C55E]">Node User Management</h1>
       </div>
       
       <div className="flex items-center justify-between">
         <UserSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         
         <Button 
-          className="bg-green-600 hover:bg-green-700"
+          className="bg-[#22C55E] hover:bg-[#1ea853]"
           onClick={() => setIsAddUserDialogOpen(true)}
         >
           <UserPlus className="h-4 w-4 mr-2" />
