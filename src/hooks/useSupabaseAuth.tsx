@@ -59,13 +59,14 @@ export const useSupabaseAuth = () => {
       
       // Try to call has_role function if it exists, otherwise use a fallback
       try {
-        // Use explicit types for both the return type and parameters
+        // Define the types properly for the RPC call
         interface HasRoleParams {
           requested_user_id: string;
           requested_role: string;
         }
         
-        const { data, error } = await supabase.rpc<boolean, HasRoleParams>('has_role', {
+        // Use a non-generic call and handle the response explicitly
+        const { data, error } = await supabase.rpc('has_role', {
           requested_user_id: userId,
           requested_role: 'admin'
         });
