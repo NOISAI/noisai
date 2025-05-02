@@ -3,8 +3,10 @@ import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { LogOut, Users, Lock } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { LogOut, Users, Lock, BarChart3, Server, Activity } from "lucide-react";
+import { useNavigate, Routes, Route, Link } from "react-router-dom";
+import UserManagement from "@/components/node-admin/UserManagement";
+import SecuritySettings from "@/components/node-admin/SecuritySettings";
 
 export default function NodeAdmin() {
   const { user, signOut, userRole } = useSupabaseAuth();
@@ -27,8 +29,8 @@ export default function NodeAdmin() {
       });
     }
   };
-  
-  return (
+
+  const renderDashboard = () => (
     <div className="min-h-screen bg-black text-white">
       <div className="border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -73,9 +75,11 @@ export default function NodeAdmin() {
             </CardHeader>
             <CardContent>
               <p className="text-gray-400 mb-4">Manage node users, permissions and access control</p>
-              <Button className="bg-green-600 hover:bg-green-700">
-                Manage Users
-              </Button>
+              <Link to="/node-admin/users">
+                <Button className="bg-green-600 hover:bg-green-700">
+                  Manage Users
+                </Button>
+              </Link>
             </CardContent>
           </Card>
           
@@ -88,13 +92,68 @@ export default function NodeAdmin() {
             </CardHeader>
             <CardContent>
               <p className="text-gray-400 mb-4">Configure security settings, authentication options</p>
+              <Link to="/node-admin/security">
+                <Button className="bg-green-600 hover:bg-green-700">
+                  Security Settings
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gray-900 border-gray-800">
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <BarChart3 className="h-5 w-5 mr-2" />
+                Performance Metrics
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-400 mb-4">View node performance data and statistics</p>
               <Button className="bg-green-600 hover:bg-green-700">
-                Security Settings
+                View Metrics
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gray-900 border-gray-800">
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <Server className="h-5 w-5 mr-2" />
+                Node Configuration
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-400 mb-4">Configure node settings and parameters</p>
+              <Button className="bg-green-600 hover:bg-green-700">
+                Configure Node
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gray-900 border-gray-800">
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <Activity className="h-5 w-5 mr-2" />
+                System Logs
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-400 mb-4">View system activity and event logs</p>
+              <Button className="bg-green-600 hover:bg-green-700">
+                View Logs
               </Button>
             </CardContent>
           </Card>
         </div>
       </main>
     </div>
+  );
+  
+  return (
+    <Routes>
+      <Route path="/" element={renderDashboard()} />
+      <Route path="/users" element={<UserManagement />} />
+      <Route path="/security" element={<SecuritySettings />} />
+    </Routes>
   );
 }

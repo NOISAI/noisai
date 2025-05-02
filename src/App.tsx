@@ -121,7 +121,7 @@ const App = () => (
             } 
           />
           <Route 
-            path="/node-admin" 
+            path="/node-admin/*" 
             element={
               <NodeAdminProtectedRoute>
                 <NodeAdmin />
