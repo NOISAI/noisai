@@ -136,7 +136,7 @@ export default function UserManagement() {
 
   const handleAddUser = (userData: {
     email: string;
-    role: string;
+    role: "node_operator" | "node_viewer";
     status: "active" | "inactive";
   }) => {
     // Generate a unique ID for the new user
