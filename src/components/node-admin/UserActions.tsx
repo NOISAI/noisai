@@ -1,6 +1,6 @@
 
 import { useToast } from "@/hooks/use-toast";
-import { Pencil, Trash } from "lucide-react";
+import { Edit, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { NodeUser } from "./types";
@@ -35,7 +35,7 @@ export function UserActionButtons({ user, onDeleteUser }: {
   return (
     <div className="text-right space-x-2">
       <Button variant="ghost" size="icon" className="hover:text-[#22C55E]">
-        <Pencil className="h-4 w-4" />
+        <Edit className="h-4 w-4" />
       </Button>
       <Button 
         variant="ghost" 
