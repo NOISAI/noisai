@@ -18,9 +18,6 @@ export const useRolePermissions = () => {
       if (email === "info@noisai.tech") {
         setUserRole("admin");
         setPermissions(rolePermissions.admin);
-      } else if (email?.includes("dev@") || email?.includes("developer@")) {
-        setUserRole("developer");
-        setPermissions(rolePermissions.developer);
       } else if (email?.includes("business@")) {
         setUserRole("business");
         setPermissions(rolePermissions.business);

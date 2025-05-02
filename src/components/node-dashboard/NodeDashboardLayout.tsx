@@ -1,6 +1,10 @@
 
 import { Link } from "react-router-dom";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
+import { Button } from "@/components/ui/button";
+import { LogOut } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function NodeDashboardLayout({ 
   userRole, 
@@ -9,8 +13,27 @@ export default function NodeDashboardLayout({
   userRole: string;
   children: React.ReactNode;
 }) {
-  const { user } = useSupabaseAuth();
+  const { user, signOut } = useSupabaseAuth();
   const email = user?.email;
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast({
+        title: "Signed out successfully",
+        description: "You have been signed out",
+      });
+      navigate("/node-sign-in");
+    } catch (error) {
+      toast({
+        title: "Error signing out",
+        description: "An error occurred while signing out",
+        variant: "destructive",
+      });
+    }
+  };
   
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
@@ -40,6 +63,16 @@ export default function NodeDashboardLayout({
               <div className="h-8 w-8 rounded-full bg-purple-500 flex items-center justify-center text-white font-medium">
                 {email ? email.charAt(0).toUpperCase() : 'U'}
               </div>
+              
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleSignOut}
+                className="border-gray-200 hover:bg-gray-100"
+              >
+                <LogOut className="h-4 w-4 mr-2" />
+                Sign Out
+              </Button>
             </div>
           </div>
         </div>
