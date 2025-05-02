@@ -138,7 +138,7 @@ export default function EditUserDialog({
                         <SelectValue placeholder="Select a role" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
+                    <SelectContent className="bg-[#1A1F2C] border-gray-700 text-white">
                       <SelectItem value="node_operator">Node Operator</SelectItem>
                       <SelectItem value="node_viewer">Node Viewer</SelectItem>
                     </SelectContent>
@@ -163,7 +163,7 @@ export default function EditUserDialog({
                         <SelectValue placeholder="Select a status" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
+                    <SelectContent className="bg-[#1A1F2C] border-gray-700 text-white">
                       <SelectItem value="active">Active</SelectItem>
                       <SelectItem value="inactive">Inactive</SelectItem>
                     </SelectContent>
