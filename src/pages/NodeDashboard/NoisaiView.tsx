@@ -88,20 +88,20 @@ export default function NoisaiView() {
       <StatsOverview stats={stats} />
       
       {/* Noise Level Card */}
-      <Card className="border border-gray-200 bg-white">
+      <Card className="noise-card border shadow-md">
         <CardContent className="p-6">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-sm text-gray-500 flex items-center">
+              <p className="text-sm text-gray-500 dark:text-gray-300 flex items-center">
                 Noise Levels
-                <span className="inline-block w-4 h-4 rounded-full bg-gray-100 text-gray-400 text-xs flex items-center justify-center ml-1">?</span>
+                <span className="inline-block w-4 h-4 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-300 text-xs flex items-center justify-center ml-1">?</span>
               </p>
-              <h2 className="text-4xl font-bold mt-2">{stats.noiseLevel} dB</h2>
-              <p className="text-sm text-gray-500 mt-1">Peak: {stats.noisePeak} dB</p>
-              <p className="text-sm text-red-600 mt-1">↓ 5% vs yesterday</p>
+              <h2 className="text-4xl font-bold mt-2 text-gray-900 dark:text-white">{stats.noiseLevel} dB</h2>
+              <p className="text-sm text-gray-500 dark:text-gray-300 mt-1">Peak: {stats.noisePeak} dB</p>
+              <p className="text-sm text-red-600 dark:text-highlight-red mt-1 trend-down">↓ 5% vs yesterday</p>
             </div>
-            <div className="bg-green-50 p-2 rounded-lg">
-              <Volume className="h-6 w-6 text-green-600" />
+            <div className="bg-green-50 dark:bg-green-800/30 p-2 rounded-lg">
+              <Volume className="h-6 w-6 text-green-600 dark:text-green-400" />
             </div>
           </div>
         </CardContent>

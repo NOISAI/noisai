@@ -71,7 +71,7 @@ export default function NodeDashboardLayout({
                   variant="outline"
                   size="sm"
                   onClick={handleSignOut}
-                  className="border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-primary-light dark:hover:text-white"
                 >
                   <LogOut className="h-4 w-4 mr-2" />
                   Sign Out

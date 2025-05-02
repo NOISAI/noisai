@@ -41,6 +41,10 @@ export default {
         text: {
           light: "#1A1F2C",
           dark: "#F1F5F9",  // Very light gray for better dark mode text
+        },
+        highlight: {
+          red: "#ea384c",
+          green: "#22C55E",
         }
       },
       borderRadius: {
