@@ -8,6 +8,7 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { UserFormData } from "./types";
 
 // Define the form schema with validation
 const addUserSchema = z.object({
@@ -20,12 +21,10 @@ const addUserSchema = z.object({
   }),
 });
 
-type AddUserFormValues = z.infer<typeof addUserSchema>;
-
 interface AddUserDialogProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
-  onAddUser: (userData: AddUserFormValues) => void;
+  onAddUser: (userData: UserFormData) => void;
 }
 
 export default function AddUserDialog({
@@ -36,7 +35,7 @@ export default function AddUserDialog({
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Initialize the form with default values
-  const form = useForm<AddUserFormValues>({
+  const form = useForm<UserFormData>({
     resolver: zodResolver(addUserSchema),
     defaultValues: {
       email: "",
@@ -45,7 +44,7 @@ export default function AddUserDialog({
     },
   });
 
-  const handleSubmit = async (values: AddUserFormValues) => {
+  const handleSubmit = async (values: UserFormData) => {
     setIsSubmitting(true);
     try {
       // In a real application, this would be an API call to create the user

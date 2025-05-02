@@ -2,30 +2,14 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Search, UserPlus, Trash, Pencil, Lock, Shield } from "lucide-react";
+import { ArrowLeft, UserPlus } from "lucide-react";
 import { Link } from "react-router-dom";
-import AddUserDialog from "./AddUserDialog";
 
-type NodeUser = {
-  id: string;
-  email: string;
-  role: string;
-  status: "active" | "inactive";
-  lastLogin: string;
-};
+import AddUserDialog from "./AddUserDialog";
+import UserSearch from "./UserSearch";
+import UserTable from "./UserTable";
+import { NodeUser, UserFormData } from "./types";
 
 export default function UserManagement() {
   const [users, setUsers] = useState<NodeUser[]>([]);
@@ -134,11 +118,7 @@ export default function UserManagement() {
     });
   };
 
-  const handleAddUser = (userData: {
-    email: string;
-    role: "node_operator" | "node_viewer";
-    status: "active" | "inactive";
-  }) => {
+  const handleAddUser = (userData: UserFormData) => {
     // Generate a unique ID for the new user
     const newUserId = (users.length + 1).toString();
     
@@ -187,15 +167,7 @@ export default function UserManagement() {
       </div>
       
       <div className="flex items-center justify-between">
-        <div className="relative w-64">
-          <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500 dark:text-gray-400" />
-          <Input
-            placeholder="Search users..."
-            className="pl-8"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
+        <UserSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         
         <Button 
           className="bg-green-600 hover:bg-green-700"
@@ -211,72 +183,12 @@ export default function UserManagement() {
           <CardTitle className="text-lg">Node Users</CardTitle>
         </CardHeader>
         <CardContent>
-          {isLoading ? (
-            <div className="flex justify-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-green-500"></div>
-            </div>
-          ) : filteredUsers.length === 0 ? (
-            <p className="text-center py-8 text-gray-500 dark:text-gray-400">
-              No users found matching your search.
-            </p>
-          ) : (
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-12">
-                      <Checkbox />
-                    </TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Role</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Last Login</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredUsers.map((user) => (
-                    <TableRow key={user.id}>
-                      <TableCell>
-                        <Checkbox />
-                      </TableCell>
-                      <TableCell>{user.email}</TableCell>
-                      <TableCell>
-                        <Badge variant={user.role === "node_operator" ? "default" : "outline"}>
-                          {user.role === "node_operator" ? "Operator" : "Viewer"}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Badge 
-                          className={`cursor-pointer ${user.status === "active" ? "bg-green-100 text-green-800 hover:bg-green-200" : "bg-red-100 text-red-800 hover:bg-red-200"}`}
-                          variant={user.status === "active" ? "default" : "destructive"}
-                          onClick={() => handleToggleStatus(user.id, user.status)}
-                        >
-                          {user.status === "active" ? "Active" : "Inactive"}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        {user.lastLogin === "Never" ? "Never" : new Date(user.lastLogin).toLocaleDateString()}
-                      </TableCell>
-                      <TableCell className="text-right space-x-2">
-                        <Button variant="ghost" size="icon">
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
-                          className="text-red-500 hover:text-red-600"
-                          onClick={() => handleDeleteUser(user.id)}
-                        >
-                          <Trash className="h-4 w-4" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          )}
+          <UserTable 
+            users={filteredUsers}
+            isLoading={isLoading}
+            onToggleStatus={handleToggleStatus}
+            onDeleteUser={handleDeleteUser}
+          />
         </CardContent>
       </Card>
 
