@@ -32,9 +32,9 @@ export default function NodeDashboard() {
     }
   }, [user, canAccessNoisaiView, canAccessBusinessView, toast]);
   
-  // Redirect admin users to the admin dashboard - use navigate instead of window.location
+  // Redirect admin users to the admin dashboard - immediately when role is determined
   useEffect(() => {
-    if (user && !isLoading && userRole === 'admin') {
+    if (!isLoading && user && userRole === 'admin') {
       navigate("/node-admin", { replace: true });
     }
   }, [user, isLoading, userRole, navigate]);

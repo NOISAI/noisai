@@ -57,37 +57,16 @@ export const useSupabaseAuth = () => {
         return;
       }
       
-      // Try to call has_role function if it exists, otherwise use a fallback
-      try {
-        // Define the types properly for the RPC call
-        interface HasRoleParams {
-          requested_user_id: string;
-          requested_role: string;
-        }
-        
-        // Use a non-generic call and handle the response explicitly
-        const { data, error } = await supabase.rpc('has_role', {
-          requested_user_id: userId,
-          requested_role: 'admin'
-        });
-        
-        if (error) {
-          console.error("Error fetching user role:", error);
-          // Fall back to email-based role assignment using the correct type
-          setUserRole(email === 'info@noisai.tech' ? 'admin' : 'user');
-        } else if (data) {
-          // If the has_role function returns true, user is admin
-          setUserRole(data ? 'admin' : 'user');
-        } else {
-          setUserRole('user');
-        }
-      } catch (rpcError) {
-        console.error("RPC function failed:", rpcError);
-        // Fall back to email-based role assignment using the correct type
-        setUserRole(email === 'info@noisai.tech' ? 'admin' : 'user');
+      // Determine other roles based on email patterns
+      if (email.includes('business')) {
+        setUserRole('business');
+        return;
       }
+      
+      // Default to user role if no special conditions are met
+      setUserRole('user');
     } catch (error) {
-      console.error("Error fetching user role:", error);
+      console.error("Error determining user role:", error);
       setUserRole('user'); // Default to user role on error
     }
   };
