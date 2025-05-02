@@ -15,9 +15,9 @@ interface PerformanceChartProps {
 
 export function PerformanceChart({ title, data }: PerformanceChartProps) {
   return (
-    <Card className="border border-gray-200 bg-white">
+    <Card className="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 card-enhanced">
       <CardContent className="p-6">
-        <h3 className="text-lg font-medium text-gray-800 mb-4">{title}</h3>
+        <h3 className="text-lg font-medium text-gray-800 dark:text-white mb-4">{title}</h3>
         <div className="h-80">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart
@@ -30,14 +30,30 @@ export function PerformanceChart({ title, data }: PerformanceChartProps) {
                   <stop offset="95%" stopColor="#82ca9d" stopOpacity={0.1}/>
                 </linearGradient>
                 <linearGradient id="colorTokens" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
-                  <stop offset="95%" stopColor="#8884d8" stopOpacity={0.1}/>
+                  <stop offset="5%" stopColor="#9b87f5" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#9b87f5" stopOpacity={0.1}/>
                 </linearGradient>
               </defs>
-              <XAxis dataKey="name" />
-              <YAxis />
-              <CartesianGrid strokeDasharray="3 3" />
-              <Tooltip />
+              <XAxis 
+                dataKey="name" 
+                stroke="#64748b" 
+                fontSize={12}
+              />
+              <YAxis 
+                stroke="#64748b"
+                fontSize={12} 
+              />
+              <CartesianGrid 
+                strokeDasharray="3 3" 
+                stroke="#64748b40"
+              />
+              <Tooltip 
+                contentStyle={{
+                  backgroundColor: "var(--background)",
+                  borderColor: "var(--border)",
+                  color: "var(--foreground)"
+                }}
+              />
               <Area 
                 type="monotone" 
                 dataKey="energy" 
@@ -48,7 +64,7 @@ export function PerformanceChart({ title, data }: PerformanceChartProps) {
               <Area 
                 type="monotone" 
                 dataKey="tokens" 
-                stroke="#8884d8" 
+                stroke="#9b87f5" 
                 fillOpacity={1} 
                 fill="url(#colorTokens)" 
               />

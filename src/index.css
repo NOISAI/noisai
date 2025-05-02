@@ -28,11 +28,11 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 222.2 47.4% 11.2%;
     --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
+    --card: 222.2 47.4% 11.2%;
     --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
+    --popover: 222.2 47.4% 11.2%;
     --popover-foreground: 210 40% 98%;
     --primary: 262 83% 74%;
     --primary-foreground: 210 40% 98%;
@@ -67,5 +67,14 @@
 
   .fade-in-slow {
     @apply animate-fade-in-slow;
+  }
+  
+  /* Enhanced dark mode styles */
+  .dark .card-enhanced {
+    @apply bg-card-dark border-gray-700 text-text-dark shadow-lg;
+  }
+  
+  .card-enhanced {
+    @apply bg-card-light border-gray-200 text-text-light;
   }
 }

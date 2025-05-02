@@ -34,6 +34,14 @@ export default {
           DEFAULT: "#1A1F2C",
           light: "#8E9196",
         },
+        card: {
+          light: "#FFFFFF",
+          dark: "#1E293B",  // Darker blue-gray for better contrast
+        },
+        text: {
+          light: "#1A1F2C",
+          dark: "#F1F5F9",  // Very light gray for better dark mode text
+        }
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -12,10 +12,10 @@ export function NoiseProgressBar({ label, value, max, color }: NoiseProgressBarP
   return (
     <div>
       <div className="flex justify-between text-sm mb-1">
-        <span>{label}</span>
-        <span>{value} dB</span>
+        <span className="text-gray-600 dark:text-gray-300">{label}</span>
+        <span className="text-gray-800 dark:text-gray-200 font-medium">{value} dB</span>
       </div>
-      <div className="w-full bg-gray-200 rounded-full h-2">
+      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
         <div 
           className={`${color} h-2 rounded-full`} 
           style={{ width: `${percentage}%` }}
