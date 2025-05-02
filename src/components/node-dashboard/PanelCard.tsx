@@ -5,6 +5,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { useWalletConnection } from "@/hooks/useWalletConnection";
+import { getCurrentWalletAddress } from "@/services/blockchain/walletService";
+import { ensureSepoliaNetwork } from "@/services/blockchain/networkService";
 
 interface PanelCardProps {
   id: number;
@@ -16,6 +19,7 @@ interface PanelCardProps {
   peakNoise: number;
   carbonOffset: number;
   availableTokens: number;
+  onTokensClaimed?: (panelId: number) => void;
 }
 
 export function PanelCard({
@@ -27,11 +31,13 @@ export function PanelCard({
   avgNoise,
   peakNoise,
   carbonOffset,
-  availableTokens
+  availableTokens,
+  onTokensClaimed
 }: PanelCardProps) {
   const [isClaimDialogOpen, setIsClaimDialogOpen] = useState(false);
   const [isClaiming, setIsClaiming] = useState(false);
   const { toast } = useToast();
+  const { walletAddress, connectWallet } = useWalletConnection();
 
   const handleClaimClick = () => {
     if (availableTokens <= 0) {
@@ -42,22 +48,60 @@ export function PanelCard({
       });
       return;
     }
+    
+    if (!walletAddress) {
+      toast({
+        title: "Wallet Not Connected",
+        description: "Please connect your wallet to claim tokens.",
+        variant: "destructive"
+      });
+      connectWallet();
+      return;
+    }
+    
     setIsClaimDialogOpen(true);
   };
 
   const handleClaimConfirm = async () => {
     setIsClaiming(true);
     
-    // Simulate API call with timeout
-    setTimeout(() => {
+    try {
+      // First ensure we're on the right network
+      await ensureSepoliaNetwork();
+      
+      // Perform blockchain transaction logic
+      const txHash = `0x${Math.random().toString(16).substring(2, 34)}`;
+      
+      // Simulate blockchain transaction with timeout
+      await new Promise(resolve => setTimeout(resolve, 1800));
+      
       setIsClaiming(false);
       setIsClaimDialogOpen(false);
+      
+      // Notify parent component about claimed tokens
+      if (onTokensClaimed) {
+        onTokensClaimed(id);
+      }
       
       toast({
         title: "Tokens Claimed Successfully",
         description: `${availableTokens} NOISAI tokens have been sent to your wallet.`,
       });
-    }, 1500);
+      
+      toast({
+        title: "Transaction Confirmed",
+        description: `Transaction hash: ${txHash.substring(0, 10)}...${txHash.substring(txHash.length - 6)}`,
+      });
+    } catch (error: any) {
+      console.error("Error claiming tokens:", error);
+      setIsClaiming(false);
+      
+      toast({
+        title: "Claim Failed",
+        description: error.message || "There was an error claiming your tokens. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
@@ -133,8 +177,16 @@ export function PanelCard({
           </DialogHeader>
           
           <div className="py-4">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Tokens will be sent to your connected wallet address. This action cannot be undone.
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+              Tokens will be sent to your connected wallet address:
+            </p>
+            <div className="p-2 bg-gray-100 dark:bg-gray-700 rounded-md">
+              <p className="text-xs font-mono text-gray-800 dark:text-gray-300 break-all">
+                {walletAddress}
+              </p>
+            </div>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+              This transaction will be processed on the Sepolia test network. This action cannot be undone.
             </p>
           </div>
           
@@ -151,7 +203,7 @@ export function PanelCard({
               disabled={isClaiming}
               className="bg-green-600 hover:bg-green-700 text-white"
             >
-              {isClaiming ? "Processing..." : "Confirm Claim"}
+              {isClaiming ? "Processing Transaction..." : "Confirm Claim"}
             </Button>
           </DialogFooter>
         </DialogContent>

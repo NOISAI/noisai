@@ -1,6 +1,5 @@
 
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
 import { PanelCard } from "./PanelCard";
 
 interface Panel {
@@ -21,11 +20,18 @@ interface PanelsListProps {
 }
 
 export function PanelsList({ panels, activePanels }: PanelsListProps) {
-  // Using local state to track panels with token claims
   const [panelData, setPanelData] = useState<Panel[]>(panels);
 
-  // We'll update this when necessary to handle claimed tokens
-  // For now, the individual PanelCard components will handle their own state
+  // Handle token claims
+  const handleTokensClaimed = (panelId: number) => {
+    setPanelData(prevPanels => 
+      prevPanels.map(panel => 
+        panel.id === panelId 
+          ? { ...panel, availableTokens: 0 } 
+          : panel
+      )
+    );
+  };
 
   return (
     <div className="space-y-4">
@@ -37,7 +43,7 @@ export function PanelsList({ panels, activePanels }: PanelsListProps) {
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {panels.map(panel => (
+        {panelData.map(panel => (
           <PanelCard
             key={panel.id}
             id={panel.id}
@@ -49,6 +55,7 @@ export function PanelsList({ panels, activePanels }: PanelsListProps) {
             peakNoise={panel.peakNoise}
             carbonOffset={panel.carbonOffset}
             availableTokens={panel.availableTokens}
+            onTokensClaimed={handleTokensClaimed}
           />
         ))}
       </div>
