@@ -81,7 +81,7 @@ export const LiveStats = ({ liveStats }: LiveStatsProps) => {
                 <div className="font-bold text-green-500">{liveStats.activeNodes}+</div>
               </div>
             </div>
-            <Link to="/sign-up">
+            <Link to="/node-sign-in">
               <Button variant="default" className="bg-green-600 hover:bg-green-700 text-white font-medium">
                 Become a Node
               </Button>
