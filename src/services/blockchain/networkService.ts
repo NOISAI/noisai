@@ -16,7 +16,7 @@ export const ensureSepoliaNetwork = async (): Promise<boolean> => {
     if (chainId !== SEPOLIA_NETWORK_CONFIG.chainId) {
       console.log("Need to switch to Sepolia network");
       try {
-        // Try to switch to Sepolia
+        // Try to switch to Sepolia - this will trigger a MetaMask popup
         await window.ethereum.request({
           method: 'wallet_switchEthereumChain',
           params: [{ chainId: SEPOLIA_NETWORK_CONFIG.chainId }],

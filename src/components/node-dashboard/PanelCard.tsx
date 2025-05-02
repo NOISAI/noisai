@@ -39,7 +39,7 @@ export function PanelCard({
   const { toast } = useToast();
   const { walletAddress, connectWallet } = useWalletConnection();
 
-  const handleClaimClick = () => {
+  const handleClaimClick = async () => {
     if (availableTokens <= 0) {
       toast({
         title: "No Tokens Available",
@@ -49,16 +49,26 @@ export function PanelCard({
       return;
     }
     
+    // If wallet is not connected, directly trigger MetaMask popup
     if (!walletAddress) {
-      toast({
-        title: "Wallet Not Connected",
-        description: "Please connect your wallet to claim tokens.",
-        variant: "destructive"
-      });
-      connectWallet();
+      try {
+        await connectWallet();
+        // Only open claim dialog if wallet connection was successful
+        if (window.ethereum && await window.ethereum.request({ method: 'eth_accounts' }).then(accounts => accounts.length > 0)) {
+          setIsClaimDialogOpen(true);
+        }
+      } catch (error) {
+        console.error("Failed to connect wallet:", error);
+        toast({
+          title: "Wallet Connection Failed",
+          description: "Please make sure MetaMask is installed and unlocked.",
+          variant: "destructive"
+        });
+      }
       return;
     }
     
+    // If already connected, proceed to open dialog
     setIsClaimDialogOpen(true);
   };
 
@@ -69,11 +79,33 @@ export function PanelCard({
       // First ensure we're on the right network
       await ensureSepoliaNetwork();
       
-      // Perform blockchain transaction logic
-      const txHash = `0x${Math.random().toString(16).substring(2, 34)}`;
+      // Double-check wallet connection
+      const currentAddress = await getCurrentWalletAddress();
       
-      // Simulate blockchain transaction with timeout
-      await new Promise(resolve => setTimeout(resolve, 1800));
+      if (!currentAddress) {
+        throw new Error("Wallet disconnected. Please reconnect.");
+      }
+      
+      // Prepare transaction parameters
+      const transactionParameters = {
+        to: "0x71C7656EC7ab88b098defB751B7401B5f6d8976F", // Example receiver address
+        from: currentAddress,
+        // This is just simulating a token claim, not actually sending ETH
+        // In a real app, this would call a smart contract function
+        data: "0x095ea7b3000000000000000000000000" + 
+              "71C7656EC7ab88b098defB751B7401B5f6d8976F" + 
+              "0000000000000000000000000000000000000000000000000000000000000000",
+      };
+      
+      console.log("Sending transaction with params:", transactionParameters);
+      
+      // Explicitly request transaction - this will trigger MetaMask popup
+      const txHash = await window.ethereum.request({
+        method: 'eth_sendTransaction',
+        params: [transactionParameters],
+      });
+      
+      console.log("Transaction sent successfully! Hash:", txHash);
       
       setIsClaiming(false);
       setIsClaimDialogOpen(false);

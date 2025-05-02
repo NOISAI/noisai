@@ -39,6 +39,39 @@ export function useWalletConnection(): UseWalletConnectionReturn {
     };
     
     checkWalletConnection();
+    
+    // Setup MetaMask event listeners
+    if (window.ethereum) {
+      // Listen for account changes
+      window.ethereum.on('accountsChanged', (accounts: string[]) => {
+        console.log("MetaMask accounts changed:", accounts);
+        if (accounts.length === 0) {
+          // User disconnected their wallet
+          disconnectWallet();
+        } else {
+          // User switched accounts
+          setWalletAddress(accounts[0]);
+          updateBalanceInfo();
+        }
+      });
+      
+      // Listen for chain changes
+      window.ethereum.on('chainChanged', (chainId: string) => {
+        console.log("MetaMask chain changed:", chainId);
+        // Refresh balance info when chain changes
+        if (walletAddress) {
+          updateBalanceInfo();
+        }
+      });
+    }
+    
+    // Clean up event listeners
+    return () => {
+      if (window.ethereum) {
+        window.ethereum.removeAllListeners('accountsChanged');
+        window.ethereum.removeAllListeners('chainChanged');
+      }
+    };
   }, []);
 
   // Update balance information when wallet is connected
@@ -67,7 +100,18 @@ export function useWalletConnection(): UseWalletConnectionReturn {
     setIsConnecting(true);
     
     try {
-      const address = await getCurrentWalletAddress();
+      // This will trigger the MetaMask popup
+      console.log("Requesting MetaMask accounts...");
+      const accounts = await window.ethereum.request({ 
+        method: 'eth_requestAccounts' 
+      });
+      
+      if (accounts.length === 0) {
+        throw new Error("No accounts found or user rejected the connection");
+      }
+      
+      const address = accounts[0];
+      console.log("MetaMask connected:", address);
       setWalletAddress(address);
       
       // Update balance information
@@ -77,13 +121,16 @@ export function useWalletConnection(): UseWalletConnectionReturn {
         title: "Wallet Connected",
         description: "Your wallet has been successfully connected.",
       });
-    } catch (error) {
+      
+      return address;
+    } catch (error: any) {
       console.error("Error connecting wallet:", error);
       toast({
         title: "Connection Failed",
-        description: "Failed to connect wallet. Please try again.",
+        description: error.message || "Failed to connect wallet. Please try again.",
         variant: "destructive"
       });
+      throw error;
     } finally {
       setIsConnecting(false);
     }
