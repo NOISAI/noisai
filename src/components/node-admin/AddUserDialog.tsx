@@ -133,13 +133,21 @@ export default function AddUserDialog({
                     className="flex space-x-6"
                   >
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="active" id="active" />
+                      <RadioGroupItem 
+                        value="active" 
+                        id="active" 
+                        className="border-[#22C55E] text-[#22C55E] focus:ring-[#22C55E]"
+                      />
                       <FormLabel htmlFor="active" className="text-white font-normal">
                         Active
                       </FormLabel>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="inactive" id="inactive" />
+                      <RadioGroupItem 
+                        value="inactive" 
+                        id="inactive"
+                        className="border-[#22C55E] text-[#22C55E] focus:ring-[#22C55E]"
+                      />
                       <FormLabel htmlFor="inactive" className="text-white font-normal">
                         Inactive
                       </FormLabel>

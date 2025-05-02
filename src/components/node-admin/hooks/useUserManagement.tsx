@@ -84,13 +84,11 @@ export function useUserManagement() {
     );
     
     setUsers(updatedUsers);
-    
-    // Update filtered users
-    const updatedFiltered = filteredUsers.map(user => 
-      user.id === userId ? { ...user, status: newStatus as "active" | "inactive" } : user
-    );
-    
-    setFilteredUsers(updatedFiltered);
+    setFilteredUsers(updatedUsers.filter(user => 
+      searchQuery.trim() === "" ||
+      user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.role.toLowerCase().includes(searchQuery.toLowerCase())
+    ));
     
     toast({
       title: "User status updated",
@@ -104,8 +102,11 @@ export function useUserManagement() {
     setUsers(updatedUsers);
     
     // Update filtered users
-    const updatedFiltered = filteredUsers.filter(user => user.id !== userId);
-    setFilteredUsers(updatedFiltered);
+    setFilteredUsers(updatedUsers.filter(user => 
+      searchQuery.trim() === "" ||
+      user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.role.toLowerCase().includes(searchQuery.toLowerCase())
+    ));
     
     toast({
       title: "User deleted",
@@ -130,15 +131,12 @@ export function useUserManagement() {
     const updatedUsers = [...users, newUser];
     setUsers(updatedUsers);
     
-    // Update filtered users if there's a search query active
-    if (searchQuery.trim() === "") {
-      setFilteredUsers(updatedUsers);
-    } else if (
-      newUser.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      newUser.role.toLowerCase().includes(searchQuery.toLowerCase())
-    ) {
-      setFilteredUsers([...filteredUsers, newUser]);
-    }
+    // Update filtered users
+    setFilteredUsers(updatedUsers.filter(user => 
+      searchQuery.trim() === "" ||
+      user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.role.toLowerCase().includes(searchQuery.toLowerCase())
+    ));
     
     toast({
       title: "User added",
@@ -163,15 +161,11 @@ export function useUserManagement() {
     setUsers(updatedUsers);
     
     // Update filtered users
-    if (searchQuery.trim() === "") {
-      setFilteredUsers(updatedUsers);
-    } else {
-      setFilteredUsers(updatedUsers.filter(
-        (user) => 
-          user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          user.role.toLowerCase().includes(searchQuery.toLowerCase())
-      ));
-    }
+    setFilteredUsers(updatedUsers.filter(user => 
+      searchQuery.trim() === "" ||
+      user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.role.toLowerCase().includes(searchQuery.toLowerCase())
+    ));
     
     toast({
       title: "User updated",
