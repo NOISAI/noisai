@@ -57,22 +57,18 @@ export const useSupabaseAuth = () => {
         return;
       }
       
-      // Instead of trying to query a non-existent table,
-      // we'll use a different approach to determine role
-      // This fixes the TypeScript error
-      
-      // In a real application, you would check role from a database table
-      // or call an RPC function
-      
-      // Since we don't have a user_roles table defined in the Database type,
-      // we'll use a simple email-based check as a workaround
-      
       // Try to call has_role function if it exists, otherwise use a fallback
       try {
-        const { data, error } = await supabase.rpc('has_role', {
+        // Use an explicit type for the parameters to avoid TypeScript errors
+        interface HasRoleParams {
+          requested_user_id: string;
+          requested_role: string;
+        }
+        
+        const { data, error } = await supabase.rpc<boolean>('has_role', {
           requested_user_id: userId,
           requested_role: 'admin'
-        });
+        } as HasRoleParams);
         
         if (error) {
           console.error("Error fetching user role:", error);
