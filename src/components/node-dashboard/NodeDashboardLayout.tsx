@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import { ThemeProvider } from "@/context/ThemeContext";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export default function NodeDashboardLayout({ 
   userRole, 
@@ -36,51 +38,55 @@ export default function NodeDashboardLayout({
   };
   
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900">
-      <div className="border-b border-gray-200 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-gray-900">NOISAI Node</h1>
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              <Link
-                to="/investor-dashboard"
-                className="bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-md text-sm font-medium text-gray-800 transition-colors"
-              >
-                Back to Investor Dashboard
-              </Link>
-              
-              <div className="bg-green-100 px-3 py-2 rounded-md text-sm text-green-800">
-                {userRole.charAt(0).toUpperCase() + userRole.slice(1)}
+    <ThemeProvider>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
+        <div className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-800">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center py-4">
+              <div className="flex items-center">
+                <h1 className="text-2xl font-bold text-primary-dark dark:text-primary-light">NOISAI Node</h1>
               </div>
               
-              <div className="bg-gray-100 px-3 py-2 rounded-md text-sm truncate max-w-[200px] text-gray-800">
-                {email || 'User'}
+              <div className="flex items-center space-x-4">
+                <ThemeToggle />
+                
+                <Link
+                  to="/investor-dashboard"
+                  className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 px-4 py-2 rounded-md text-sm font-medium text-gray-800 dark:text-gray-200 transition-colors"
+                >
+                  Back to Investor Dashboard
+                </Link>
+                
+                <div className="bg-green-100 dark:bg-green-800/30 px-3 py-2 rounded-md text-sm text-green-800 dark:text-green-400">
+                  {userRole.charAt(0).toUpperCase() + userRole.slice(1)}
+                </div>
+                
+                <div className="bg-gray-100 dark:bg-gray-700 px-3 py-2 rounded-md text-sm truncate max-w-[200px] text-gray-800 dark:text-gray-200">
+                  {email || 'User'}
+                </div>
+                
+                <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-white font-medium">
+                  {email ? email.charAt(0).toUpperCase() : 'U'}
+                </div>
+                
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleSignOut}
+                  className="border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Sign Out
+                </Button>
               </div>
-              
-              <div className="h-8 w-8 rounded-full bg-purple-500 flex items-center justify-center text-white font-medium">
-                {email ? email.charAt(0).toUpperCase() : 'U'}
-              </div>
-              
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleSignOut}
-                className="border-gray-200 hover:bg-gray-100"
-              >
-                <LogOut className="h-4 w-4 mr-2" />
-                Sign Out
-              </Button>
             </div>
           </div>
         </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {children}
+        </div>
       </div>
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {children}
-      </div>
-    </div>
+    </ThemeProvider>
   );
 }

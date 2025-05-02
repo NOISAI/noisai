@@ -4,6 +4,7 @@ import { ClerkProvider } from '@clerk/clerk-react';
 import App from './App.tsx'
 import './index.css'
 import { CLERK_CONFIG } from './config/apiKeys';
+import { ThemeProvider } from './context/ThemeContext';
 
 // Validate that we have a Clerk publishable key
 if (!CLERK_CONFIG.PUBLISHABLE_KEY) {
@@ -28,6 +29,8 @@ createRoot(document.getElementById("root")!).render(
       }
     }}
   >
-    <App />
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
   </ClerkProvider>
 );

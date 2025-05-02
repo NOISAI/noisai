@@ -1,5 +1,6 @@
 
 import { WalletConnectButton } from "./WalletConnectButton";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 interface DashboardHeaderProps {
   walletAddress: string | null;
@@ -17,11 +18,12 @@ export function DashboardHeader({
   return (
     <div className="flex items-center justify-between">
       <div>
-        <h2 className="text-3xl font-bold text-black">NOISAI Dashboard</h2>
-        <p className="text-gray-600">User View - Monitor business panels and tokens</p>
+        <h2 className="text-3xl font-bold text-black dark:text-white">NOISAI Dashboard</h2>
+        <p className="text-gray-600 dark:text-gray-400">User View - Monitor business panels and tokens</p>
       </div>
       
-      <div>
+      <div className="flex items-center space-x-4">
+        <ThemeToggle />
         <WalletConnectButton 
           walletAddress={walletAddress} 
           isConnecting={isConnecting}
