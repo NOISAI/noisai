@@ -1,19 +1,15 @@
 
 import { Link } from "react-router-dom";
 import { useUser, ClerkProvider } from "@clerk/clerk-react";
-
-// Define a separate public key for Node Dashboard
-const NODE_DASHBOARD_CLERK_KEY = import.meta.env.VITE_NODE_CLERK_PUBLISHABLE_KEY || 
-  import.meta.env.VITE_CLERK_PUBLISHABLE_KEY; // Fallback to main key if node key isn't provided
+import { CLERK_CONFIG } from "@/config/apiKeys";
 
 // Create a wrapper component that provides the Node Dashboard-specific Clerk context
 const NodeDashboardClerkWrapper = ({ children }: { children: React.ReactNode }) => {
   // Only wrap with a new ClerkProvider if we have a different key
-  if (NODE_DASHBOARD_CLERK_KEY !== import.meta.env.VITE_CLERK_PUBLISHABLE_KEY && 
-      NODE_DASHBOARD_CLERK_KEY) {
+  if (CLERK_CONFIG.NODE_PUBLISHABLE_KEY !== CLERK_CONFIG.PUBLISHABLE_KEY) {
     return (
       <ClerkProvider 
-        publishableKey={NODE_DASHBOARD_CLERK_KEY}
+        publishableKey={CLERK_CONFIG.NODE_PUBLISHABLE_KEY}
         appearance={{
           variables: {
             colorPrimary: "#22C55E"
