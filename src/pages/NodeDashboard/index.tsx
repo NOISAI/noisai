@@ -19,6 +19,7 @@ export default function NodeDashboard() {
   const canAccessBusinessView = user?.email?.includes("business");
 
   useEffect(() => {
+    // Only show toast when user is loaded and has limited access
     if (user && !canAccessNoisaiView && !canAccessBusinessView) {
       toast({
         title: "Limited Access",
@@ -26,12 +27,14 @@ export default function NodeDashboard() {
         variant: "default"
       });
     }
-    
-    // Redirect admin users to the admin dashboard
-    if (user?.email === "info@noisai.tech" || userRole === "admin") {
+  }, [user, canAccessNoisaiView, canAccessBusinessView, toast]);
+  
+  // Redirect admin users to the admin dashboard - moved to a separate useEffect
+  useEffect(() => {
+    if (user && (userRole === 'admin' || user.email === 'info@noisai.tech')) {
       window.location.href = "/node-admin";
     }
-  }, [user, toast, userRole]);
+  }, [user, userRole]);
 
   if (isLoading) {
     return <DashboardLoader />;

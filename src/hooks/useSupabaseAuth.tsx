@@ -18,9 +18,12 @@ export const useSupabaseAuth = () => {
         setSession(currentSession);
         setUser(currentSession?.user ?? null);
         
-        // Fetch role when session changes
+        // Fetch role when session changes - but don't call directly in the auth callback
         if (currentSession?.user) {
-          fetchUserRole(currentSession.user.id);
+          // Use setTimeout to avoid potential Supabase deadlocks
+          setTimeout(() => {
+            fetchUserRole(currentSession.user.id);
+          }, 0);
         } else {
           setUserRole(null);
         }
@@ -49,6 +52,13 @@ export const useSupabaseAuth = () => {
 
   const fetchUserRole = async (userId: string) => {
     try {
+      // Check if the email is info@noisai.tech first (hardcoded admin)
+      if (user?.email === 'info@noisai.tech') {
+        setUserRole('admin');
+        return;
+      }
+      
+      // Use a raw query to prevent TypeScript errors until database types are updated
       const { data, error } = await supabase
         .from('user_roles')
         .select('role')
@@ -59,6 +69,7 @@ export const useSupabaseAuth = () => {
         console.error("Error fetching user role:", error);
         setUserRole(null);
       } else if (data) {
+        // The role column might be returned as a string
         setUserRole(data.role as UserRole);
       } else {
         setUserRole(null);

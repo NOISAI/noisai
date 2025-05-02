@@ -3,57 +3,45 @@ import { useState, useEffect } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 
 type NodeAdminProtectedRouteProps = {
   children: React.ReactNode;
 };
 
 const NodeAdminProtectedRoute = ({ children }: NodeAdminProtectedRouteProps) => {
-  const { user, isLoading } = useSupabaseAuth();
-  const [isAdmin, setIsAdmin] = useState(false);
+  const { user, isLoading, userRole } = useSupabaseAuth();
   const [checkingAdmin, setCheckingAdmin] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const location = useLocation();
   const { toast } = useToast();
   
   useEffect(() => {
     const checkAdminStatus = async () => {
-      if (user) {
-        try {
-          // First check if the email is info@noisai.tech
-          if (user.email === 'info@noisai.tech') {
-            setIsAdmin(true);
-          } else {
-            // As a backup, check the role in the database
-            const { data, error } = await supabase
-              .from('user_roles')
-              .select('role')
-              .eq('user_id', user.id)
-              .single();
-            
-            if (error) {
-              console.error("Error checking admin status:", error);
-              setIsAdmin(false);
-            } else if (data && data.role === 'admin') {
-              setIsAdmin(true);
-            } else {
-              setIsAdmin(false);
-            }
-          }
-        } catch (error) {
-          console.error("Error checking admin status:", error);
+      // If user exists and role is loaded, check admin status
+      if (user && !isLoading) {
+        // Check if the email is info@noisai.tech
+        if (user.email === 'info@noisai.tech' || userRole === 'admin') {
+          setIsAdmin(true);
+        } else {
           setIsAdmin(false);
         }
       }
       setCheckingAdmin(false);
     };
     
-    if (user) {
-      checkAdminStatus();
-    } else if (!isLoading) {
-      setCheckingAdmin(false);
+    checkAdminStatus();
+  }, [user, isLoading, userRole]);
+
+  useEffect(() => {
+    // Show toast only when we've finished checking and user isn't an admin
+    if (!checkingAdmin && user && !isAdmin) {
+      toast({
+        title: "Access Denied",
+        description: "You don't have permission to access the admin area.",
+        variant: "destructive"
+      });
     }
-  }, [user, isLoading]);
+  }, [checkingAdmin, user, isAdmin, toast]);
 
   if (isLoading || checkingAdmin) {
     return (
@@ -68,11 +56,6 @@ const NodeAdminProtectedRoute = ({ children }: NodeAdminProtectedRouteProps) => 
   }
   
   if (!isAdmin) {
-    toast({
-      title: "Access Denied",
-      description: "You don't have permission to access the admin area.",
-      variant: "destructive"
-    });
     return <Navigate to="/node-dashboard" replace />;
   }
   
