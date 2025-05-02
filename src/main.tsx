@@ -10,9 +10,12 @@ if (!CLERK_CONFIG.PUBLISHABLE_KEY) {
   throw new Error("Missing Clerk Publishable Key. Please set VITE_CLERK_PUBLISHABLE_KEY in your environment or check the apiKeys.ts file.");
 }
 
+// Use the NODE_PUBLISHABLE_KEY if available, otherwise fall back to the regular PUBLISHABLE_KEY
+const clerkPublishableKey = CLERK_CONFIG.NODE_PUBLISHABLE_KEY || CLERK_CONFIG.PUBLISHABLE_KEY;
+
 createRoot(document.getElementById("root")!).render(
   <ClerkProvider 
-    publishableKey={CLERK_CONFIG.PUBLISHABLE_KEY}
+    publishableKey={clerkPublishableKey}
     appearance={{
       baseTheme: undefined,
       variables: {

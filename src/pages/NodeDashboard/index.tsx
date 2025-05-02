@@ -7,13 +7,12 @@ import NoisaiView from "./NoisaiView";
 import BusinessView from "./BusinessView";
 import NodeDashboardLayout from "@/components/node-dashboard/NodeDashboardLayout";
 import DashboardLoader from "@/components/node-dashboard/DashboardLoader";
-import { SignedIn, SignedOut, useClerk } from "@clerk/clerk-react";
+import { SignedIn, SignedOut } from "@clerk/clerk-react";
 
 export default function NodeDashboard() {
   const { permissions, isLoaded, userRole } = useRolePermissions();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { user } = useClerk();
 
   // Check permissions on mount and redirect to appropriate view
   useEffect(() => {
@@ -29,10 +28,14 @@ export default function NodeDashboard() {
       }
 
       // Set default landing view based on permissions
-      if (permissions.canAccessNoisaiView) {
-        navigate("/node-dashboard/noisai", { replace: true });
-      } else if (permissions.canAccessBusinessView) {
-        navigate("/node-dashboard/business", { replace: true });
+      const currentPath = window.location.pathname;
+      if (currentPath === "/node-dashboard") {
+        // Only redirect if we're at the root node dashboard path
+        if (permissions.canAccessNoisaiView) {
+          navigate("/node-dashboard/noisai", { replace: true });
+        } else if (permissions.canAccessBusinessView) {
+          navigate("/node-dashboard/business", { replace: true });
+        }
       }
     }
   }, [isLoaded, permissions, navigate, toast]);
