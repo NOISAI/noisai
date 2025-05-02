@@ -32,12 +32,23 @@ export default function NodeDashboard() {
     }
   }, [user, canAccessNoisaiView, canAccessBusinessView, toast]);
   
-  // Redirect admin users to the admin dashboard - immediately when role is determined
+  // Redirect admin users to the admin dashboard
   useEffect(() => {
     if (!isLoading && user && userRole === 'admin') {
+      console.log("Redirecting admin to node-admin dashboard", { email: user.email, role: userRole });
       navigate("/node-admin", { replace: true });
     }
   }, [user, isLoading, userRole, navigate]);
+
+  // Add debugging to see what's happening
+  useEffect(() => {
+    console.log("NodeDashboard state:", { 
+      isLoading, 
+      userEmail: user?.email, 
+      userRole,
+      isOnAdminPage: location.pathname === "/node-admin"
+    });
+  }, [isLoading, user, userRole, location]);
 
   const handleSignOut = async () => {
     try {
@@ -64,7 +75,12 @@ export default function NodeDashboard() {
     return <Navigate to="/node-sign-in" replace state={{ from: location.pathname }} />;
   }
 
-  // Determine which view to display
+  // Immediately redirect admin users if they somehow get to this component
+  if (userRole === 'admin') {
+    return <Navigate to="/node-admin" replace />;
+  }
+
+  // Determine which view to display for non-admin users
   const renderDashboardView = () => {
     if (canAccessNoisaiView) {
       return <NoisaiView />;

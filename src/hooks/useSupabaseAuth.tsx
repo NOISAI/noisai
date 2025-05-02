@@ -25,9 +25,8 @@ export const useSupabaseAuth = () => {
           }, 0);
         } else {
           setUserRole(null);
+          setIsLoading(false);
         }
-        
-        setIsLoading(false);
       }
     );
 
@@ -39,9 +38,9 @@ export const useSupabaseAuth = () => {
       // Fetch role for existing session
       if (currentSession?.user) {
         fetchUserRole(currentSession.user.id, currentSession.user.email || '');
+      } else {
+        setIsLoading(false);
       }
-      
-      setIsLoading(false);
     });
 
     return () => {
@@ -51,23 +50,32 @@ export const useSupabaseAuth = () => {
 
   const fetchUserRole = async (userId: string, email: string) => {
     try {
+      console.log("Determining role for email:", email);
+      
       // Check if the email is info@noisai.tech first (hardcoded admin)
       if (email === 'info@noisai.tech') {
+        console.log("Setting admin role for info@noisai.tech");
         setUserRole('admin');
+        setIsLoading(false);
         return;
       }
       
       // Determine other roles based on email patterns
       if (email.includes('business')) {
+        console.log("Setting business role based on email pattern");
         setUserRole('business');
+        setIsLoading(false);
         return;
       }
       
       // Default to user role if no special conditions are met
+      console.log("Setting default user role");
       setUserRole('user');
+      setIsLoading(false);
     } catch (error) {
       console.error("Error determining user role:", error);
       setUserRole('user'); // Default to user role on error
+      setIsLoading(false);
     }
   };
 

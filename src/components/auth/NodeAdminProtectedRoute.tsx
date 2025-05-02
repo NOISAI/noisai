@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
 import { useToast } from "@/hooks/use-toast";
@@ -12,6 +12,16 @@ const NodeAdminProtectedRoute = ({ children }: NodeAdminProtectedRouteProps) => 
   const { user, isLoading, userRole } = useSupabaseAuth();
   const location = useLocation();
   const { toast } = useToast();
+  
+  // Add debugging to track auth status
+  useEffect(() => {
+    console.log("NodeAdminProtectedRoute state:", {
+      isLoading,
+      userEmail: user?.email,
+      userRole,
+      isAuthenticated: !!user
+    });
+  }, [user, isLoading, userRole]);
   
   // Use a useEffect to show the toast only once when component mounts and conditions are met
   useEffect(() => {
@@ -38,9 +48,11 @@ const NodeAdminProtectedRoute = ({ children }: NodeAdminProtectedRouteProps) => 
   
   // Check role-based access
   if (userRole !== 'admin') {
+    console.log("Access denied to admin route - redirecting to dashboard");
     return <Navigate to="/node-dashboard" replace />;
   }
   
+  console.log("Access granted to admin route");
   return <>{children}</>;
 };
 
