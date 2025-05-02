@@ -1,6 +1,5 @@
 
 import { Link } from "react-router-dom";
-import { useUser } from "@clerk/clerk-react";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
 
 export default function NodeDashboardLayout({ 

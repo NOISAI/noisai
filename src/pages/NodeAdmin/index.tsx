@@ -7,7 +7,7 @@ import { LogOut, Users, Lock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function NodeAdmin() {
-  const { user, signOut } = useSupabaseAuth();
+  const { user, signOut, userRole } = useSupabaseAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   
@@ -38,7 +38,7 @@ export default function NodeAdmin() {
             </div>
             
             <div className="flex items-center space-x-4">
-              <div className="bg-gray-800 px-3 py-2 rounded-md text-sm">
+              <div className="bg-green-900 text-green-300 px-3 py-2 rounded-md text-sm">
                 Admin
               </div>
               

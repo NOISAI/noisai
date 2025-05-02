@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 type NodeAdminProtectedRouteProps = {
   children: React.ReactNode;
@@ -12,17 +14,31 @@ const NodeAdminProtectedRoute = ({ children }: NodeAdminProtectedRouteProps) => 
   const [isAdmin, setIsAdmin] = useState(false);
   const [checkingAdmin, setCheckingAdmin] = useState(true);
   const location = useLocation();
+  const { toast } = useToast();
   
   useEffect(() => {
     const checkAdminStatus = async () => {
       if (user) {
         try {
-          // In a real app, you would check admin status from the database
-          // For now, we'll accept any valid user with a specific email pattern as admin
-          if (user.email && (user.email.includes('admin') || user.email.includes('noisai'))) {
+          // First check if the email is info@noisai.tech
+          if (user.email === 'info@noisai.tech') {
             setIsAdmin(true);
           } else {
-            setIsAdmin(false);
+            // As a backup, check the role in the database
+            const { data, error } = await supabase
+              .from('user_roles')
+              .select('role')
+              .eq('user_id', user.id)
+              .single();
+            
+            if (error) {
+              console.error("Error checking admin status:", error);
+              setIsAdmin(false);
+            } else if (data && data.role === 'admin') {
+              setIsAdmin(true);
+            } else {
+              setIsAdmin(false);
+            }
           }
         } catch (error) {
           console.error("Error checking admin status:", error);
@@ -52,6 +68,11 @@ const NodeAdminProtectedRoute = ({ children }: NodeAdminProtectedRouteProps) => 
   }
   
   if (!isAdmin) {
+    toast({
+      title: "Access Denied",
+      description: "You don't have permission to access the admin area.",
+      variant: "destructive"
+    });
     return <Navigate to="/node-dashboard" replace />;
   }
   

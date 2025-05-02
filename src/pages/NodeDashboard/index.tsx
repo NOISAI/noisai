@@ -9,17 +9,13 @@ import DashboardLoader from "@/components/node-dashboard/DashboardLoader";
 import { useToast } from "@/hooks/use-toast";
 
 export default function NodeDashboard() {
-  const { user, isLoading } = useSupabaseAuth();
+  const { user, isLoading, userRole } = useSupabaseAuth();
   const location = useLocation();
   const { toast } = useToast();
   
-  // For demonstration purposes, we'll determine the user role based on email
-  // In a production app, you would fetch this from your database
-  const userRole = user?.email?.includes("admin") ? "admin" : "user";
-  
-  // Check if user should see NOISAI or Business view based on email domain
-  // This is a simplified approach - in production, use proper role-based permissions
-  const canAccessNoisaiView = true;  // Allow all users to access NOISAI view for now
+  // For demonstration purposes, we'll determine the user's view based on email
+  // In a production app, this would be purely role-based
+  const canAccessNoisaiView = true;  // Allow all regular users to access NOISAI view
   const canAccessBusinessView = user?.email?.includes("business");
 
   useEffect(() => {
@@ -30,7 +26,12 @@ export default function NodeDashboard() {
         variant: "default"
       });
     }
-  }, [user, toast]);
+    
+    // Redirect admin users to the admin dashboard
+    if (user?.email === "info@noisai.tech" || userRole === "admin") {
+      window.location.href = "/node-admin";
+    }
+  }, [user, toast, userRole]);
 
   if (isLoading) {
     return <DashboardLoader />;
@@ -57,7 +58,7 @@ export default function NodeDashboard() {
   };
 
   return (
-    <NodeDashboardLayout userRole={userRole}>
+    <NodeDashboardLayout userRole="user">
       {renderDashboardView()}
     </NodeDashboardLayout>
   );

@@ -46,9 +46,13 @@ export function SupabaseAuth({ mode }: SupabaseAuthProps) {
 
         if (error) throw error;
 
-        // Get the redirect URL from location state or default to node dashboard
-        const redirectTo = location.state?.from || "/node-dashboard";
-        navigate(redirectTo);
+        // Determine where to redirect the user based on their email
+        if (email === "info@noisai.tech") {
+          navigate("/node-admin");
+        } else {
+          // Get the redirect URL from location state or default to node dashboard
+          navigate("/node-dashboard");
+        }
       }
     } catch (error: any) {
       toast({
@@ -114,4 +118,4 @@ export function SupabaseAuth({ mode }: SupabaseAuthProps) {
       </Button>
     </form>
   );
-}
+};
