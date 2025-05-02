@@ -59,6 +59,7 @@ export const useSupabaseAuth = () => {
       }
       
       // Use a raw query with rpc to call our has_role function
+      // This method avoids the TypeScript errors by using a different approach
       const { data, error } = await supabase.rpc('has_role', {
         requested_user_id: userId,
         requested_role: 'admin'
