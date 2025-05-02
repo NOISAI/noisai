@@ -2,8 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
-
-type UserRole = 'admin' | 'user' | null;
+import { UserRole } from '@/types/role';
 
 export const useSupabaseAuth = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -77,7 +76,7 @@ export const useSupabaseAuth = () => {
         
         if (error) {
           console.error("Error fetching user role:", error);
-          // Fall back to email-based role assignment
+          // Fall back to email-based role assignment using the correct type
           setUserRole(email === 'info@noisai.tech' ? 'admin' : 'user');
         } else if (data) {
           // If the has_role function returns true, user is admin
@@ -87,7 +86,7 @@ export const useSupabaseAuth = () => {
         }
       } catch (rpcError) {
         console.error("RPC function failed:", rpcError);
-        // Fall back to email-based role assignment
+        // Fall back to email-based role assignment using the correct type
         setUserRole(email === 'info@noisai.tech' ? 'admin' : 'user');
       }
     } catch (error) {
