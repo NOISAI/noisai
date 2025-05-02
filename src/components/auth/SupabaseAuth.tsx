@@ -39,20 +39,16 @@ export function SupabaseAuth({ mode }: SupabaseAuthProps) {
           description: "Please check your email for verification instructions.",
         });
       } else {
-        const { error, data } = await supabase.auth.signInWithPassword({
+        const { error } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
 
         if (error) throw error;
-
-        // Determine where to redirect the user based on their email
-        if (email === "info@noisai.tech") {
-          navigate("/node-admin");
-        } else {
-          // Get the redirect URL from location state or default to node dashboard
-          navigate("/node-dashboard");
-        }
+        
+        // Let the router handle redirects based on role
+        // The redirects will happen automatically based on the useSupabaseAuth hook
+        navigate("/node-dashboard");
       }
     } catch (error: any) {
       toast({

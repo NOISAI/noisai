@@ -1,6 +1,6 @@
 
 import { useEffect } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
 import NoisaiView from "./NoisaiView";
 import BusinessView from "./BusinessView";
@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 export default function NodeDashboard() {
   const { user, isLoading, userRole } = useSupabaseAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const { toast } = useToast();
   
   // For demonstration purposes, we'll determine the user's view based on email
@@ -29,12 +30,12 @@ export default function NodeDashboard() {
     }
   }, [user, canAccessNoisaiView, canAccessBusinessView, toast]);
   
-  // Redirect admin users to the admin dashboard - moved to a separate useEffect
+  // Redirect admin users to the admin dashboard - use navigate instead of window.location
   useEffect(() => {
-    if (user && (userRole === 'admin' || user.email === 'info@noisai.tech')) {
-      window.location.href = "/node-admin";
+    if (user && !isLoading && userRole === 'admin') {
+      navigate("/node-admin", { replace: true });
     }
-  }, [user, userRole]);
+  }, [user, isLoading, userRole, navigate]);
 
   if (isLoading) {
     return <DashboardLoader />;

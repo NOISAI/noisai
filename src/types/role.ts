@@ -1,6 +1,6 @@
 
 // Define role types for the application
-export type UserRole = 'admin' | 'business' | 'developer' | 'user';
+export type UserRole = 'admin' | 'user' | null;
 
 export interface RolePermission {
   canAccessNoisaiView: boolean;
@@ -11,33 +11,19 @@ export interface RolePermission {
 }
 
 // Define role-based permissions
-export const rolePermissions: Record<UserRole, RolePermission> = {
+export const rolePermissions: Record<Exclude<UserRole, null>, RolePermission> = {
   admin: {
     canAccessNoisaiView: true,
-    canAccessBusinessView: false,
+    canAccessBusinessView: true,
     canManagePanels: true,
     canClaimTokens: false,
-    canExportData: true
-  },
-  business: {
-    canAccessNoisaiView: false,
-    canAccessBusinessView: true,
-    canManagePanels: false,
-    canClaimTokens: true,
-    canExportData: true
-  },
-  developer: {
-    canAccessNoisaiView: true,
-    canAccessBusinessView: true,
-    canManagePanels: true,
-    canClaimTokens: true,
     canExportData: true
   },
   user: {
-    canAccessNoisaiView: false,
+    canAccessNoisaiView: true,
     canAccessBusinessView: false,
     canManagePanels: false,
-    canClaimTokens: false,
+    canClaimTokens: true,
     canExportData: false
   }
 };

@@ -22,7 +22,7 @@ export const useSupabaseAuth = () => {
         if (currentSession?.user) {
           // Use setTimeout to avoid potential Supabase deadlocks
           setTimeout(() => {
-            fetchUserRole(currentSession.user.id);
+            fetchUserRole(currentSession.user.id, currentSession.user.email || '');
           }, 0);
         } else {
           setUserRole(null);
@@ -39,7 +39,7 @@ export const useSupabaseAuth = () => {
       
       // Fetch role for existing session
       if (currentSession?.user) {
-        fetchUserRole(currentSession.user.id);
+        fetchUserRole(currentSession.user.id, currentSession.user.email || '');
       }
       
       setIsLoading(false);
@@ -50,33 +50,32 @@ export const useSupabaseAuth = () => {
     };
   }, []);
 
-  const fetchUserRole = async (userId: string) => {
+  const fetchUserRole = async (userId: string, email: string) => {
     try {
       // Check if the email is info@noisai.tech first (hardcoded admin)
-      if (user?.email === 'info@noisai.tech') {
+      if (email === 'info@noisai.tech') {
         setUserRole('admin');
         return;
       }
       
-      // Use a raw query to prevent TypeScript errors until database types are updated
-      const { data, error } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', userId)
-        .single();
+      // Use a raw query with rpc to call our has_role function
+      const { data, error } = await supabase.rpc('has_role', {
+        requested_user_id: userId,
+        requested_role: 'admin'
+      });
       
       if (error) {
         console.error("Error fetching user role:", error);
-        setUserRole(null);
+        setUserRole('user'); // Default to user role on error
       } else if (data) {
-        // The role column might be returned as a string
-        setUserRole(data.role as UserRole);
+        // If the has_role function returns true, user is admin
+        setUserRole(data ? 'admin' : 'user');
       } else {
-        setUserRole(null);
+        setUserRole('user');
       }
     } catch (error) {
       console.error("Error fetching user role:", error);
-      setUserRole(null);
+      setUserRole('user'); // Default to user role on error
     }
   };
 
