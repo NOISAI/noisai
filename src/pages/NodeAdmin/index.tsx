@@ -7,6 +7,9 @@ import { LogOut, Users, Lock, BarChart3, Server, Activity } from "lucide-react";
 import { useNavigate, Routes, Route, Link } from "react-router-dom";
 import UserManagement from "@/components/node-admin/UserManagement";
 import SecuritySettings from "@/components/node-admin/SecuritySettings";
+import MetricsDashboard from "@/components/node-admin/MetricsDashboard";
+import NodeConfiguration from "@/components/node-admin/NodeConfiguration";
+import SystemLogs from "@/components/node-admin/SystemLogs";
 
 export default function NodeAdmin() {
   const { user, signOut, userRole } = useSupabaseAuth();
@@ -109,9 +112,11 @@ export default function NodeAdmin() {
             </CardHeader>
             <CardContent>
               <p className="text-gray-400 mb-4">View node performance data and statistics</p>
-              <Button className="bg-[#22C55E] hover:bg-[#1ea853]">
-                View Metrics
-              </Button>
+              <Link to="/node-admin/metrics">
+                <Button className="bg-[#22C55E] hover:bg-[#1ea853]">
+                  View Metrics
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
@@ -124,9 +129,11 @@ export default function NodeAdmin() {
             </CardHeader>
             <CardContent>
               <p className="text-gray-400 mb-4">Configure node settings and parameters</p>
-              <Button className="bg-[#22C55E] hover:bg-[#1ea853]">
-                Configure Node
-              </Button>
+              <Link to="/node-admin/config">
+                <Button className="bg-[#22C55E] hover:bg-[#1ea853]">
+                  Configure Node
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
@@ -139,9 +146,11 @@ export default function NodeAdmin() {
             </CardHeader>
             <CardContent>
               <p className="text-gray-400 mb-4">View system activity and event logs</p>
-              <Button className="bg-[#22C55E] hover:bg-[#1ea853]">
-                View Logs
-              </Button>
+              <Link to="/node-admin/logs">
+                <Button className="bg-[#22C55E] hover:bg-[#1ea853]">
+                  View Logs
+                </Button>
+              </Link>
             </CardContent>
           </Card>
         </div>
@@ -154,6 +163,9 @@ export default function NodeAdmin() {
       <Route path="/" element={renderDashboard()} />
       <Route path="/users" element={<UserManagement />} />
       <Route path="/security" element={<SecuritySettings />} />
+      <Route path="/metrics" element={<MetricsDashboard />} />
+      <Route path="/config" element={<NodeConfiguration />} />
+      <Route path="/logs" element={<SystemLogs />} />
     </Routes>
   );
 }
