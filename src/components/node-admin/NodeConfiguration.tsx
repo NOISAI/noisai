@@ -1,5 +1,5 @@
-
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function NodeConfiguration() {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [networkSettings, setNetworkSettings] = useState({
     maxConnections: 50,
     bandwidth: 10,
@@ -52,6 +53,9 @@ export default function NodeConfiguration() {
       title: "Settings Saved",
       description: "Your node configuration has been updated successfully.",
     });
+    
+    // Navigate back to the admin dashboard after saving
+    navigate("/node-admin");
   };
 
   return (
