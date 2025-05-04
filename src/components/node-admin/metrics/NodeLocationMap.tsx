@@ -35,93 +35,96 @@ export default function NodeLocationMap({ nodes, isAdminView = true }: NodeLocat
   };
 
   return (
-    <Card className="bg-gray-900 border-gray-800">
-      <CardHeader>
-        <div className="flex justify-between items-center">
-          <div className="flex items-center">
-            <Link to="/node-admin" className="mr-3">
-              <Button variant="outline" size="sm" className="bg-gray-800 border-gray-700 hover:bg-gray-700">
-                <ArrowLeft className="h-4 w-4 mr-1" />
-                Back to Dashboard
-              </Button>
-            </Link>
-            <CardTitle className="text-white">
-              Node Locations
-              {isAdminView && <span className="ml-2 text-xs bg-blue-900 text-blue-300 px-2 py-0.5 rounded-full">Admin View</span>}
-            </CardTitle>
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Node Status Counts */}
-        <div className="flex flex-wrap gap-2 mb-4">
-          <div className="flex items-center bg-gray-800 px-3 py-1 rounded-full">
-            <WifiHigh className="h-4 w-4 text-[#22C55E] mr-2" />
-            <span className="text-sm text-gray-300">{activeNodes.length} active nodes</span>
-          </div>
-          <div className="flex items-center bg-gray-800 px-3 py-1 rounded-full">
-            <WifiOff className="h-4 w-4 text-gray-400 mr-2" />
-            <span className="text-sm text-gray-300">{inactiveNodes.length} inactive nodes</span>
-          </div>
-        </div>
-        
-        {/* Interactive Map */}
-        <MapboxMap 
-          nodes={nodes} 
-          onNodeClick={handleNodeClick} 
-          adminView={isAdminView}
-        />
-
-        {/* Selected Node Details */}
-        {selectedNode && (
-          <div className="mt-4 bg-gray-800 p-4 rounded-md">
-            <div className="flex justify-between items-center mb-3">
-              <h3 className="text-white font-medium">{selectedNode.name}</h3>
-              <div className={`px-2 py-1 rounded text-xs ${
-                selectedNode.status === "active" 
-                  ? "bg-green-900 text-green-300" 
-                  : "bg-gray-700 text-gray-400"
-              }`}>
-                {selectedNode.status}
-              </div>
+    <div className="space-y-4">
+      {/* Back button at the top */}
+      <div className="flex items-center">
+        <Link to="/node-admin">
+          <Button variant="outline" size="sm" className="bg-gray-800 border-gray-700 hover:bg-gray-700">
+            <ArrowLeft className="h-4 w-4 mr-1" />
+            Back to Dashboard
+          </Button>
+        </Link>
+        <h2 className="text-2xl font-bold text-white ml-4">
+          Node Locations
+          {isAdminView && <span className="ml-2 text-xs bg-blue-900 text-blue-300 px-2 py-0.5 rounded-full">Admin View</span>}
+        </h2>
+      </div>
+      
+      <Card className="bg-gray-900 border-gray-800">
+        <CardHeader>
+          <CardTitle className="text-white">Node Distribution Map</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* Node Status Counts */}
+          <div className="flex flex-wrap gap-2 mb-4">
+            <div className="flex items-center bg-gray-800 px-3 py-1 rounded-full">
+              <WifiHigh className="h-4 w-4 text-[#22C55E] mr-2" />
+              <span className="text-sm text-gray-300">{activeNodes.length} active nodes</span>
             </div>
-            
-            <div className="grid grid-cols-2 gap-2 text-sm mb-4">
-              <div className="text-gray-400">Location:</div>
-              <div className="text-white flex items-center">
-                <MapPin className="h-3 w-3 mr-1 text-gray-400" />
-                {selectedNode.location}
-              </div>
-              
-              <div className="text-gray-400">Last Active:</div>
-              <div className="text-white">
-                {formatDate(selectedNode.lastActive)}
-              </div>
-              
-              <div className="text-gray-400">Coordinates:</div>
-              <div className="text-white">
-                {selectedNode.lat.toFixed(4)}, {selectedNode.lng.toFixed(4)}
-              </div>
+            <div className="flex items-center bg-gray-800 px-3 py-1 rounded-full">
+              <WifiOff className="h-4 w-4 text-gray-400 mr-2" />
+              <span className="text-sm text-gray-300">{inactiveNodes.length} inactive nodes</span>
             </div>
+          </div>
+          
+          {/* Interactive Map */}
+          <MapboxMap 
+            nodes={nodes} 
+            onNodeClick={handleNodeClick} 
+            adminView={isAdminView}
+          />
 
-            {/* Node Events */}
-            {selectedNode.events && selectedNode.events.length > 0 && (
-              <div>
-                <h4 className="text-gray-300 text-sm font-medium mb-2 flex items-center">
-                  <Activity className="h-4 w-4 mr-1" />
-                  Recent Events
-                </h4>
-                <div className="bg-gray-900 rounded-md overflow-hidden">
-                  {selectedNode.events.map((event) => (
-                    <NodeEventItem key={event.id} event={event} />
-                  ))}
+          {/* Selected Node Details */}
+          {selectedNode && (
+            <div className="mt-4 bg-gray-800 p-4 rounded-md">
+              <div className="flex justify-between items-center mb-3">
+                <h3 className="text-white font-medium">{selectedNode.name}</h3>
+                <div className={`px-2 py-1 rounded text-xs ${
+                  selectedNode.status === "active" 
+                    ? "bg-green-900 text-green-300" 
+                    : "bg-gray-700 text-gray-400"
+                }`}>
+                  {selectedNode.status}
                 </div>
               </div>
-            )}
-          </div>
-        )}
-      </CardContent>
-    </Card>
+              
+              <div className="grid grid-cols-2 gap-2 text-sm mb-4">
+                <div className="text-gray-400">Location:</div>
+                <div className="text-white flex items-center">
+                  <MapPin className="h-3 w-3 mr-1 text-gray-400" />
+                  {selectedNode.location}
+                </div>
+                
+                <div className="text-gray-400">Last Active:</div>
+                <div className="text-white">
+                  {formatDate(selectedNode.lastActive)}
+                </div>
+                
+                <div className="text-gray-400">Coordinates:</div>
+                <div className="text-white">
+                  {selectedNode.lat.toFixed(4)}, {selectedNode.lng.toFixed(4)}
+                </div>
+              </div>
+
+              {/* Node Events */}
+              {selectedNode.events && selectedNode.events.length > 0 && (
+                <div>
+                  <h4 className="text-gray-300 text-sm font-medium mb-2 flex items-center">
+                    <Activity className="h-4 w-4 mr-1" />
+                    Recent Events
+                  </h4>
+                  <div className="bg-gray-900 rounded-md overflow-hidden">
+                    {selectedNode.events.map((event) => (
+                      <NodeEventItem key={event.id} event={event} />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
   );
 }
 
