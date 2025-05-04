@@ -4,7 +4,8 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { NodeLocation } from "./types";
 import { Button } from "@/components/ui/button";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Eye } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 // This token is invalid or expired, so we'll need user input
 const MAPBOX_TOKEN = "";
@@ -13,15 +14,23 @@ interface MapboxMapProps {
   nodes: NodeLocation[];
   onNodeClick?: (node: NodeLocation) => void;
   highlightActive?: boolean;
+  adminView?: boolean; // New prop to indicate if this is an admin view
 }
 
-export default function MapboxMap({ nodes, onNodeClick, highlightActive = true }: MapboxMapProps) {
+export default function MapboxMap({ 
+  nodes, 
+  onNodeClick, 
+  highlightActive = true, 
+  adminView = false 
+}: MapboxMapProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markers = useRef<mapboxgl.Marker[]>([]);
   const [mapToken, setMapToken] = useState<string>(MAPBOX_TOKEN);
   const [showTokenInput, setShowTokenInput] = useState<boolean>(true);
   const [mapError, setMapError] = useState<string>("");
+  const [viewingUserNode, setViewingUserNode] = useState<string | null>(null);
+  const [connectedUsers, setConnectedUsers] = useState<{id: string, name: string}[]>([]);
 
   useEffect(() => {
     if (!mapContainer.current) return;
@@ -89,7 +98,56 @@ export default function MapboxMap({ nodes, onNodeClick, highlightActive = true }
     }
 
     addMarkers();
-  }, [nodes, mapToken, map.current, highlightActive]);
+  }, [nodes, mapToken, map.current, highlightActive, viewingUserNode]);
+
+  // Set up real-time communication between admin and user nodes
+  useEffect(() => {
+    if (!adminView) return;
+
+    // Listen for user connections and node views
+    const channel = supabase
+      .channel('admin-user-map-sync')
+      .on('presence', { event: 'sync' }, () => {
+        const state = channel.presenceState();
+        const users = Object.values(state).flat().map((user: any) => ({
+          id: user.user_id,
+          name: user.username
+        }));
+        setConnectedUsers(users);
+      })
+      .on('broadcast', { event: 'node_view' }, (payload) => {
+        if (payload.nodeId) {
+          console.log(`User ${payload.userId} is viewing node ${payload.nodeId}`);
+          setViewingUserNode(payload.nodeId);
+        }
+      })
+      .subscribe(async (status) => {
+        if (status === 'SUBSCRIBED' && adminView) {
+          await channel.track({
+            user_id: 'admin',
+            username: 'Administrator',
+            online_at: new Date().toISOString()
+          });
+        }
+      });
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [adminView]);
+
+  // Function to broadcast which node an user is viewing
+  const broadcastNodeView = (nodeId: string) => {
+    if (!adminView) {
+      // User nodes broadcast what they're looking at
+      const channel = supabase.channel('admin-user-map-sync');
+      channel.send({
+        type: 'broadcast',
+        event: 'node_view',
+        payload: { nodeId, userId: 'user-' + Math.random().toString(36).substr(2, 9) }
+      });
+    }
+  };
 
   const addMarkers = () => {
     if (!map.current) return;
@@ -119,6 +177,12 @@ export default function MapboxMap({ nodes, onNodeClick, highlightActive = true }
       } else {
         el.style.backgroundColor = "#6b7280"; // Gray for inactive
       }
+
+      // Highlight node being viewed by a user (admin view only)
+      if (adminView && viewingUserNode === node.id.toString()) {
+        el.style.boxShadow = "0 0 15px rgba(255, 165, 0, 0.8)";
+        el.style.border = "2px solid orange";
+      }
       
       // Create the popup
       const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
@@ -143,6 +207,9 @@ export default function MapboxMap({ nodes, onNodeClick, highlightActive = true }
       
       // Add click event
       el.addEventListener("click", () => {
+        // Broadcast node view to admin (if user view)
+        broadcastNodeView(node.id.toString());
+        
         if (onNodeClick) {
           onNodeClick(node);
         }
@@ -207,6 +274,22 @@ export default function MapboxMap({ nodes, onNodeClick, highlightActive = true }
     <div className="relative">
       {/* Map container */}
       <div ref={mapContainer} className="h-[500px] rounded-md overflow-hidden" />
+      
+      {/* Connected users indicator (admin view only) */}
+      {adminView && connectedUsers.length > 0 && (
+        <div className="absolute top-2 left-2 bg-gray-800/80 backdrop-blur-sm p-2 rounded text-sm text-white">
+          <div className="flex items-center gap-1 mb-1">
+            <div className="w-2 h-2 rounded-full bg-green-500"></div>
+            <span>{connectedUsers.length} users online</span>
+          </div>
+          {viewingUserNode && (
+            <div className="flex items-center text-orange-300 gap-1">
+              <Eye className="h-3 w-3" />
+              <span>User viewing node {viewingUserNode}</span>
+            </div>
+          )}
+        </div>
+      )}
       
       {/* Button to reset token */}
       <button 

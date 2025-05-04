@@ -7,9 +7,10 @@ import MapboxMap from "./MapboxMap";
 
 interface NodeLocationMapProps {
   nodes: NodeLocation[];
+  isAdminView?: boolean;
 }
 
-export default function NodeLocationMap({ nodes }: NodeLocationMapProps) {
+export default function NodeLocationMap({ nodes, isAdminView = true }: NodeLocationMapProps) {
   const [selectedNode, setSelectedNode] = useState<NodeLocation | null>(null);
   const activeNodes = nodes.filter(node => node.status === "active");
   const inactiveNodes = nodes.filter(node => node.status === "inactive");
@@ -34,7 +35,10 @@ export default function NodeLocationMap({ nodes }: NodeLocationMapProps) {
   return (
     <Card className="bg-gray-900 border-gray-800">
       <CardHeader>
-        <CardTitle className="text-white">Node Locations</CardTitle>
+        <CardTitle className="text-white">
+          Node Locations
+          {isAdminView && <span className="ml-2 text-xs bg-blue-900 text-blue-300 px-2 py-0.5 rounded-full">Admin View</span>}
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Node Status Counts */}
@@ -50,7 +54,11 @@ export default function NodeLocationMap({ nodes }: NodeLocationMapProps) {
         </div>
         
         {/* Interactive Map */}
-        <MapboxMap nodes={nodes} onNodeClick={handleNodeClick} />
+        <MapboxMap 
+          nodes={nodes} 
+          onNodeClick={handleNodeClick} 
+          adminView={isAdminView}
+        />
 
         {/* Selected Node Details */}
         {selectedNode && (

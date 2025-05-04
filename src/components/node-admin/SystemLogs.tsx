@@ -1,145 +1,104 @@
 
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, Download, RefreshCcw } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { LogEntry } from "./logs/types";
 import LogFilters from "./logs/LogFilters";
 import LogList from "./logs/LogList";
-import { LogEntry, LogFilterLevel, LogFilterService, LogService, LogLevel } from "./logs/types";
-
-// Mock log data with correct types
-const mockLogs: LogEntry[] = [
-  { id: 1, timestamp: "2025-05-03T23:15:12Z", level: "info" as LogLevel, message: "Node synchronization completed successfully", service: "sync" as LogService },
-  { id: 2, timestamp: "2025-05-03T23:10:05Z", level: "warning" as LogLevel, message: "High memory usage detected (85%)", service: "system" as LogService },
-  { id: 3, timestamp: "2025-05-03T23:05:47Z", level: "error" as LogLevel, message: "Failed to connect to peer node at 192.168.1.105", service: "network" as LogService },
-  { id: 4, timestamp: "2025-05-03T23:01:30Z", level: "info" as LogLevel, message: "User authentication successful: admin@example.com", service: "auth" as LogService },
-  { id: 5, timestamp: "2025-05-03T22:58:22Z", level: "info" as LogLevel, message: "Processed 152 transactions in batch #28940", service: "transaction" as LogService },
-  { id: 6, timestamp: "2025-05-03T22:55:18Z", level: "warning" as LogLevel, message: "Connection timeout with external API", service: "api" as LogService },
-  { id: 7, timestamp: "2025-05-03T22:50:03Z", level: "error" as LogLevel, message: "Database query failed: relation \"metrics\" does not exist", service: "database" as LogService },
-  { id: 8, timestamp: "2025-05-03T22:45:56Z", level: "info" as LogLevel, message: "System backup completed", service: "backup" as LogService },
-  { id: 9, timestamp: "2025-05-03T22:40:42Z", level: "info" as LogLevel, message: "New user account created: user123", service: "auth" as LogService },
-  { id: 10, timestamp: "2025-05-03T22:35:29Z", level: "error" as LogLevel, message: "Storage quota exceeded for logs", service: "system" as LogService },
-  { id: 11, timestamp: "2025-05-03T22:30:15Z", level: "info" as LogLevel, message: "Node started with protocol version 2.4.1", service: "system" as LogService },
-  { id: 12, timestamp: "2025-05-03T22:25:03Z", level: "warning" as LogLevel, message: "SSL certificate will expire in 7 days", service: "security" as LogService },
-];
 
 export default function SystemLogs() {
-  const navigate = useNavigate();
-  const [logs, setLogs] = useState<LogEntry[]>(mockLogs);
-  const [filteredLogs, setFilteredLogs] = useState<LogEntry[]>(mockLogs);
-  const [filterLevel, setFilterLevel] = useState<LogFilterLevel>("all");
-  const [filterService, setFilterService] = useState<LogFilterService>("all");
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  
-  // Apply filters when they change
-  useEffect(() => {
-    let results = logs;
-    
-    if (filterLevel !== "all") {
-      results = results.filter(log => log.level === filterLevel);
+  const [activeTab, setActiveTab] = useState("all");
+  const [filters, setFilters] = useState({
+    level: "",
+    source: "",
+    startDate: "",
+    endDate: "",
+    search: ""
+  });
+
+  // Mock log data
+  const logs: LogEntry[] = [
+    {
+      id: "1",
+      timestamp: new Date().toISOString(),
+      level: "info",
+      source: "system",
+      message: "System started successfully"
+    },
+    {
+      id: "2",
+      timestamp: new Date(Date.now() - 15 * 60000).toISOString(),
+      level: "error",
+      source: "node",
+      message: "Node connection failed",
+      details: "Error: Connection timeout after 30s\nNode ID: node-78245\nAttempt: 3 of 5"
+    },
+    {
+      id: "3",
+      timestamp: new Date(Date.now() - 30 * 60000).toISOString(),
+      level: "warning",
+      source: "network",
+      message: "Network latency increased"
+    },
+    {
+      id: "4",
+      timestamp: new Date(Date.now() - 45 * 60000).toISOString(),
+      level: "info",
+      source: "user",
+      message: "User logged in",
+      details: "User ID: 1234\nIP: 192.168.1.1\nBrowser: Chrome 98.0.4758.102"
+    },
+    {
+      id: "5",
+      timestamp: new Date(Date.now() - 120 * 60000).toISOString(),
+      level: "debug",
+      source: "system",
+      message: "Cache cleared"
     }
-    
-    if (filterService !== "all") {
-      results = results.filter(log => log.service === filterService);
-    }
-    
-    if (searchQuery.trim() !== "") {
-      const query = searchQuery.toLowerCase();
-      results = results.filter(log => 
-        log.message.toLowerCase().includes(query) || 
-        log.service.toLowerCase().includes(query)
-      );
-    }
-    
-    setFilteredLogs(results);
-  }, [logs, filterLevel, filterService, searchQuery]);
+  ];
   
-  const refreshLogs = () => {
-    setIsRefreshing(true);
-    // In a real app, this would fetch from an API
-    setTimeout(() => {
-      // Add a new log at the top
-      const newLog: LogEntry = {
-        id: logs.length + 1,
-        timestamp: new Date().toISOString(),
-        level: ["info", "warning", "error"][Math.floor(Math.random() * 3)] as LogLevel,
-        message: `Log refresh triggered manually at ${new Date().toLocaleTimeString()}`,
-        service: "system" as LogService
-      };
-      setLogs([newLog, ...logs]);
-      setIsRefreshing(false);
-    }, 800);
-  };
-  
-  const downloadLogs = () => {
-    // In a real app, this would generate a proper log file
-    const logText = filteredLogs
-      .map(log => `[${log.timestamp}] [${log.level.toUpperCase()}] [${log.service}] ${log.message}`)
-      .join('\n');
-    
-    const blob = new Blob([logText], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `node-logs-${new Date().toISOString().split('T')[0]}.log`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+  // Filter logs by tab
+  const getFilteredLogs = () => {
+    if (activeTab === "all") return logs;
+    if (activeTab === "errors") return logs.filter(log => log.level === "error");
+    if (activeTab === "warnings") return logs.filter(log => log.level === "warning");
+    if (activeTab === "system") return logs.filter(log => log.source === "system");
+    if (activeTab === "nodes") return logs.filter(log => log.source === "node");
+    return logs;
   };
   
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <div className="flex items-center mb-2">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="mr-2 border-gray-700 text-gray-300 hover:text-white hover:bg-gray-700"
-              onClick={() => navigate("/node-admin")}
-            >
-              <ArrowLeft className="h-4 w-4 mr-1" />
-              Back to Admin
-            </Button>
-          </div>
-          <h2 className="text-2xl font-bold text-white">System Logs</h2>
-          <p className="text-gray-400">View system activity and event logs</p>
-        </div>
-        <div className="flex items-center space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            className="border-gray-700 text-gray-300 hover:text-white hover:bg-gray-700"
-            onClick={refreshLogs}
-            disabled={isRefreshing}
-          >
-            <RefreshCcw className={`h-4 w-4 mr-2 ${isRefreshing ? "animate-spin" : ""}`} />
-            Refresh
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className="border-gray-700 text-gray-300 hover:text-white hover:bg-gray-700"
-            onClick={downloadLogs}
-          >
-            <Download className="h-4 w-4 mr-2" />
-            Download
-          </Button>
-        </div>
+      <div>
+        <h2 className="text-2xl font-bold text-white">System Logs</h2>
+        <p className="text-gray-400">View and analyze system activity logs</p>
       </div>
-
-      <LogFilters 
-        searchQuery={searchQuery}
-        filterLevel={filterLevel}
-        filterService={filterService}
-        onSearchChange={setSearchQuery}
-        onLevelChange={setFilterLevel}
-        onServiceChange={setFilterService}
-      />
-
-      <LogList logs={filteredLogs} />
+      
+      <Card className="bg-gray-900 border-gray-800">
+        <CardHeader>
+          <CardTitle>
+            <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab}>
+              <TabsList className="bg-gray-800">
+                <TabsTrigger value="all">All Logs</TabsTrigger>
+                <TabsTrigger value="errors">Errors</TabsTrigger>
+                <TabsTrigger value="warnings">Warnings</TabsTrigger>
+                <TabsTrigger value="system">System</TabsTrigger>
+                <TabsTrigger value="nodes">Nodes</TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <LogFilters 
+            filters={filters}
+            onFilterChange={setFilters}
+          />
+          <LogList 
+            logs={getFilteredLogs()}
+            filters={filters}
+          />
+        </CardContent>
+      </Card>
     </div>
   );
 }
