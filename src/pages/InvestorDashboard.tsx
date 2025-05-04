@@ -1,9 +1,11 @@
+
 import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { TabsContent } from "@/components/ui/tabs";
 import { Link } from "react-router-dom";
 import { useRolePermissions } from "@/hooks/useRolePermissions";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // Import refactored components
 import DashboardHeader from "@/components/investor/DashboardHeader";
@@ -22,6 +24,21 @@ export default function InvestorDashboard() {
   const [isConnecting, setIsConnecting] = useState(false);
   const [activeTab, setActiveTab] = useState("portfolio");
   const isMobile = useIsMobile();
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  // Check if we need to show investments tab
+  useEffect(() => {
+    // If URL has a tab parameter, set it as active
+    const searchParams = new URLSearchParams(location.search);
+    const tab = searchParams.get('tab');
+    if (tab) {
+      setActiveTab(tab);
+    } else if (location.pathname === "/investments") {
+      // Redirect to dashboard with investments tab
+      navigate("/investor-dashboard?tab=investments", { replace: true });
+    }
+  }, [location, navigate]);
   
   useEffect(() => {
     // Welcome toast when dashboard loads
@@ -64,6 +81,15 @@ export default function InvestorDashboard() {
     }
   };
 
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    
+    // Update the URL with the current tab
+    const url = new URL(window.location.href);
+    url.searchParams.set('tab', value);
+    window.history.pushState({}, '', url.toString());
+  };
+
   return (
     <div className="min-h-screen bg-black text-white">
       <DashboardHeader 
@@ -85,7 +111,7 @@ export default function InvestorDashboard() {
           )}
         </div>
         
-        <DashboardTabs activeTab={activeTab} onTabChange={setActiveTab}>
+        <DashboardTabs activeTab={activeTab} onTabChange={handleTabChange}>
           <TabsContent value="portfolio" className="mt-2 sm:mt-4">
             <PortfolioOverview />
           </TabsContent>
