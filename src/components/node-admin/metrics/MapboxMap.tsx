@@ -11,9 +11,10 @@ const MAPBOX_TOKEN = "pk.eyJ1IjoiZGVtb3VzZXIiLCJhIjoiY2xyMTlnbHIyMDV6NjJrcGR1ZzN
 interface MapboxMapProps {
   nodes: NodeLocation[];
   onNodeClick?: (node: NodeLocation) => void;
+  highlightActive?: boolean;
 }
 
-export default function MapboxMap({ nodes, onNodeClick }: MapboxMapProps) {
+export default function MapboxMap({ nodes, onNodeClick, highlightActive = true }: MapboxMapProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markers = useRef<mapboxgl.Marker[]>([]);
@@ -70,7 +71,7 @@ export default function MapboxMap({ nodes, onNodeClick }: MapboxMapProps) {
     }
 
     addMarkers();
-  }, [nodes, mapToken, map.current]);
+  }, [nodes, mapToken, map.current, highlightActive]);
 
   const addMarkers = () => {
     if (!map.current) return;
@@ -89,11 +90,16 @@ export default function MapboxMap({ nodes, onNodeClick }: MapboxMapProps) {
       el.style.borderRadius = "50%";
       el.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.5)";
       el.style.cursor = "pointer";
-      el.style.backgroundColor = node.status === "active" ? "#22C55E" : "#6b7280";
       
-      // Add pulse effect for active nodes
+      // Set color based on node status
       if (node.status === "active") {
-        el.style.animation = "pulse 1.5s infinite";
+        el.style.backgroundColor = "#22C55E"; // Green for active
+        // Add pulse effect for active nodes if highlighting is enabled
+        if (highlightActive) {
+          el.style.animation = "pulse 1.5s infinite";
+        }
+      } else {
+        el.style.backgroundColor = "#6b7280"; // Gray for inactive
       }
       
       // Create the popup
@@ -105,6 +111,9 @@ export default function MapboxMap({ nodes, onNodeClick }: MapboxMapProps) {
           <p class="text-xs ${node.status === "active" ? "text-green-500" : "text-gray-500"}">
             Status: ${node.status}
           </p>
+          ${node.events && node.events.length > 0 ? 
+            `<p class="text-xs mt-1">Recent events: ${node.events.length}</p>` : 
+            ''}
         </div>
       `);
 
@@ -168,20 +177,22 @@ export default function MapboxMap({ nodes, onNodeClick }: MapboxMapProps) {
       {/* Map container */}
       <div ref={mapContainer} className="h-[500px] rounded-md overflow-hidden" />
       
-      {/* CSS for pulse effect */}
-      <style jsx>{`
-        @keyframes pulse {
-          0% {
-            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+      {/* CSS for pulse effect - Fixed the style tag syntax */}
+      <style>
+        {`
+          @keyframes pulse {
+            0% {
+              box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+            }
+            70% {
+              box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+            }
+            100% {
+              box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+            }
           }
-          70% {
-            box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
-          }
-          100% {
-            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
-          }
-        }
-      `}</style>
+        `}
+      </style>
     </div>
   );
 }
