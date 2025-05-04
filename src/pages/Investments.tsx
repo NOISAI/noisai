@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { OrientationPrompt } from "@/components/shared/OrientationPrompt";
 import InvestmentsList from "@/components/investor/InvestmentsList";
+import { Link } from "react-router-dom";
 
 export default function Investments() {
   const { toast } = useToast();
@@ -20,12 +21,12 @@ export default function Investments() {
       <header className="bg-gray-900 border-b border-gray-800 py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
           <h1 className="text-xl font-bold">NOISAI Investments</h1>
-          <a 
-            href="/investor-dashboard" 
+          <Link 
+            to="/investor-dashboard" 
             className="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-md transition-colors text-sm"
           >
             Back to Dashboard
-          </a>
+          </Link>
         </div>
       </header>
 

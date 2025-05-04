@@ -14,6 +14,7 @@ import SignUp from "./pages/Auth/SignUp";
 import SupabaseSignIn from "./pages/Auth/SupabaseSignIn";
 import SupabaseSignUp from "./pages/Auth/SupabaseSignUp";
 import InvestorDashboard from "./pages/InvestorDashboard";
+import Investments from "./pages/Investments"; // Import the Investments page
 import AdminDashboard from "./pages/AdminDashboard";
 import NodeDashboard from "./pages/NodeDashboard";
 import NodeAdmin from "./pages/NodeAdmin";
@@ -97,6 +98,15 @@ const App = () => (
             element={
               <InvestorProtectedRoute>
                 <InvestorDashboard />
+              </InvestorProtectedRoute>
+            } 
+          />
+          {/* Add the Investments route with the same protection as the investor dashboard */}
+          <Route 
+            path="/investments" 
+            element={
+              <InvestorProtectedRoute>
+                <Investments />
               </InvestorProtectedRoute>
             } 
           />
