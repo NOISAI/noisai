@@ -35,7 +35,8 @@ export default function NodeDetailsDialog({
       toast({
         title: "Node status updated",
         description: "Node has been reactivated successfully.",
-        variant: "success",
+        // Changed from 'success' to 'default' since only 'default' and 'destructive' are supported
+        variant: "default",
       });
     }
   };
