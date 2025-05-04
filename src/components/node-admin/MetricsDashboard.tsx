@@ -1,9 +1,11 @@
 
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, Legend } from "recharts";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useLiveStats } from "@/hooks/useLiveStats";
 import { formatTokenValue } from "@/utils/statsCalculations";
 
@@ -25,28 +27,23 @@ const mockPerformanceData = [
 ];
 
 export default function MetricsDashboard() {
-  const [timeRange, setTimeRange] = useState<"day" | "week" | "month">("week");
   const liveStats = useLiveStats();
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-bold text-white">Performance Metrics</h2>
-          <p className="text-gray-400">Monitor your node's performance and activity</p>
+        <div className="flex items-center">
+          <Link to="/node-admin" className="mr-4">
+            <Button variant="outline" size="sm" className="flex items-center gap-2 border-gray-700 text-gray-300 hover:text-white hover:bg-gray-700">
+              <ArrowLeft className="h-4 w-4" />
+              Back to Dashboard
+            </Button>
+          </Link>
+          <div>
+            <h2 className="text-2xl font-bold text-white">Performance Metrics</h2>
+            <p className="text-gray-400">Monitor your node's performance and activity</p>
+          </div>
         </div>
-        <Tabs
-          defaultValue="week"
-          value={timeRange}
-          onValueChange={(value) => setTimeRange(value as "day" | "week" | "month")}
-          className="w-[300px]"
-        >
-          <TabsList className="grid grid-cols-3 bg-gray-800">
-            <TabsTrigger value="day" className="text-white data-[state=active]:bg-[#22C55E] data-[state=active]:text-black">Day</TabsTrigger>
-            <TabsTrigger value="week" className="text-white data-[state=active]:bg-[#22C55E] data-[state=active]:text-black">Week</TabsTrigger>
-            <TabsTrigger value="month" className="text-white data-[state=active]:bg-[#22C55E] data-[state=active]:text-black">Month</TabsTrigger>
-          </TabsList>
-        </Tabs>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
