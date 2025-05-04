@@ -21,7 +21,7 @@ const mockLogs = [
   { id: 10, timestamp: "2025-05-03T22:35:29Z", level: "error", message: "Storage quota exceeded for logs", service: "system" as LogService },
   { id: 11, timestamp: "2025-05-03T22:30:15Z", level: "info", message: "Node started with protocol version 2.4.1", service: "system" as LogService },
   { id: 12, timestamp: "2025-05-03T22:25:03Z", level: "warning", message: "SSL certificate will expire in 7 days", service: "security" as LogService },
-] as LogEntry[];
+];
 
 export default function SystemLogs() {
   const navigate = useNavigate();
