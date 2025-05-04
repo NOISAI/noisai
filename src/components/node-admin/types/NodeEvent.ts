@@ -27,3 +27,7 @@ export interface NodeDetails {
   energyGenerated: number;
   carbonOffset: number;
 }
+
+export interface NodeEventHandlers {
+  updateNodeStatus?: (eventId: number, nodeId: string, newStatus: 'active' | 'inactive') => void;
+}

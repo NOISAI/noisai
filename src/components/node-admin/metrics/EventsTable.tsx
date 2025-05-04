@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MapPin, Server, Battery, Leaf, Coins } from "lucide-react";
-import { NodeEvent } from "../types/NodeEvent";
+import { NodeEvent, NodeEventHandlers } from "../types/NodeEvent";
 import {
   Table,
   TableBody,
@@ -13,6 +13,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import NodeDetailsDialog from "./NodeDetailsDialog";
+import { useToast } from "@/hooks/use-toast";
 
 interface EventsTableProps {
   events: NodeEvent[];
@@ -23,6 +24,7 @@ interface EventsTableProps {
 export default function EventsTable({ events, selectedEvent, onSelectEvent }: EventsTableProps) {
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
   const [selectedEventForDialog, setSelectedEventForDialog] = useState<NodeEvent | null>(null);
+  const { toast } = useToast();
 
   const handleViewDetails = (event: NodeEvent) => {
     setSelectedEventForDialog(event);
@@ -32,6 +34,54 @@ export default function EventsTable({ events, selectedEvent, onSelectEvent }: Ev
   const handleCloseDialog = () => {
     setDetailsDialogOpen(false);
     setSelectedEventForDialog(null);
+  };
+
+  // Node status update handler
+  const updateNodeStatus = (eventId: number, nodeId: string, newStatus: 'active' | 'inactive') => {
+    const updatedEvents = events.map(event => {
+      if (event.id === eventId && event.nodes) {
+        // Update the specific node's status
+        const updatedNodes = event.nodes.map(node => {
+          if (node.id === nodeId) {
+            return { ...node, status: newStatus };
+          }
+          return node;
+        });
+
+        // Recalculate active and inactive node counts
+        const activeNodes = updatedNodes.filter(node => node.status === 'active').length;
+        const inactiveNodes = updatedNodes.length - activeNodes;
+
+        // Return the updated event
+        return {
+          ...event,
+          nodes: updatedNodes,
+          activeNodes,
+          inactiveNodes
+        };
+      }
+      return event;
+    });
+
+    // This is where you would typically persist the changes to a database
+    console.log("Node status updated:", { eventId, nodeId, newStatus });
+    console.log("Updated events:", updatedEvents);
+
+    // Since we can't modify the events array directly (it's passed as a prop),
+    // we need to update the selectedEventForDialog to show the changes in the dialog
+    if (selectedEventForDialog?.id === eventId) {
+      const updatedEvent = updatedEvents.find(e => e.id === eventId) || null;
+      setSelectedEventForDialog(updatedEvent);
+    }
+
+    toast({
+      title: "Node status updated",
+      description: `Node ${nodeId} has been ${newStatus === 'active' ? 'reactivated' : 'deactivated'}.`,
+    });
+  };
+
+  const nodeEventHandlers: NodeEventHandlers = {
+    updateNodeStatus
   };
 
   return (
@@ -140,7 +190,8 @@ export default function EventsTable({ events, selectedEvent, onSelectEvent }: Ev
       <NodeDetailsDialog 
         event={selectedEventForDialog} 
         isOpen={detailsDialogOpen} 
-        onClose={handleCloseDialog} 
+        onClose={handleCloseDialog}
+        handlers={nodeEventHandlers}
       />
     </Card>
   );

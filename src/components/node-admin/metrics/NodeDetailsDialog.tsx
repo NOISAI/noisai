@@ -7,17 +7,38 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { NodeEvent, NodeDetails } from "../types/NodeEvent";
-import { Server, Battery, Leaf, Coins, Volume2 } from "lucide-react";
+import { NodeEvent, NodeDetails, NodeEventHandlers } from "../types/NodeEvent";
+import { Button } from "@/components/ui/button";
+import { Server, Battery, Leaf, Coins, Volume2, Power } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface NodeDetailsDialogProps {
   event: NodeEvent | null;
   isOpen: boolean;
   onClose: () => void;
+  handlers?: NodeEventHandlers;
 }
 
-export default function NodeDetailsDialog({ event, isOpen, onClose }: NodeDetailsDialogProps) {
+export default function NodeDetailsDialog({ 
+  event, 
+  isOpen, 
+  onClose,
+  handlers
+}: NodeDetailsDialogProps) {
+  const { toast } = useToast();
+  
   if (!event) return null;
+  
+  const handleActivateNode = (nodeId: string) => {
+    if (handlers?.updateNodeStatus) {
+      handlers.updateNodeStatus(event.id, nodeId, 'active');
+      toast({
+        title: "Node status updated",
+        description: "Node has been reactivated successfully.",
+        variant: "success",
+      });
+    }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -72,6 +93,7 @@ export default function NodeDetailsDialog({ event, isOpen, onClose }: NodeDetail
                   <TableHead className="text-gray-400">TOKENS CLAIMED</TableHead>
                   <TableHead className="text-gray-400">ENERGY (KWH)</TableHead>
                   <TableHead className="text-gray-400">CARBON OFFSET (KG)</TableHead>
+                  <TableHead className="text-gray-400">ACTIONS</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -121,6 +143,19 @@ export default function NodeDetailsDialog({ event, isOpen, onClose }: NodeDetail
                         <Leaf className="h-3 w-3 mr-1 text-[#22C55E]" />
                         {node.carbonOffset.toFixed(1)}
                       </div>
+                    </TableCell>
+                    <TableCell>
+                      {node.status === "inactive" && handlers?.updateNodeStatus && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="border-green-700 bg-green-900/20 text-green-400 hover:bg-green-900/40 hover:border-green-600"
+                          onClick={() => handleActivateNode(node.id)}
+                        >
+                          <Power className="h-3 w-3 mr-1" />
+                          Reactivate
+                        </Button>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
