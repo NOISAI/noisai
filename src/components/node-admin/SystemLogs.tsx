@@ -9,18 +9,18 @@ import { LogEntry, LogFilterLevel, LogFilterService, LogService } from "./logs/t
 
 // Mock log data
 const mockLogs = [
-  { id: 1, timestamp: "2025-05-03T23:15:12Z", level: "info", message: "Node synchronization completed successfully", service: "sync" },
-  { id: 2, timestamp: "2025-05-03T23:10:05Z", level: "warning", message: "High memory usage detected (85%)", service: "system" },
-  { id: 3, timestamp: "2025-05-03T23:05:47Z", level: "error", message: "Failed to connect to peer node at 192.168.1.105", service: "network" },
-  { id: 4, timestamp: "2025-05-03T23:01:30Z", level: "info", message: "User authentication successful: admin@example.com", service: "auth" },
-  { id: 5, timestamp: "2025-05-03T22:58:22Z", level: "info", message: "Processed 152 transactions in batch #28940", service: "transaction" },
-  { id: 6, timestamp: "2025-05-03T22:55:18Z", level: "warning", message: "Connection timeout with external API", service: "api" },
-  { id: 7, timestamp: "2025-05-03T22:50:03Z", level: "error", message: "Database query failed: relation \"metrics\" does not exist", service: "database" },
-  { id: 8, timestamp: "2025-05-03T22:45:56Z", level: "info", message: "System backup completed", service: "backup" },
-  { id: 9, timestamp: "2025-05-03T22:40:42Z", level: "info", message: "New user account created: user123", service: "auth" },
-  { id: 10, timestamp: "2025-05-03T22:35:29Z", level: "error", message: "Storage quota exceeded for logs", service: "system" },
-  { id: 11, timestamp: "2025-05-03T22:30:15Z", level: "info", message: "Node started with protocol version 2.4.1", service: "system" },
-  { id: 12, timestamp: "2025-05-03T22:25:03Z", level: "warning", message: "SSL certificate will expire in 7 days", service: "security" },
+  { id: 1, timestamp: "2025-05-03T23:15:12Z", level: "info", message: "Node synchronization completed successfully", service: "sync" as LogService },
+  { id: 2, timestamp: "2025-05-03T23:10:05Z", level: "warning", message: "High memory usage detected (85%)", service: "system" as LogService },
+  { id: 3, timestamp: "2025-05-03T23:05:47Z", level: "error", message: "Failed to connect to peer node at 192.168.1.105", service: "network" as LogService },
+  { id: 4, timestamp: "2025-05-03T23:01:30Z", level: "info", message: "User authentication successful: admin@example.com", service: "auth" as LogService },
+  { id: 5, timestamp: "2025-05-03T22:58:22Z", level: "info", message: "Processed 152 transactions in batch #28940", service: "transaction" as LogService },
+  { id: 6, timestamp: "2025-05-03T22:55:18Z", level: "warning", message: "Connection timeout with external API", service: "api" as LogService },
+  { id: 7, timestamp: "2025-05-03T22:50:03Z", level: "error", message: "Database query failed: relation \"metrics\" does not exist", service: "database" as LogService },
+  { id: 8, timestamp: "2025-05-03T22:45:56Z", level: "info", message: "System backup completed", service: "backup" as LogService },
+  { id: 9, timestamp: "2025-05-03T22:40:42Z", level: "info", message: "New user account created: user123", service: "auth" as LogService },
+  { id: 10, timestamp: "2025-05-03T22:35:29Z", level: "error", message: "Storage quota exceeded for logs", service: "system" as LogService },
+  { id: 11, timestamp: "2025-05-03T22:30:15Z", level: "info", message: "Node started with protocol version 2.4.1", service: "system" as LogService },
+  { id: 12, timestamp: "2025-05-03T22:25:03Z", level: "warning", message: "SSL certificate will expire in 7 days", service: "security" as LogService },
 ] as LogEntry[];
 
 export default function SystemLogs() {
