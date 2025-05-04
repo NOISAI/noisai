@@ -10,6 +10,14 @@ export interface NodeLocation {
   lat: number;
   lng: number;
   lastActive: string;
+  events?: NodeEvent[];
+}
+
+export interface NodeEvent {
+  id: number;
+  timestamp: string;
+  type: "connection" | "error" | "restart" | "update";
+  description: string;
 }
 
 export interface NodeMetric {
