@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowLeft, MapPin } from "lucide-react";
+import { ArrowLeft, MapPin, User, Battery, Leaf, Coins } from "lucide-react";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, Legend } from "recharts";
 import { useLiveStats } from "@/hooks/useLiveStats";
@@ -20,7 +20,13 @@ const nodeEvents: NodeEvent[] = [
     totalNodes: 3,
     activeNodes: 3,
     inactiveNodes: 0,
-    avgNoiseLevel: 78
+    avgNoiseLevel: 78,
+    userId: "user-123",
+    userName: "Sarah Johnson",
+    tokensGenerated: 1240,
+    tokensClaimed: 980,
+    energyGenerated: 15.6,
+    carbonOffset: 7.8
   },
   {
     id: 2,
@@ -30,7 +36,13 @@ const nodeEvents: NodeEvent[] = [
     totalNodes: 8,
     activeNodes: 5,
     inactiveNodes: 3,
-    avgNoiseLevel: 92
+    avgNoiseLevel: 92,
+    userId: "user-456",
+    userName: "Michael Chen",
+    tokensGenerated: 4280,
+    tokensClaimed: 3100,
+    energyGenerated: 48.2,
+    carbonOffset: 22.5
   },
   {
     id: 3,
@@ -40,7 +52,13 @@ const nodeEvents: NodeEvent[] = [
     totalNodes: 4,
     activeNodes: 2,
     inactiveNodes: 2,
-    avgNoiseLevel: 81
+    avgNoiseLevel: 81,
+    userId: "user-789",
+    userName: "Emma Schmidt",
+    tokensGenerated: 1860,
+    tokensClaimed: 1200,
+    energyGenerated: 22.4,
+    carbonOffset: 10.2
   },
   {
     id: 4,
@@ -50,9 +68,21 @@ const nodeEvents: NodeEvent[] = [
     totalNodes: 5,
     activeNodes: 4,
     inactiveNodes: 1,
-    avgNoiseLevel: 85
+    avgNoiseLevel: 85,
+    userId: "user-101",
+    userName: "Antoine Dupont",
+    tokensGenerated: 2650,
+    tokensClaimed: 1950,
+    energyGenerated: 31.8,
+    carbonOffset: 14.7
   }
 ];
+
+// Calculate totals for the metrics
+const totalTokensGenerated = nodeEvents.reduce((sum, event) => sum + event.tokensGenerated, 0);
+const totalTokensClaimed = nodeEvents.reduce((sum, event) => sum + event.tokensClaimed, 0);
+const totalEnergyGenerated = nodeEvents.reduce((sum, event) => sum + event.energyGenerated, 0);
+const totalCarbonOffset = nodeEvents.reduce((sum, event) => sum + event.carbonOffset, 0);
 
 const mockNodeMetrics = [
   { name: 'Monday', count: 120, uptime: 98 },
@@ -92,7 +122,7 @@ export default function MetricsDashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card className="bg-gray-900 border-gray-800">
           <CardHeader>
             <CardTitle className="text-white">Active Nodes</CardTitle>
@@ -104,20 +134,29 @@ export default function MetricsDashboard() {
         </Card>
         <Card className="bg-gray-900 border-gray-800">
           <CardHeader>
-            <CardTitle className="text-white">Network Efficiency</CardTitle>
+            <CardTitle className="text-white">Tokens Generated</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-4xl font-bold text-[#22C55E]">{liveStats.networkEfficiency}%</div>
-            <p className="text-gray-400 mt-2">Average efficiency across all nodes</p>
+            <div className="text-4xl font-bold text-[#22C55E]">{formatTokenValue(totalTokensGenerated)}</div>
+            <p className="text-gray-400 mt-2">Claimed: {formatTokenValue(totalTokensClaimed)}</p>
           </CardContent>
         </Card>
         <Card className="bg-gray-900 border-gray-800">
           <CardHeader>
-            <CardTitle className="text-white">Daily Transactions</CardTitle>
+            <CardTitle className="text-white">Energy Generated</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-4xl font-bold text-[#22C55E]">{liveStats.dailyTransactions.toLocaleString()}</div>
-            <p className="text-gray-400 mt-2">Transactions processed today</p>
+            <div className="text-4xl font-bold text-[#22C55E]">{totalEnergyGenerated.toFixed(1)} kWh</div>
+            <p className="text-gray-400 mt-2">Across all active nodes</p>
+          </CardContent>
+        </Card>
+        <Card className="bg-gray-900 border-gray-800">
+          <CardHeader>
+            <CardTitle className="text-white">Carbon Offset</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-4xl font-bold text-[#22C55E]">{totalCarbonOffset.toFixed(1)} kg</div>
+            <p className="text-gray-400 mt-2">Environmental impact</p>
           </CardContent>
         </Card>
       </div>
@@ -147,10 +186,12 @@ export default function MetricsDashboard() {
                   <tr>
                     <th className="px-4 py-3">Event</th>
                     <th className="px-4 py-3">Location</th>
-                    <th className="px-4 py-3">Total Nodes</th>
-                    <th className="px-4 py-3">Active Nodes</th>
-                    <th className="px-4 py-3">Inactive Nodes</th>
-                    <th className="px-4 py-3">Avg Noise Level</th>
+                    <th className="px-4 py-3">User</th>
+                    <th className="px-4 py-3">Nodes (Active/Total)</th>
+                    <th className="px-4 py-3">Tokens Generated</th>
+                    <th className="px-4 py-3">Tokens Claimed</th>
+                    <th className="px-4 py-3">Energy (kWh)</th>
+                    <th className="px-4 py-3">Carbon Offset (kg)</th>
                     <th className="px-4 py-3">Actions</th>
                   </tr>
                 </thead>
@@ -166,10 +207,40 @@ export default function MetricsDashboard() {
                         <MapPin className="h-3 w-3 mr-1 text-[#22C55E]" /> 
                         {event.location}
                       </td>
-                      <td className="px-4 py-3 text-gray-300">{event.totalNodes}</td>
-                      <td className="px-4 py-3 text-[#22C55E]">{event.activeNodes}</td>
-                      <td className="px-4 py-3 text-red-400">{event.inactiveNodes}</td>
-                      <td className="px-4 py-3 text-gray-300">{event.avgNoiseLevel} dB</td>
+                      <td className="px-4 py-3 text-gray-300 flex items-center">
+                        <User className="h-3 w-3 mr-1 text-blue-400" />
+                        {event.userName}
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className="text-[#22C55E]">{event.activeNodes}</span>
+                        <span className="text-gray-400">/</span>
+                        <span className="text-gray-300">{event.totalNodes}</span>
+                        {event.inactiveNodes > 0 && (
+                          <span className="ml-2 text-xs px-1.5 py-0.5 rounded-full bg-red-900/30 text-red-400">
+                            {event.inactiveNodes} offline
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3 text-yellow-300">
+                        <div className="flex items-center">
+                          <Coins className="h-3 w-3 mr-1" />
+                          {event.tokensGenerated}
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 text-blue-300">
+                        {event.tokensClaimed}
+                        <span className="text-gray-500 ml-1">
+                          ({Math.round(event.tokensClaimed / event.tokensGenerated * 100)}%)
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-gray-300 flex items-center">
+                        <Battery className="h-3 w-3 mr-1 text-[#22C55E]" />
+                        {event.energyGenerated.toFixed(1)}
+                      </td>
+                      <td className="px-4 py-3 text-gray-300 flex items-center">
+                        <Leaf className="h-3 w-3 mr-1 text-[#22C55E]" />
+                        {event.carbonOffset.toFixed(1)}
+                      </td>
                       <td className="px-4 py-3">
                         <Button 
                           size="sm" 

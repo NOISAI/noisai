@@ -12,6 +12,12 @@ export interface NodeEvent {
   activeNodes: number;
   inactiveNodes: number;
   avgNoiseLevel: number;
+  userId: string;
+  userName: string;
+  tokensGenerated: number;
+  tokensClaimed: number;
+  energyGenerated: number; // in kWh
+  carbonOffset: number; // in kg
 }
 
 interface NodeLocationMapProps {
