@@ -3,11 +3,56 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, MapPin } from "lucide-react";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, Legend } from "recharts";
 import { useLiveStats } from "@/hooks/useLiveStats";
 import { formatTokenValue } from "@/utils/statsCalculations";
+import NodeLocationMap from "./NodeLocationMap";
+
+// Mock data for node events with location information
+const nodeEvents = [
+  {
+    id: 1,
+    name: "City Coffee Amsterdam",
+    location: "Amsterdam, Netherlands",
+    coordinates: [4.9041, 52.3676], // [longitude, latitude]
+    totalNodes: 3,
+    activeNodes: 3,
+    inactiveNodes: 0,
+    avgNoiseLevel: 78
+  },
+  {
+    id: 2,
+    name: "Tomorrowland Festival",
+    location: "Boom, Belgium",
+    coordinates: [4.3667, 51.0833],
+    totalNodes: 8,
+    activeNodes: 5,
+    inactiveNodes: 3,
+    avgNoiseLevel: 92
+  },
+  {
+    id: 3,
+    name: "Downtown Mall Berlin",
+    location: "Berlin, Germany",
+    coordinates: [13.3833, 52.5167],
+    totalNodes: 4,
+    activeNodes: 2,
+    inactiveNodes: 2,
+    avgNoiseLevel: 81
+  },
+  {
+    id: 4,
+    name: "Paris Music Center",
+    location: "Paris, France",
+    coordinates: [2.3522, 48.8566],
+    totalNodes: 5,
+    activeNodes: 4,
+    inactiveNodes: 1,
+    avgNoiseLevel: 85
+  }
+];
 
 const mockNodeMetrics = [
   { name: 'Monday', count: 120, uptime: 98 },
@@ -28,6 +73,7 @@ const mockPerformanceData = [
 
 export default function MetricsDashboard() {
   const liveStats = useLiveStats();
+  const [selectedEvent, setSelectedEvent] = useState<number | null>(null);
 
   return (
     <div className="space-y-6">
@@ -72,6 +118,72 @@ export default function MetricsDashboard() {
           <CardContent>
             <div className="text-4xl font-bold text-[#22C55E]">{liveStats.dailyTransactions.toLocaleString()}</div>
             <p className="text-gray-400 mt-2">Transactions processed today</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid grid-cols-1 gap-6">
+        <Card className="bg-gray-900 border-gray-800">
+          <CardHeader>
+            <CardTitle className="text-white">Node Locations</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[400px] mb-6">
+              <NodeLocationMap events={nodeEvents} selectedEvent={selectedEvent} onSelectEvent={setSelectedEvent} />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid grid-cols-1 gap-6">
+        <Card className="bg-gray-900 border-gray-800">
+          <CardHeader>
+            <CardTitle className="text-white">Node Events</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm text-left">
+                <thead className="text-xs uppercase text-gray-400">
+                  <tr>
+                    <th className="px-4 py-3">Event</th>
+                    <th className="px-4 py-3">Location</th>
+                    <th className="px-4 py-3">Total Nodes</th>
+                    <th className="px-4 py-3">Active Nodes</th>
+                    <th className="px-4 py-3">Inactive Nodes</th>
+                    <th className="px-4 py-3">Avg Noise Level</th>
+                    <th className="px-4 py-3">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {nodeEvents.map((event) => (
+                    <tr 
+                      key={event.id} 
+                      className={`border-b border-gray-800 ${selectedEvent === event.id ? 'bg-gray-800' : ''} hover:bg-gray-800`}
+                      onClick={() => setSelectedEvent(selectedEvent === event.id ? null : event.id)}
+                    >
+                      <td className="px-4 py-3 font-medium text-white">{event.name}</td>
+                      <td className="px-4 py-3 text-gray-300 flex items-center">
+                        <MapPin className="h-3 w-3 mr-1 text-[#22C55E]" /> 
+                        {event.location}
+                      </td>
+                      <td className="px-4 py-3 text-gray-300">{event.totalNodes}</td>
+                      <td className="px-4 py-3 text-[#22C55E]">{event.activeNodes}</td>
+                      <td className="px-4 py-3 text-red-400">{event.inactiveNodes}</td>
+                      <td className="px-4 py-3 text-gray-300">{event.avgNoiseLevel} dB</td>
+                      <td className="px-4 py-3">
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          className="border-gray-700 text-gray-300 hover:border-[#22C55E] hover:text-[#22C55E]"
+                        >
+                          View Details
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </CardContent>
         </Card>
       </div>
