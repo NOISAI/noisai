@@ -1,7 +1,9 @@
 
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { WifiHigh, WifiOff, MapPin, Activity } from "lucide-react";
+import { WifiHigh, WifiOff, MapPin, Activity, ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { NodeEvent, NodeLocation } from "./types";
 import MapboxMap from "./MapboxMap";
 
@@ -35,10 +37,20 @@ export default function NodeLocationMap({ nodes, isAdminView = true }: NodeLocat
   return (
     <Card className="bg-gray-900 border-gray-800">
       <CardHeader>
-        <CardTitle className="text-white">
-          Node Locations
-          {isAdminView && <span className="ml-2 text-xs bg-blue-900 text-blue-300 px-2 py-0.5 rounded-full">Admin View</span>}
-        </CardTitle>
+        <div className="flex justify-between items-center">
+          <div className="flex items-center">
+            <Link to="/node-admin" className="mr-3">
+              <Button variant="outline" size="sm" className="bg-gray-800 border-gray-700 hover:bg-gray-700">
+                <ArrowLeft className="h-4 w-4 mr-1" />
+                Back to Dashboard
+              </Button>
+            </Link>
+            <CardTitle className="text-white">
+              Node Locations
+              {isAdminView && <span className="ml-2 text-xs bg-blue-900 text-blue-300 px-2 py-0.5 rounded-full">Admin View</span>}
+            </CardTitle>
+          </div>
+        </div>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Node Status Counts */}

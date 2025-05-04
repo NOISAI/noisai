@@ -2,6 +2,9 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { LogEntry } from "./logs/types";
 import LogFilters from "./logs/LogFilters";
 import LogList from "./logs/LogList";
@@ -69,9 +72,17 @@ export default function SystemLogs() {
   
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-white">System Logs</h2>
-        <p className="text-gray-400">View and analyze system activity logs</p>
+      <div className="flex justify-between items-center">
+        <div>
+          <h2 className="text-2xl font-bold text-white">System Logs</h2>
+          <p className="text-gray-400">View and analyze system activity logs</p>
+        </div>
+        <Link to="/node-admin">
+          <Button variant="outline" size="sm" className="bg-gray-900 border-gray-700 hover:bg-gray-800">
+            <ArrowLeft className="h-4 w-4 mr-1" />
+            Back to Dashboard
+          </Button>
+        </Link>
       </div>
       
       <Card className="bg-gray-900 border-gray-800">
