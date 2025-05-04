@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, UserCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function AdminHeader() {
   const { user } = useUser();
@@ -13,6 +14,7 @@ export default function AdminHeader() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const isMobile = useIsMobile();
   
   const handleSignOut = async () => {
     try {
@@ -76,6 +78,7 @@ export default function AdminHeader() {
           size="icon"
           className="block md:hidden"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Toggle menu"
         >
           {isMobileMenuOpen ? (
             <X className="h-5 w-5" />
@@ -87,7 +90,7 @@ export default function AdminHeader() {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden border-t border-gray-800 py-3 px-4">
+        <div className="md:hidden border-t border-gray-800 py-3 px-4 animate-fade-in">
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-3 mb-2">
               <Avatar className="h-8 w-8 border border-gray-700">

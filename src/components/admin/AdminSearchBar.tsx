@@ -17,13 +17,13 @@ export default function AdminSearchBar({
   onAddInvestorClick
 }: AdminSearchBarProps) {
   return (
-    <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
+    <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 md:mb-8 gap-4 md:gap-0">
       <div>
         <h1 className="text-2xl md:text-3xl font-bold">Admin Dashboard</h1>
-        <p className="text-gray-400">Manage investors, track interactions, and generate reports</p>
+        <p className="text-gray-400 text-sm md:text-base">Manage investors, track interactions, and generate reports</p>
       </div>
-      <div className="mt-4 md:mt-0 flex flex-col sm:flex-row gap-3">
-        <div className="relative flex items-center">
+      <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+        <div className="relative flex items-center w-full sm:w-auto">
           <Input 
             type="search" 
             placeholder="Search..." 
@@ -38,7 +38,7 @@ export default function AdminSearchBar({
           />
         </div>
         <Button 
-          className="bg-[#22C55E] hover:bg-[#1ea853] text-black"
+          className="bg-[#22C55E] hover:bg-[#1ea853] text-black w-full sm:w-auto"
           onClick={onAddInvestorClick}
         >
           <UserPlus size={16} className="mr-1" />

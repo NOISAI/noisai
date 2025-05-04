@@ -13,7 +13,7 @@ export default function MetricsDashboard() {
   const [selectedEvent, setSelectedEvent] = useState<number | null>(null);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       <MetricsHeader />
       
       <MetricCards 
@@ -21,7 +21,7 @@ export default function MetricsDashboard() {
         activeNodesCount={liveStats.activeNodes} 
       />
       
-      <div className="grid grid-cols-1 gap-6">
+      <div className="grid grid-cols-1 gap-4 md:gap-6">
         <MapSection 
           events={nodeEvents} 
           selectedEvent={selectedEvent} 
@@ -29,7 +29,7 @@ export default function MetricsDashboard() {
         />
       </div>
       
-      <div className="grid grid-cols-1 gap-6">
+      <div className="grid grid-cols-1 gap-4 md:gap-6">
         <EventsTable 
           events={nodeEvents} 
           selectedEvent={selectedEvent} 

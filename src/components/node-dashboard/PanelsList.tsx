@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { PanelCard } from "./panel/PanelCard";
 
@@ -34,14 +35,14 @@ export function PanelsList({ panels, activePanels }: PanelsListProps) {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-wrap justify-between items-center">
         <h3 className="text-xl font-medium text-gray-800 dark:text-gray-200">Your Panels</h3>
-        <span className="bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">
+        <span className="bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300 text-xs font-medium px-2.5 py-0.5 rounded-full">
           {activePanels} Active
         </span>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         {panelData.map(panel => (
           <PanelCard
             key={panel.id}
