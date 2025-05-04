@@ -14,15 +14,15 @@ export default function MetricsHeader() {
           </Button>
         </Link>
         <div className="flex items-center">
+          <img 
+            src="/noisai-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
+            alt="NOISAI Logo" 
+            className="w-4 h-4 mr-2" 
+          />
           <div>
             <h2 className="text-2xl font-bold text-white">Performance Metrics</h2>
-            <div className="flex items-center text-gray-400">
+            <div className="text-gray-400">
               <span>Monitor your node's performance and activity</span>
-              <img 
-                src="/noisai-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
-                alt="NOISAI Logo" 
-                className="w-4 h-4 ml-2" 
-              />
             </div>
           </div>
         </div>
