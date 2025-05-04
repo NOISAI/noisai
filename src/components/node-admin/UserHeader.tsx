@@ -13,7 +13,14 @@ export default function UserHeader() {
             Back to Dashboard
           </Button>
         </Link>
-        <h1 className="text-2xl font-bold text-[#22C55E]">Node User Management</h1>
+        <div className="flex items-center">
+          <img 
+            src="/noisai-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
+            alt="NOISAI Logo" 
+            className="w-6 h-6 mr-2" 
+          />
+          <h1 className="text-2xl font-bold text-[#22C55E]">Node User Management</h1>
+        </div>
       </div>
     </div>
   );

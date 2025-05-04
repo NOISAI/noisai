@@ -13,9 +13,16 @@ export default function MetricsHeader() {
             Back to Dashboard
           </Button>
         </Link>
-        <div>
-          <h2 className="text-2xl font-bold text-white">Performance Metrics</h2>
-          <p className="text-gray-400">Monitor your node's performance and activity</p>
+        <div className="flex items-center">
+          <img 
+            src="/noisai-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
+            alt="NOISAI Logo" 
+            className="w-6 h-6 mr-2" 
+          />
+          <div>
+            <h2 className="text-2xl font-bold text-white">Performance Metrics</h2>
+            <p className="text-gray-400">Monitor your node's performance and activity</p>
+          </div>
         </div>
       </div>
     </div>

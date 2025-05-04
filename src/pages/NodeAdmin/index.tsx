@@ -39,6 +39,11 @@ export default function NodeAdmin() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center">
+              <img 
+                src="/noisai-uploads/ca242ff0-731d-4f1b-9fc6-bad0a48ffed3.png" 
+                alt="NOISAI Logo" 
+                className="w-8 h-8 mr-2"
+              />
               <h1 className="text-2xl font-bold text-[#22C55E]">NOISAI Node Admin Dashboard</h1>
             </div>
             
