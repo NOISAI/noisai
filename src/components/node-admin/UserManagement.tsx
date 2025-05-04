@@ -6,6 +6,7 @@ import UserTable from "./UserTable";
 import AddUserDialog from "./AddUserDialog";
 import EditUserDialog from "./EditUserDialog";
 import { useUserManagement } from "./hooks/useUserManagement";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function UserManagement() {
   const {
@@ -25,8 +26,10 @@ export default function UserManagement() {
     handleEditUser
   } = useUserManagement();
   
+  const isMobile = useIsMobile();
+  
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <UserHeader />
       
       <UserToolbar 
@@ -36,10 +39,10 @@ export default function UserManagement() {
       />
       
       <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Node Users</CardTitle>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base sm:text-lg">Node Users</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-2 sm:p-4">
           <UserTable 
             users={users}
             isLoading={isLoading}

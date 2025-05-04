@@ -10,11 +10,13 @@ import SecuritySettings from "@/components/node-admin/SecuritySettings";
 import MetricsDashboard from "@/components/node-admin/MetricsDashboard";
 import NodeConfiguration from "@/components/node-admin/NodeConfiguration";
 import SystemLogs from "@/components/node-admin/SystemLogs";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function NodeAdmin() {
   const { user, signOut, userRole } = useSupabaseAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   
   const handleSignOut = async () => {
     try {
@@ -44,17 +46,23 @@ export default function NodeAdmin() {
                 alt="NOISAI Logo" 
                 className="w-8 h-8 mr-2"
               />
-              <h1 className="text-2xl font-bold text-[#22C55E]">NOISAI Node Admin Dashboard</h1>
+              <h1 className="text-xl sm:text-2xl font-bold text-[#22C55E] truncate max-w-[200px] sm:max-w-none">
+                {isMobile ? "NOISAI Admin" : "NOISAI Node Admin Dashboard"}
+              </h1>
             </div>
             
-            <div className="flex items-center space-x-4">
-              <div className="bg-green-900 text-green-300 px-3 py-2 rounded-md text-sm">
-                Admin
-              </div>
-              
-              <div className="bg-gray-800 px-3 py-2 rounded-md text-sm truncate max-w-[200px]">
-                {user?.email || 'Admin'}
-              </div>
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              {!isMobile && (
+                <>
+                  <div className="bg-green-900 text-green-300 px-3 py-2 rounded-md text-sm">
+                    Admin
+                  </div>
+                  
+                  <div className="hidden sm:block bg-gray-800 px-3 py-2 rounded-md text-sm truncate max-w-[100px] md:max-w-[200px]">
+                    {user?.email || 'Admin'}
+                  </div>
+                </>
+              )}
               
               <Button 
                 variant="outline" 
@@ -62,29 +70,29 @@ export default function NodeAdmin() {
                 onClick={handleSignOut}
                 className="border-gray-700 text-gray-300 hover:text-white hover:bg-gray-700"
               >
-                <LogOut className="h-4 w-4 mr-2" />
-                Sign Out
+                <LogOut className="h-4 w-4 mr-0 sm:mr-2" />
+                {!isMobile ? "Sign Out" : ""}
               </Button>
             </div>
           </div>
         </div>
       </div>
       
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h2 className="text-xl font-semibold mb-6">Node Administration</h2>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <h2 className="text-xl font-semibold mb-4 sm:mb-6">Node Administration</h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           <Card className="bg-gray-900 border-gray-800">
-            <CardHeader>
-              <CardTitle className="flex items-center">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center text-base sm:text-lg">
                 <Users className="h-5 w-5 mr-2" />
                 Node User Management
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-400 mb-4">Manage node users, permissions and access control</p>
+              <p className="text-gray-400 text-sm mb-4">Manage node users, permissions and access control</p>
               <Link to="/node-admin/users">
-                <Button className="bg-[#22C55E] hover:bg-[#1ea853]">
+                <Button className="w-full sm:w-auto bg-[#22C55E] hover:bg-[#1ea853]">
                   Manage Users
                 </Button>
               </Link>
@@ -92,16 +100,16 @@ export default function NodeAdmin() {
           </Card>
           
           <Card className="bg-gray-900 border-gray-800">
-            <CardHeader>
-              <CardTitle className="flex items-center">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center text-base sm:text-lg">
                 <Lock className="h-5 w-5 mr-2" />
                 Security Settings
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-400 mb-4">Configure security settings, authentication options</p>
+              <p className="text-gray-400 text-sm mb-4">Configure security settings, authentication options</p>
               <Link to="/node-admin/security">
-                <Button className="bg-[#22C55E] hover:bg-[#1ea853]">
+                <Button className="w-full sm:w-auto bg-[#22C55E] hover:bg-[#1ea853]">
                   Security Settings
                 </Button>
               </Link>
@@ -109,16 +117,16 @@ export default function NodeAdmin() {
           </Card>
 
           <Card className="bg-gray-900 border-gray-800">
-            <CardHeader>
-              <CardTitle className="flex items-center">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center text-base sm:text-lg">
                 <BarChart3 className="h-5 w-5 mr-2" />
                 Performance Metrics
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-400 mb-4">View node performance data and statistics</p>
+              <p className="text-gray-400 text-sm mb-4">View node performance data and statistics</p>
               <Link to="/node-admin/metrics">
-                <Button className="bg-[#22C55E] hover:bg-[#1ea853]">
+                <Button className="w-full sm:w-auto bg-[#22C55E] hover:bg-[#1ea853]">
                   View Metrics
                 </Button>
               </Link>
@@ -126,16 +134,16 @@ export default function NodeAdmin() {
           </Card>
 
           <Card className="bg-gray-900 border-gray-800">
-            <CardHeader>
-              <CardTitle className="flex items-center">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center text-base sm:text-lg">
                 <Server className="h-5 w-5 mr-2" />
                 Node Configuration
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-400 mb-4">Configure node settings and parameters</p>
+              <p className="text-gray-400 text-sm mb-4">Configure node settings and parameters</p>
               <Link to="/node-admin/config">
-                <Button className="bg-[#22C55E] hover:bg-[#1ea853]">
+                <Button className="w-full sm:w-auto bg-[#22C55E] hover:bg-[#1ea853]">
                   Configure Node
                 </Button>
               </Link>
@@ -143,16 +151,16 @@ export default function NodeAdmin() {
           </Card>
 
           <Card className="bg-gray-900 border-gray-800">
-            <CardHeader>
-              <CardTitle className="flex items-center">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center text-base sm:text-lg">
                 <Activity className="h-5 w-5 mr-2" />
                 System Logs
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-400 mb-4">View system activity and event logs</p>
+              <p className="text-gray-400 text-sm mb-4">View system activity and event logs</p>
               <Link to="/node-admin/logs">
-                <Button className="bg-[#22C55E] hover:bg-[#1ea853]">
+                <Button className="w-full sm:w-auto bg-[#22C55E] hover:bg-[#1ea853]">
                   View Logs
                 </Button>
               </Link>

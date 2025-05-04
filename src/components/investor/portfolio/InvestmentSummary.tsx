@@ -1,127 +1,94 @@
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
-interface Investment {
-  id: string;
-  name: string;
-  amount: number;
-  tokenAmount: number;
-  date: string;
-  status: "pending" | "approved" | "completed";
-  txHash: string;
-}
-
-interface PortfolioStats {
-  totalInvested: number;
-  pendingApproval: number;
-  totalTokens: number;
-  investmentCount: number;
-}
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { PiggyBank } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface InvestmentSummaryProps {
-  userInvestments: Investment[];
-  portfolioStats: PortfolioStats;
+  userInvestments: any[];
+  portfolioStats: {
+    totalInvested: number;
+    pendingApproval: number;
+    totalTokens: number;
+    investmentCount: number;
+  };
   investmentOpportunities: number;
 }
 
-const InvestmentSummary = ({
-  userInvestments,
-  portfolioStats,
-  investmentOpportunities,
-}: InvestmentSummaryProps) => {
+const InvestmentSummary = ({ userInvestments, portfolioStats, investmentOpportunities }: InvestmentSummaryProps) => {
+  const isMobile = useIsMobile();
+  
   return (
-    <Card className="bg-gray-900 border border-gray-800">
-      <CardHeader>
-        <CardTitle>Investment Summary</CardTitle>
-        <CardDescription>Your current investment portfolio</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <div className="space-y-6">
+      <h2 className="text-xl font-bold">Investment Summary</h2>
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {userInvestments.length > 0 ? (
-          <div className="space-y-6">
-            <div className="overflow-x-auto">
-              <table className="min-w-full">
-                <thead className="border-b border-gray-800">
-                  <tr>
-                    <th className="text-left py-3 px-4 text-gray-400">Investment</th>
-                    <th className="text-left py-3 px-4 text-gray-400">Amount</th>
-                    <th className="text-left py-3 px-4 text-gray-400">ETH</th>
-                    <th className="text-left py-3 px-4 text-gray-400">Date</th>
-                    <th className="text-left py-3 px-4 text-gray-400">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {userInvestments.map((inv) => (
-                    <tr key={inv.id} className="border-b border-gray-800">
-                      <td className="py-3 px-4">{inv.name}</td>
-                      <td className="py-3 px-4">${inv.amount.toLocaleString()}</td>
-                      <td className="py-3 px-4">{inv.tokenAmount.toFixed(6)}</td>
-                      <td className="py-3 px-4">{new Date(inv.date).toLocaleDateString()}</td>
-                      <td className="py-3 px-4">
-                        <span className={`inline-block px-2 py-1 rounded text-xs ${
-                          inv.status === "approved" 
-                            ? "bg-green-900/30 text-green-500"
-                            : inv.status === "completed" 
-                              ? "bg-blue-900/30 text-blue-500"
-                              : "bg-yellow-900/30 text-yellow-500"
-                        }`}>
-                          {inv.status.charAt(0).toUpperCase() + inv.status.slice(1)}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+          userInvestments.map(investment => (
+            <Card key={investment.id} className="bg-gray-900 border-gray-800 overflow-hidden">
+              <CardHeader className="bg-gray-800 pb-2">
+                <CardTitle className="flex items-center text-base">
+                  <PiggyBank className="h-5 w-5 text-[#22C55E] mr-2" />
+                  {investment.name}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-4">
+                <div className="space-y-1 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Amount:</span>
+                    <span className="font-medium">${investment.amount.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Token Allocation:</span>
+                    <span className="font-medium">{investment.tokens.toLocaleString()} NOISAI</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Status:</span>
+                    <span className={`font-medium ${investment.status === 'Confirmed' ? 'text-green-500' : 'text-yellow-500'}`}>
+                      {investment.status}
+                    </span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))
         ) : (
-          <div className="h-[300px] flex items-center justify-center border border-gray-800 rounded-md bg-gray-950 mb-4">
-            <div className="text-center">
-              <p className="text-gray-400 mb-2">No active investments</p>
-              <p className="text-[#22C55E]">
-                {investmentOpportunities === 1 
-                  ? "NOISAI Seed Sale is now open" 
-                  : `${investmentOpportunities} NOISAI investment opportunities available`}
+          <Card className="col-span-1 sm:col-span-3 bg-gray-900 border-gray-800">
+            <CardContent className="pt-6 flex flex-col items-center">
+              <div className="rounded-full bg-gray-800 p-3 mb-4">
+                <PiggyBank className="h-8 w-8 text-gray-400" />
+              </div>
+              <h3 className="text-lg font-medium mb-2">No Investments Yet</h3>
+              <p className="text-gray-400 text-center mb-4 max-w-md">
+                You haven't made any investments yet. Start your investment journey with NOISAI today.
               </p>
-            </div>
-          </div>
+              <Link to="/investments">
+                <Button className="bg-[#22C55E] hover:bg-[#1ea853]">
+                  View Investment Opportunities
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
         )}
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
-          <div className="bg-gray-800 p-4 rounded-md">
-            <p className="text-sm text-gray-400">NOISAI Tokens</p>
-            <p className="text-xl font-bold">{portfolioStats.totalTokens.toFixed(6)}</p>
-          </div>
-          <div className="bg-gray-800 p-4 rounded-md">
-            <p className="text-sm text-gray-400">Equity Share</p>
-            <p className="text-xl font-bold">
-              {portfolioStats.totalInvested > 0 ? `${(portfolioStats.totalInvested / 1000000 * 100).toFixed(4)}%` : '0%'}
+      </div>
+      
+      {userInvestments.length > 0 && (
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-4 bg-gray-900 border border-gray-800 rounded-lg">
+          <div className="space-y-1">
+            <h3 className="text-lg font-medium">You have {investmentOpportunities} new investment opportunities</h3>
+            <p className="text-sm text-gray-400">
+              Explore new ways to grow your NOISAI portfolio
             </p>
           </div>
-          <div className="bg-gray-800 p-4 rounded-md">
-            <p className="text-sm text-gray-400">Investment Status</p>
-            <p className="text-xl font-bold">
-              {portfolioStats.investmentCount > 0 
-                ? portfolioStats.pendingApproval > 0 
-                  ? "Pending" 
-                  : "Active" 
-                : "None"}
-            </p>
-          </div>
-          <div className="bg-gray-800 p-4 rounded-md">
-            <p className="text-sm text-gray-400">Investor Status</p>
-            <p className="text-xl font-bold">
-              {portfolioStats.totalInvested > 0 ? "Active" : "Not Active"}
-            </p>
-          </div>
+          <Link to="/investments">
+            <Button className="w-full sm:w-auto bg-[#22C55E] hover:bg-[#1ea853]">
+              View All Opportunities
+            </Button>
+          </Link>
         </div>
-      </CardContent>
-    </Card>
+      )}
+    </div>
   );
 };
 

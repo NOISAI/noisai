@@ -2,6 +2,7 @@
 import { Search, UserPlus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface AdminSearchBarProps {
   searchQuery: string;
@@ -16,6 +17,8 @@ export default function AdminSearchBar({
   onSearch,
   onAddInvestorClick
 }: AdminSearchBarProps) {
+  const isMobile = useIsMobile();
+  
   return (
     <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 md:mb-8 gap-4 md:gap-0">
       <div>
@@ -42,7 +45,7 @@ export default function AdminSearchBar({
           onClick={onAddInvestorClick}
         >
           <UserPlus size={16} className="mr-1" />
-          New Investor
+          {!isMobile || true ? "New Investor" : ""}
         </Button>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { useToast } from "@/hooks/use-toast";
 import { TabsContent } from "@/components/ui/tabs";
 import { Link } from "react-router-dom";
 import { useRolePermissions } from "@/hooks/useRolePermissions";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Import refactored components
 import DashboardHeader from "@/components/investor/DashboardHeader";
@@ -20,6 +21,7 @@ export default function InvestorDashboard() {
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
   const [activeTab, setActiveTab] = useState("portfolio");
+  const isMobile = useIsMobile();
   
   useEffect(() => {
     // Welcome toast when dashboard loads
@@ -70,13 +72,13 @@ export default function InvestorDashboard() {
         connectWallet={connectWallet}
       />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-bold">Investor Dashboard</h1>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0 mb-4 sm:mb-8">
+          <h1 className="text-2xl sm:text-4xl font-bold">Investor Dashboard</h1>
           {permissions.canAccessNoisaiView && (
             <Link 
               to="/node-dashboard"
-              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition-colors"
+              className="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-md transition-colors text-sm sm:text-base"
             >
               Go to Node Dashboard
             </Link>
@@ -84,23 +86,23 @@ export default function InvestorDashboard() {
         </div>
         
         <DashboardTabs activeTab={activeTab} onTabChange={setActiveTab}>
-          <TabsContent value="portfolio">
+          <TabsContent value="portfolio" className="mt-2 sm:mt-4">
             <PortfolioOverview />
           </TabsContent>
 
-          <TabsContent value="investments">
+          <TabsContent value="investments" className="mt-2 sm:mt-4">
             <InvestmentsList />
           </TabsContent>
 
-          <TabsContent value="interactions">
+          <TabsContent value="interactions" className="mt-2 sm:mt-4">
             <InteractionHistory />
           </TabsContent>
 
-          <TabsContent value="documents">
+          <TabsContent value="documents" className="mt-2 sm:mt-4">
             <DocumentManagement />
           </TabsContent>
 
-          <TabsContent value="profile">
+          <TabsContent value="profile" className="mt-2 sm:mt-4">
             <ProfileManagement />
           </TabsContent>
         </DashboardTabs>
