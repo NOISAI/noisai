@@ -5,7 +5,7 @@ import { NodeEvent } from "../types/NodeEvent";
 export const nodeEvents: NodeEvent[] = [
   {
     id: 1,
-    name: "Node A1",
+    name: "City Coffee Amsterdam",
     location: "Amsterdam, Netherlands",
     coordinates: [4.9041, 52.3676], // [longitude, latitude] - explicit tuple
     totalNodes: 3,
@@ -13,7 +13,7 @@ export const nodeEvents: NodeEvent[] = [
     inactiveNodes: 0,
     avgNoiseLevel: 78,
     nodeId: "node-123",
-    nodeName: "Node Amsterdam 1",
+    nodeName: "Node N1",
     tokensGenerated: 1240,
     tokensClaimed: 980,
     energyGenerated: 15.6,
@@ -21,7 +21,7 @@ export const nodeEvents: NodeEvent[] = [
   },
   {
     id: 2,
-    name: "Node B2",
+    name: "Tomorrowland Festival",
     location: "Boom, Belgium",
     coordinates: [4.3667, 51.0833],
     totalNodes: 8,
@@ -29,7 +29,7 @@ export const nodeEvents: NodeEvent[] = [
     inactiveNodes: 3,
     avgNoiseLevel: 92,
     nodeId: "node-456",
-    nodeName: "Node Belgium 1",
+    nodeName: "Node N2",
     tokensGenerated: 4280,
     tokensClaimed: 3100,
     energyGenerated: 48.2,
@@ -37,7 +37,7 @@ export const nodeEvents: NodeEvent[] = [
   },
   {
     id: 3,
-    name: "Node C3",
+    name: "Downtown Mall Berlin",
     location: "Berlin, Germany",
     coordinates: [13.3833, 52.5167],
     totalNodes: 4,
@@ -45,7 +45,7 @@ export const nodeEvents: NodeEvent[] = [
     inactiveNodes: 2,
     avgNoiseLevel: 81,
     nodeId: "node-789",
-    nodeName: "Node Berlin 1",
+    nodeName: "Node N3",
     tokensGenerated: 1860,
     tokensClaimed: 1200,
     energyGenerated: 22.4,
@@ -53,7 +53,7 @@ export const nodeEvents: NodeEvent[] = [
   },
   {
     id: 4,
-    name: "Node D4",
+    name: "Paris Music Center",
     location: "Paris, France",
     coordinates: [2.3522, 48.8566],
     totalNodes: 5,
@@ -61,7 +61,7 @@ export const nodeEvents: NodeEvent[] = [
     inactiveNodes: 1,
     avgNoiseLevel: 85,
     nodeId: "node-101",
-    nodeName: "Node Paris 1",
+    nodeName: "Node N4",
     tokensGenerated: 2650,
     tokensClaimed: 1950,
     energyGenerated: 31.8,
