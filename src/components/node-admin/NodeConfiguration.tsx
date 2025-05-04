@@ -9,6 +9,8 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function NodeConfiguration() {
   const { toast } = useToast();
@@ -60,9 +62,19 @@ export default function NodeConfiguration() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-white">Node Configuration</h2>
-        <p className="text-gray-400">Configure node settings and parameters</p>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center">
+          <Link to="/node-admin" className="mr-4">
+            <Button variant="outline" size="sm" className="flex items-center gap-2 border-gray-700 text-gray-300 hover:text-white hover:bg-gray-700">
+              <ArrowLeft className="h-4 w-4" />
+              Back to Dashboard
+            </Button>
+          </Link>
+          <div>
+            <h2 className="text-2xl font-bold text-white">Node Configuration</h2>
+            <p className="text-gray-400">Configure node settings and parameters</p>
+          </div>
+        </div>
       </div>
 
       <Tabs defaultValue="network" className="w-full">

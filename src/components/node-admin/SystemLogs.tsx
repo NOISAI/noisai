@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -6,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download, RefreshCcw, Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // Mock log data
 const mockLogs = [
@@ -25,7 +24,6 @@ const mockLogs = [
 ];
 
 export default function SystemLogs() {
-  const navigate = useNavigate();
   const [logs, setLogs] = useState(mockLogs);
   const [filteredLogs, setFilteredLogs] = useState(mockLogs);
   const [filterLevel, setFilterLevel] = useState<string>("all");
@@ -114,20 +112,21 @@ export default function SystemLogs() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <div>
-          <div className="flex items-center mb-2">
+        <div className="flex items-center">
+          <Link to="/node-admin" className="mr-4">
             <Button 
               variant="outline" 
               size="sm" 
-              className="mr-2 border-gray-700 text-gray-300 hover:text-white hover:bg-gray-700"
-              onClick={() => navigate("/node-admin")}
+              className="flex items-center gap-2 border-gray-700 text-gray-300 hover:text-white hover:bg-gray-700"
             >
-              <ArrowLeft className="h-4 w-4 mr-1" />
-              Back to Admin
+              <ArrowLeft className="h-4 w-4" />
+              Back to Dashboard
             </Button>
+          </Link>
+          <div>
+            <h2 className="text-2xl font-bold text-white">System Logs</h2>
+            <p className="text-gray-400">View system activity and event logs</p>
           </div>
-          <h2 className="text-2xl font-bold text-white">System Logs</h2>
-          <p className="text-gray-400">View system activity and event logs</p>
         </div>
         <div className="flex items-center space-x-2">
           <Button
@@ -230,4 +229,3 @@ export default function SystemLogs() {
     </div>
   );
 }
-
