@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MapPin, Server, Battery, Leaf, Coins } from "lucide-react";
@@ -11,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import NodeDetailsDialog from "./NodeDetailsDialog";
 
 interface EventsTableProps {
   events: NodeEvent[];
@@ -19,6 +21,19 @@ interface EventsTableProps {
 }
 
 export default function EventsTable({ events, selectedEvent, onSelectEvent }: EventsTableProps) {
+  const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
+  const [selectedEventForDialog, setSelectedEventForDialog] = useState<NodeEvent | null>(null);
+
+  const handleViewDetails = (event: NodeEvent) => {
+    setSelectedEventForDialog(event);
+    setDetailsDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDetailsDialogOpen(false);
+    setSelectedEventForDialog(null);
+  };
+
   return (
     <Card className="bg-gray-900 border-gray-800">
       <CardHeader>
@@ -107,6 +122,10 @@ export default function EventsTable({ events, selectedEvent, onSelectEvent }: Ev
                       size="sm"
                       variant="outline"
                       className="border-gray-700 text-gray-300 hover:border-[#22C55E] hover:text-[#22C55E]"
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent triggering row click
+                        handleViewDetails(event);
+                      }}
                     >
                       View Details
                     </Button>
@@ -117,6 +136,12 @@ export default function EventsTable({ events, selectedEvent, onSelectEvent }: Ev
           </Table>
         </div>
       </CardContent>
+      
+      <NodeDetailsDialog 
+        event={selectedEventForDialog} 
+        isOpen={detailsDialogOpen} 
+        onClose={handleCloseDialog} 
+      />
     </Card>
   );
 }
