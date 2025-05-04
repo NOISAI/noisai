@@ -1,8 +1,16 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin, User, Battery, Leaf, Coins } from "lucide-react";
+import { MapPin, Server, Battery, Leaf, Coins } from "lucide-react";
 import { NodeEvent } from "../types/NodeEvent";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 interface EventsTableProps {
   events: NodeEvent[];
@@ -18,79 +26,95 @@ export default function EventsTable({ events, selectedEvent, onSelectEvent }: Ev
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left">
-            <thead className="text-xs uppercase text-gray-400">
-              <tr>
-                <th className="px-4 py-3">Event</th>
-                <th className="px-4 py-3">Location</th>
-                <th className="px-4 py-3">User</th>
-                <th className="px-4 py-3">Nodes (Active/Total)</th>
-                <th className="px-4 py-3">Tokens Generated</th>
-                <th className="px-4 py-3">Tokens Claimed</th>
-                <th className="px-4 py-3">Energy (kWh)</th>
-                <th className="px-4 py-3">Carbon Offset (kg)</th>
-                <th className="px-4 py-3">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table>
+            <TableHeader>
+              <TableRow className="border-gray-800">
+                <TableHead className="text-gray-400">EVENT</TableHead>
+                <TableHead className="text-gray-400">LOCATION</TableHead>
+                <TableHead className="text-gray-400">NODE</TableHead>
+                <TableHead className="text-gray-400">NODES (ACTIVE/TOTAL)</TableHead>
+                <TableHead className="text-gray-400">TOKENS GENERATED</TableHead>
+                <TableHead className="text-gray-400">TOKENS CLAIMED</TableHead>
+                <TableHead className="text-gray-400">ENERGY (KWH)</TableHead>
+                <TableHead className="text-gray-400">CARBON OFFSET (KG)</TableHead>
+                <TableHead className="text-gray-400">ACTIONS</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {events.map((event) => (
-                <tr 
-                  key={event.id} 
-                  className={`border-b border-gray-800 ${selectedEvent === event.id ? 'bg-gray-800' : ''} hover:bg-gray-800`}
+                <TableRow
+                  key={event.id}
+                  className={`border-b border-gray-800 ${selectedEvent === event.id ? 'bg-gray-800' : ''} hover:bg-gray-800 cursor-pointer`}
                   onClick={() => onSelectEvent(selectedEvent === event.id ? null : event.id)}
                 >
-                  <td className="px-4 py-3 font-medium text-white">{event.name}</td>
-                  <td className="px-4 py-3 text-gray-300 flex items-center">
-                    <MapPin className="h-3 w-3 mr-1 text-[#22C55E]" /> 
-                    {event.location}
-                  </td>
-                  <td className="px-4 py-3 text-gray-300 flex items-center">
-                    <User className="h-3 w-3 mr-1 text-blue-400" />
-                    {event.userName}
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className="text-[#22C55E]">{event.activeNodes}</span>
-                    <span className="text-gray-400">/</span>
-                    <span className="text-gray-300">{event.totalNodes}</span>
-                    {event.inactiveNodes > 0 && (
-                      <span className="ml-2 text-xs px-1.5 py-0.5 rounded-full bg-red-900/30 text-red-400">
-                        {event.inactiveNodes} offline
-                      </span>
-                    )}
-                  </td>
-                  <td className="px-4 py-3 text-yellow-300">
+                  <TableCell className="font-medium text-white">
+                    {event.name}
+                  </TableCell>
+                  <TableCell className="text-gray-300">
+                    <div className="flex items-center">
+                      <MapPin className="h-3 w-3 mr-1 text-[#22C55E]" />
+                      {event.location}
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-gray-300">
+                    <div className="flex items-center">
+                      <Server className="h-3 w-3 mr-1 text-blue-400" />
+                      {event.nodeName}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div>
+                      <div>
+                        <span className="text-[#22C55E]">{event.activeNodes}</span>
+                        <span className="text-gray-400">/</span>
+                        <span className="text-gray-300">{event.totalNodes}</span>
+                      </div>
+                      {event.inactiveNodes > 0 && (
+                        <div className="mt-1 text-xs px-1.5 py-0.5 rounded-full bg-red-900/30 text-red-400 inline-block">
+                          {event.inactiveNodes} offline
+                        </div>
+                      )}
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-yellow-300">
                     <div className="flex items-center">
                       <Coins className="h-3 w-3 mr-1" />
                       {event.tokensGenerated}
                     </div>
-                  </td>
-                  <td className="px-4 py-3 text-blue-300">
-                    {event.tokensClaimed}
-                    <span className="text-gray-500 ml-1">
-                      ({Math.round(event.tokensClaimed / event.tokensGenerated * 100)}%)
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-gray-300 flex items-center">
-                    <Battery className="h-3 w-3 mr-1 text-[#22C55E]" />
-                    {event.energyGenerated.toFixed(1)}
-                  </td>
-                  <td className="px-4 py-3 text-gray-300 flex items-center">
-                    <Leaf className="h-3 w-3 mr-1 text-[#22C55E]" />
-                    {event.carbonOffset.toFixed(1)}
-                  </td>
-                  <td className="px-4 py-3">
-                    <Button 
-                      size="sm" 
-                      variant="outline" 
+                  </TableCell>
+                  <TableCell className="text-blue-300">
+                    <div>
+                      {event.tokensClaimed}
+                      <span className="text-gray-500 ml-1">
+                        ({Math.round(event.tokensClaimed / event.tokensGenerated * 100)}%)
+                      </span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-gray-300">
+                    <div className="flex items-center">
+                      <Battery className="h-3 w-3 mr-1 text-[#22C55E]" />
+                      {event.energyGenerated.toFixed(1)}
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-gray-300">
+                    <div className="flex items-center">
+                      <Leaf className="h-3 w-3 mr-1 text-[#22C55E]" />
+                      {event.carbonOffset.toFixed(1)}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      size="sm"
+                      variant="outline"
                       className="border-gray-700 text-gray-300 hover:border-[#22C55E] hover:text-[#22C55E]"
                     >
                       View Details
                     </Button>
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       </CardContent>
     </Card>

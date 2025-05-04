@@ -8,8 +8,8 @@ export interface NodeEvent {
   activeNodes: number;
   inactiveNodes: number;
   avgNoiseLevel: number;
-  userId: string;
-  userName: string;
+  nodeId: string; // Changed from userId to nodeId
+  nodeName: string; // Changed from userName to nodeName
   tokensGenerated: number;
   tokensClaimed: number;
   energyGenerated: number; // in kWh
