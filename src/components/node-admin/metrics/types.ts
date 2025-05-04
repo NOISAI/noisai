@@ -1,6 +1,5 @@
 
 // Types for the metrics dashboard
-export type TimeRange = "day" | "week" | "month";
 export type ViewMode = "charts" | "map" | "list";
 
 export interface NodeLocation {
