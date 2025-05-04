@@ -8,15 +8,15 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, Legend } from "recharts";
 import { useLiveStats } from "@/hooks/useLiveStats";
 import { formatTokenValue } from "@/utils/statsCalculations";
-import NodeLocationMap from "./NodeLocationMap";
+import NodeLocationMap, { NodeEvent } from "./NodeLocationMap";
 
 // Mock data for node events with location information
-const nodeEvents = [
+const nodeEvents: NodeEvent[] = [
   {
     id: 1,
     name: "City Coffee Amsterdam",
     location: "Amsterdam, Netherlands",
-    coordinates: [4.9041, 52.3676], // [longitude, latitude]
+    coordinates: [4.9041, 52.3676], // [longitude, latitude] - explicit tuple
     totalNodes: 3,
     activeNodes: 3,
     inactiveNodes: 0,
