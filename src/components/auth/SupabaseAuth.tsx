@@ -47,7 +47,6 @@ export function SupabaseAuth({ mode }: SupabaseAuthProps) {
         if (error) throw error;
         
         // Let the router handle redirects based on role
-        // The redirects will happen automatically based on the useSupabaseAuth hook
         navigate("/node-dashboard");
       }
     } catch (error: any) {

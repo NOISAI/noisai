@@ -58,7 +58,7 @@ export default function NodeDashboardLayout({
                   alt="NOISAI Logo" 
                   className="w-8 h-8 mr-2"
                 />
-                <h1 className="text-2xl font-bold text-primary-green dark:text-primary-light">NOISAI Node</h1>
+                <h1 className="text-2xl font-bold text-[#22C55E]">NOISAI Node</h1>
               </div>
               
               {isMobile ? (
@@ -87,7 +87,7 @@ export default function NodeDashboardLayout({
                     {email || 'User'}
                   </div>
                   
-                  <div className="h-8 w-8 rounded-full bg-primary-green flex items-center justify-center text-white font-medium">
+                  <div className="h-8 w-8 rounded-full bg-[#22C55E] flex items-center justify-center text-white font-medium">
                     {email ? email.charAt(0).toUpperCase() : 'U'}
                   </div>
                   
@@ -95,7 +95,7 @@ export default function NodeDashboardLayout({
                     variant="outline"
                     size="sm"
                     onClick={handleSignOut}
-                    className="border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-primary-light dark:hover:text-white"
+                    className="border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-[#22C55E] dark:hover:text-white"
                   >
                     <LogOut className="h-4 w-4 mr-2" />
                     Sign Out
@@ -126,7 +126,7 @@ export default function NodeDashboardLayout({
                 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
-                    <div className="h-8 w-8 rounded-full bg-primary-green flex items-center justify-center text-white font-medium mr-3">
+                    <div className="h-8 w-8 rounded-full bg-[#22C55E] flex items-center justify-center text-white font-medium mr-3">
                       {email ? email.charAt(0).toUpperCase() : 'U'}
                     </div>
                     <span className="text-sm">{email}</span>
@@ -136,7 +136,7 @@ export default function NodeDashboardLayout({
                     variant="outline"
                     size="sm"
                     onClick={handleSignOut}
-                    className="border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-primary-light dark:hover:text-white"
+                    className="border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-[#22C55E] dark:hover:text-white"
                   >
                     <LogOut className="h-4 w-4 mr-2" />
                     Sign Out
