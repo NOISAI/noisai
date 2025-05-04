@@ -29,6 +29,7 @@ export default {
           DEFAULT: "#22C55E",
           light: "#E5FFF0",
           dark: "#1B8E48",
+          green: "#22C55E", // Added this for the specific green color
         },
         secondary: {
           DEFAULT: "#1A1F2C",

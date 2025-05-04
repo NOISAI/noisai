@@ -49,7 +49,7 @@ export default function NodeDashboardLayout({
                   alt="NOISAI Logo" 
                   className="w-8 h-8 mr-2"
                 />
-                <h1 className="text-2xl font-bold text-primary-dark dark:text-primary-light">NOISAI Node</h1>
+                <h1 className="text-2xl font-bold text-primary-green dark:text-primary-light">NOISAI Node</h1>
               </div>
               
               <div className="flex items-center space-x-4">                
