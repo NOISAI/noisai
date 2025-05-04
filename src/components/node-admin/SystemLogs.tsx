@@ -5,7 +5,7 @@ import { ArrowLeft, Download, RefreshCcw } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import LogFilters from "./logs/LogFilters";
 import LogList from "./logs/LogList";
-import { LogEntry, LogFilterLevel, LogFilterService } from "./logs/types";
+import { LogEntry, LogFilterLevel, LogFilterService, LogService } from "./logs/types";
 
 // Mock log data
 const mockLogs = [
@@ -65,7 +65,7 @@ export default function SystemLogs() {
         timestamp: new Date().toISOString(),
         level: ["info", "warning", "error"][Math.floor(Math.random() * 3)] as "info" | "warning" | "error",
         message: `Log refresh triggered manually at ${new Date().toLocaleTimeString()}`,
-        service: "system"
+        service: "system" as LogService
       };
       setLogs([newLog, ...logs]);
       setIsRefreshing(false);
