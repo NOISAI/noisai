@@ -3,10 +3,11 @@ import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { NodeLocation } from "./types";
+import { Button } from "@/components/ui/button";
+import { AlertCircle } from "lucide-react";
 
-// This would ideally come from environment variables or Supabase
-// For demonstration, you'll need to replace with your actual token
-const MAPBOX_TOKEN = "pk.eyJ1IjoiZGVtb3VzZXIiLCJhIjoiY2xyMTlnbHIyMDV6NjJrcGR1ZzNzZ3ZzcSJ9.HfPe12pFR_ywVUrzKH3aDg";
+// This token is invalid or expired, so we'll need user input
+const MAPBOX_TOKEN = "";
 
 interface MapboxMapProps {
   nodes: NodeLocation[];
@@ -19,7 +20,8 @@ export default function MapboxMap({ nodes, onNodeClick, highlightActive = true }
   const map = useRef<mapboxgl.Map | null>(null);
   const markers = useRef<mapboxgl.Marker[]>([]);
   const [mapToken, setMapToken] = useState<string>(MAPBOX_TOKEN);
-  const [showTokenInput, setShowTokenInput] = useState<boolean>(mapToken === "");
+  const [showTokenInput, setShowTokenInput] = useState<boolean>(true);
+  const [mapError, setMapError] = useState<string>("");
 
   useEffect(() => {
     if (!mapContainer.current) return;
@@ -27,37 +29,53 @@ export default function MapboxMap({ nodes, onNodeClick, highlightActive = true }
     // Use the token from state (which might be from input field)
     if (!mapToken) return;
 
-    mapboxgl.accessToken = mapToken;
+    // Clear any previous error
+    setMapError("");
 
-    // Initialize map
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: "mapbox://styles/mapbox/dark-v11",
-      center: [0, 20],
-      zoom: 1.5,
-      projection: "globe",
-    });
+    try {
+      mapboxgl.accessToken = mapToken;
 
-    // Add navigation controls
-    map.current.addControl(
-      new mapboxgl.NavigationControl({ visualizePitch: true }),
-      "top-right"
-    );
-
-    // Add atmosphere and fog effects
-    map.current.on("style.load", () => {
-      map.current?.setFog({
-        color: "rgb(20, 20, 30)",
-        "high-color": "rgb(40, 40, 60)",
-        "horizon-blend": 0.2,
+      // Initialize map
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: "mapbox://styles/mapbox/dark-v11",
+        center: [0, 20],
+        zoom: 1.5,
+        projection: "globe",
       });
-    });
 
-    return () => {
-      // Clean up
-      markers.current.forEach(marker => marker.remove());
-      map.current?.remove();
-    };
+      // Add navigation controls
+      map.current.addControl(
+        new mapboxgl.NavigationControl({ visualizePitch: true }),
+        "top-right"
+      );
+
+      // Add atmosphere and fog effects
+      map.current.on("style.load", () => {
+        map.current?.setFog({
+          color: "rgb(20, 20, 30)",
+          "high-color": "rgb(40, 40, 60)",
+          "horizon-blend": 0.2,
+        });
+      });
+
+      // Handle errors when loading the map
+      map.current.on("error", (e) => {
+        console.error("Mapbox error:", e);
+        setMapError("There was an error loading the map. Please check your token and try again.");
+        setShowTokenInput(true);
+      });
+
+      return () => {
+        // Clean up
+        markers.current.forEach(marker => marker.remove());
+        map.current?.remove();
+      };
+    } catch (error) {
+      console.error("Error initializing map:", error);
+      setMapError("Failed to initialize map. Please check your token and try again.");
+      setShowTokenInput(true);
+    }
   }, [mapToken]);
 
   // Add markers when map is loaded and nodes change
@@ -143,15 +161,28 @@ export default function MapboxMap({ nodes, onNodeClick, highlightActive = true }
     }
   };
 
-  // Return the token input form if no token is provided
+  const handleResetToken = () => {
+    setShowTokenInput(true);
+    setMapToken("");
+  };
+
+  // Return the token input form if needed
   if (showTokenInput) {
     return (
       <div className="h-[500px] border border-gray-700 rounded-md flex items-center justify-center p-8">
         <div className="bg-gray-800 p-6 rounded-lg max-w-md w-full">
           <h3 className="text-white text-lg font-medium mb-4">Mapbox Token Required</h3>
+          
+          {mapError && (
+            <div className="bg-red-900/30 border border-red-800 text-red-300 p-3 rounded mb-4 flex items-start">
+              <AlertCircle className="h-5 w-5 mr-2 flex-shrink-0 mt-0.5" />
+              <p className="text-sm">{mapError}</p>
+            </div>
+          )}
+          
           <p className="text-gray-400 mb-4">
             To display the map, please enter your Mapbox public token. 
-            You can find it in your Mapbox account dashboard.
+            You can get a free token at <a href="https://www.mapbox.com/" target="_blank" rel="noopener noreferrer" className="text-green-400 underline">mapbox.com</a>.
           </p>
           <form onSubmit={handleTokenSubmit}>
             <input
@@ -177,7 +208,15 @@ export default function MapboxMap({ nodes, onNodeClick, highlightActive = true }
       {/* Map container */}
       <div ref={mapContainer} className="h-[500px] rounded-md overflow-hidden" />
       
-      {/* CSS for pulse effect - Fixed the style tag syntax */}
+      {/* Button to reset token */}
+      <button 
+        onClick={handleResetToken}
+        className="absolute top-2 right-2 bg-gray-800 hover:bg-gray-700 text-white text-xs py-1 px-2 rounded"
+      >
+        Change API Token
+      </button>
+      
+      {/* CSS for pulse effect */}
       <style>
         {`
           @keyframes pulse {
