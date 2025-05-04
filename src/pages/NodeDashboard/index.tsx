@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
@@ -7,6 +6,7 @@ import BusinessView from "./BusinessView";
 import NodeDashboardLayout from "@/components/node-dashboard/NodeDashboardLayout";
 import DashboardLoader from "@/components/node-dashboard/DashboardLoader";
 import { useToast } from "@/hooks/use-toast";
+import { OrientationPrompt } from "@/components/shared/OrientationPrompt";
 
 export default function NodeDashboard() {
   const { user, isLoading, userRole, signOut } = useSupabaseAuth();
@@ -80,6 +80,7 @@ export default function NodeDashboard() {
   return (
     <NodeDashboardLayout userRole="user">
       {renderDashboardView()}
+      <OrientationPrompt />
     </NodeDashboardLayout>
   );
 }

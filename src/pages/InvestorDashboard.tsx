@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { TabsContent } from "@/components/ui/tabs";
@@ -14,6 +13,7 @@ import InvestmentsList from "@/components/investor/InvestmentsList";
 import InteractionHistory from "@/components/investor/InteractionHistory";
 import DocumentManagement from "@/components/investor/DocumentManagement";
 import ProfileManagement from "@/components/investor/ProfileManagement";
+import { OrientationPrompt } from "@/components/shared/OrientationPrompt";
 
 export default function InvestorDashboard() {
   const { toast } = useToast();
@@ -67,7 +67,7 @@ export default function InvestorDashboard() {
   return (
     <div className="min-h-screen bg-black text-white">
       <DashboardHeader 
-        walletAddress={walletAddress}
+        walletAddress={walletAddress} 
         isConnecting={isConnecting}
         connectWallet={connectWallet}
       />
@@ -107,6 +107,8 @@ export default function InvestorDashboard() {
           </TabsContent>
         </DashboardTabs>
       </main>
+      
+      <OrientationPrompt />
     </div>
   );
 }

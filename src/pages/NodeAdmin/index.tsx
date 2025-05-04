@@ -11,6 +11,7 @@ import MetricsDashboard from "@/components/node-admin/MetricsDashboard";
 import NodeConfiguration from "@/components/node-admin/NodeConfiguration";
 import SystemLogs from "@/components/node-admin/SystemLogs";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { OrientationPrompt } from "@/components/shared/OrientationPrompt";
 
 export default function NodeAdmin() {
   const { user, signOut, userRole } = useSupabaseAuth();
@@ -168,17 +169,19 @@ export default function NodeAdmin() {
           </Card>
         </div>
       </main>
+      
+      <OrientationPrompt />
     </div>
   );
   
   return (
     <Routes>
       <Route path="/" element={renderDashboard()} />
-      <Route path="/users" element={<UserManagement />} />
-      <Route path="/security" element={<SecuritySettings />} />
-      <Route path="/metrics" element={<MetricsDashboard />} />
-      <Route path="/config" element={<NodeConfiguration />} />
-      <Route path="/logs" element={<SystemLogs />} />
+      <Route path="/users" element={<><UserManagement /><OrientationPrompt /></>} />
+      <Route path="/security" element={<><SecuritySettings /><OrientationPrompt /></>} />
+      <Route path="/metrics" element={<><MetricsDashboard /><OrientationPrompt /></>} />
+      <Route path="/config" element={<><NodeConfiguration /><OrientationPrompt /></>} />
+      <Route path="/logs" element={<><SystemLogs /><OrientationPrompt /></>} />
     </Routes>
   );
 }
