@@ -1,5 +1,7 @@
 # Welcome to NOISAI
+https://www.noisai.tech/
 
+[![Typing SVG](https://readme-typing-svg.demolab.com/?lines= "Revolutionary technology that converts ambient sound into renewable electricity, powered by blockchain and AI")](https://git.io/typing-svg)
 
 ## Project info
 
