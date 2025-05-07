@@ -46,6 +46,6 @@ NOISAI’s technology can be integrated with other renewable energy systems, suc
 For example, while solar panels may only cover 10–15% of a stadium’s energy needs, NOISAI’s sound-to-energy conversion could significantly increase the proportion of locally generated renewable energy.
 
 
-## Tokenized Energy Credits**
+## Tokenized Energy Credits
 
 Earn and trade energy credits on our blockchain network, creating a decentralized energy marketplace
